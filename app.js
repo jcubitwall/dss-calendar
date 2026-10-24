@@ -138,7 +138,7 @@ function evItem(e, withDate) {
   const when = withDate ? `<div class="kind">${esc(TL.whenText(e))}</div>` : (e.p === 'm' ? `<div class="kind">Scripture gives the month only; shown on the 1st</div>` : '');
   const basis = e.b ? `<div class="basis">Year: ${esc(e.b)}${e.c === 'derived' ? ' (derived)' : ''}</div>` : '';
   const del = e.k === 'mine' ? ` <button class="linkbtn" data-del="${esc(e.id)}">Delete</button>` : '';
-  const go = withDate ? ` <button class="linkbtn" data-go="${e.j}">Go to day</button>` : '';
+  const go = (withDate ? ` <button class="linkbtn" data-go="${e.j}">Go to day</button>` : '') + ` <button class="linkbtn" data-ev="${esc(e.id)}">Read more</button>`;
   const src = e.u ? ` <a href="${esc(e.u)}" target="_blank" rel="noopener">${esc(e.s || 'Source')}</a>` : e.s ? ` <span class="kind">${esc(e.s)}</span>` : '';
   const cert = e.c === 'probable' ? ' · day probable' : '';
   return `<li><div class="kind ${e.k}">${kind}${cert}</div><div class="t">${esc(e.t)}</div>${when}${e.n ? `<div class="n">${esc(e.n)}</div>` : ''}${basis}<div>${src}${go}${del}</div></li>`;
@@ -271,7 +271,7 @@ function renderHistory() {
     const x = D.fromJdn(e.j), c = D.jdnToCivil(e.j);
     const era = x?.am ? `Onah ${D.cycles(x.am).onah} · ${D.AGES[D.cycles(x.am).age - 1]}` : 'Creation';
     if (era !== lastEra) { h += `<li class="era">${era}</li>`; lastEra = era; }
-    h += `<li><button data-go="${e.j}"><span class="d1">${esc(TL.whenText(e).split(' · ')[0])}</span><span class="t">${esc(e.t)}</span><span class="d2">${D.WEEKDAYS[D.weekdayOf(e.j)]}, ${fmtCivil(c, true)} ${calName(c.cal)}</span></button></li>`;
+    h += `<li><button data-ev="${esc(e.id)}"${e.id === tl.last ? ' class="seen"' : ''}><span class="d1">${esc(TL.whenText(e).split(' · ')[0])}</span><span class="t">${esc(e.t)}</span><span class="d2">${D.WEEKDAYS[D.weekdayOf(e.j)]}, ${fmtCivil(c, true)} ${calName(c.cal)}</span></button></li>`;
   }
   if (!list.length) h += `<li class="muted" style="padding:12px 0">No events match. Try a shorter word, or switch on more categories above.</li>`;
   h += '</ul>';
@@ -399,11 +399,21 @@ function render() {
   if (view === 'history') renderHistory();
   if (view === 'timeline') renderTimeline();
 }
+const scrollMemo = {};
+let backPlace = null;
+function showBack() {
+  let el = $('#backPlace');
+  if (!backPlace) { el?.remove(); return; }
+  if (!el) { el = document.createElement('button'); el.id = 'backPlace'; el.className = 'back-place'; document.body.appendChild(el); }
+  el.textContent = backPlace.view === 'history' ? 'Back to my place in History' : 'Back to my place in the timeline';
+}
 function setView(v) {
+  scrollMemo[view] = window.scrollY;
   view = v;
   document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.view === v));
   ['month', 'ring', 'timeline', 'history'].forEach(k => { $('#view-' + k).hidden = k !== v; });
   render();
+  if ((v === 'timeline' || v === 'history') && scrollMemo[v]) requestAnimationFrame(() => window.scrollTo({ top: scrollMemo[v] }));
 }
 
 // ---------- About ----------
@@ -448,7 +458,7 @@ function renderTimeline() {
   $('#view-timeline').innerHTML = h;
   const body = $('#tlBody');
   const from = Math.max(1, Math.min(tl.from, tl.to)), to = Math.min(7000, Math.max(tl.from, tl.to));
-  if (tl.mode === 'line') TL.renderLine(body, evs, { ppy: tl.zoom, from, to });
+  if (tl.mode === 'line') TL.renderLine(body, evs, { ppy: tl.zoom, from, to, lastId: tl.last });
   else {
     const size = 1000;
     const w = TL.wheelSVG(evs, size, { from, to });
@@ -457,6 +467,62 @@ function renderTimeline() {
   }
   const upd = () => { tl.from = +$('#tlFrom').value || 1; tl.to = +$('#tlTo').value || 7000; renderTimeline(); };
   $('#tlFrom').addEventListener('change', upd); $('#tlTo').addEventListener('change', upd);
+}
+
+// ---------- Event reader ----------
+// Opens over the current view, so closing it returns to the same scroll position.
+const evById = id => EVENTS.find(e => e.id === id) || mine.map(e => ({ ...e, k: 'mine' })).find(e => e.id === id);
+const wikiTitle = u => { const m = /wikipedia\.org\/wiki\/([^?#]+)/.exec(u || ''); return m ? decodeURIComponent(m[1]) : ''; };
+const bibleRef = e => (e.k === 'biblical' && /^[1-3]?\s?[A-Za-z]+ \d+:\d+/.test(e.r) ? e.r : '');
+async function openEvent(id) {
+  const e = evById(id); if (!e) return;
+  tl.last = id; store.set('tl', tl);
+  document.querySelectorAll('.seen').forEach(n => n.classList.remove('seen'));
+  document.querySelectorAll(`[data-ev="${CSS.escape(id)}"]`).forEach(n => { if (n.closest('#view-timeline, #view-history')) n.classList.add('seen'); });
+  const x = D.fromJdn(e.j), c = D.jdnToCivil(e.j);
+  const other = c.cal === 'julian' ? { ...D.jdnToGreg(e.j), cal: 'gregorian' } : { ...D.jdnToJul(e.j), cal: 'julian' };
+  const kind = e.k === 'mine' ? 'Your event' : e.k === 'biblical' ? 'Bible' : e.k === 'church' ? 'Church history' : 'History';
+  const wt = wikiTitle(e.u), ref = bibleRef(e);
+  const links = [];
+  if (e.u) links.push(`<a href="${esc(e.u)}" target="_blank" rel="noopener">${esc(e.s && !/wikipedia/i.test(e.s) ? e.s : (wt ? 'Wikipedia' : 'Source'))}</a>`);
+  if (wt && e.u !== `https://en.wikipedia.org/wiki/${wt}`) links.push(`<a href="https://en.wikipedia.org/wiki/${encodeURIComponent(wt)}" target="_blank" rel="noopener">Wikipedia</a>`);
+  if (wt) links.push(`<a href="https://grokipedia.com/page/${encodeURIComponent(wt.replace(/ /g, '_'))}" target="_blank" rel="noopener">Grokipedia</a>`);
+  const when = e.p === 'm' && x?.kind === 'month'
+    ? `${D.MONTHS[x.month - 1].name} ${x.am} AM <span class="muted">(Scripture gives the month only)</span>`
+    : `${D.WEEKDAYS[x.weekday]}, ${esc(dssShort(x))}`;
+  $('#eventBody').innerHTML = `
+    <div class="kind ${e.k}">${kind}${e.c === 'probable' ? ' · day probable' : ''}${e.c === 'derived' ? ' · year derived' : ''}</div>
+    <h2 class="lk-title">${esc(e.t)}</h2>
+    <p class="ev-when">${when}</p>
+    <p class="muted">${fmtCivil(c, true)} ${calName(c.cal)}${c.y < 1700 ? ` · ${fmtCivil(other, true)} ${calName(other.cal)}` : ''}${e.r && !ref ? ` · ${esc(e.r)}` : ''}</p>
+    ${e.n ? `<p>${esc(e.n)}</p>` : ''}
+    ${e.b ? `<p class="basis">Year: ${esc(e.b)}</p>` : ''}
+    <div id="evRead" class="ev-read"></div>
+    <p class="lk-links">${links.join(' ')}</p>
+    <div class="pr-actions">
+      <button type="button" class="btn" data-openday="${e.j}">Open this day</button>
+      <button type="button" class="btn ghost" value="close" onclick="this.closest('dialog').close()">Back to where I was</button>
+    </div>`;
+  $('#eventDlg').showModal();
+  $('#eventDlg').scrollTop = 0;
+  const read = $('#evRead');
+  if (ref) {
+    read.innerHTML = `<p class="muted">Loading ${esc(ref)} (KJV)…</p>`;
+    try {
+      const r = await fetch(`https://bible-api.com/${encodeURIComponent(ref)}?translation=kjv`);
+      if (!r.ok) throw new Error(r.status);
+      const j = await r.json();
+      read.innerHTML = `<blockquote class="verse">${esc((j.text || '').trim())}<cite>${esc(j.reference || ref)}, King James Version</cite></blockquote>`;
+    } catch { read.innerHTML = `<p class="muted">Couldn't load the verse text. Use the link below to read ${esc(ref)}.</p>`; }
+  } else if (wt) {
+    read.innerHTML = '<p class="muted">Loading summary…</p>';
+    try {
+      const r = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(wt)}`);
+      if (!r.ok) throw new Error(r.status);
+      const j = await r.json();
+      read.innerHTML = `${j.thumbnail?.source ? `<img class="lk-img" src="${esc(j.thumbnail.source)}" alt="">` : ''}<p>${esc(j.extract || '')}</p><p class="muted small">Summary from Wikipedia. Dates there follow standard (secular) dating.</p>`;
+    } catch { read.innerHTML = '<p class="muted">Couldn\'t load the summary. Use the links below to read more.</p>'; }
+  } else read.innerHTML = '';
 }
 
 // ---------- Print and export ----------
@@ -526,7 +592,14 @@ async function doPdf(btn) {
 
 // ---------- Events wiring ----------
 document.addEventListener('click', e => {
-  const t = e.target.closest('button, path, [data-go]'); if (!t) return;
+  const t = e.target.closest('button, path, [data-go], [data-ev]'); if (!t) return;
+  if (t.dataset.ev) { openEvent(t.dataset.ev); return; }
+  if (t.dataset.openday) {
+    const j = +t.dataset.openday; $('#eventDlg').close();
+    backPlace = { view, y: window.scrollY }; scrollMemo[view] = window.scrollY;
+    select(j, true); window.scrollTo({ top: 0 }); showBack(); return;
+  }
+  if (t.id === 'backPlace') { const b = backPlace; backPlace = null; showBack(); if (b) { if (view !== b.view) setView(b.view); requestAnimationFrame(() => window.scrollTo({ top: b.y })); } return; }
   if (t.dataset.j) { select(+t.dataset.j); window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); return; }
   if (t.dataset.closelookup) $('#lookup').close();
   if (t.dataset.savelookup && lookupCurrent) {
@@ -612,7 +685,7 @@ async function openLookup(id) {
       <h3 class="lk-h">Dates on the DSS calendar</h3>
       <ul class="lk-dates">${rows}</ul>
       <p class="lk-note">Dates come from Wikidata and follow standard (secular) dating. For people and events in Scripture, the app's biblical timeline follows the Bible's own dates and Ken Johnson's chronology.</p>
-      <p class="lk-links">${x.wikiUrl ? `<a href="${esc(x.wikiUrl)}" target="_blank" rel="noopener">Read on Wikipedia</a>` : ''} <a href="${esc(x.wikidataUrl)}" target="_blank" rel="noopener">Wikidata</a></p>`;
+      <p class="lk-links">${x.wikiUrl ? `<a href="${esc(x.wikiUrl)}" target="_blank" rel="noopener">Wikipedia</a> <a href="https://grokipedia.com/page/${encodeURIComponent(wikiTitle(x.wikiUrl).replace(/ /g, '_'))}" target="_blank" rel="noopener">Grokipedia</a>` : ''} <a href="${esc(x.wikidataUrl)}" target="_blank" rel="noopener">Wikidata</a></p>`;
     lookupCurrent = x;
   } catch (e) {
     body.innerHTML = `<p>Couldn't load this entry: ${esc(e.message)}. Check your connection and try again.</p>`;
@@ -654,6 +727,8 @@ const [table, events] = await Promise.all([
 D.init(table);
 EVENTS = events;
 for (const e of EVENTS) { if (!byJdn.has(e.j)) byJdn.set(e.j, []); byJdn.get(e.j).push(e); }
+const setHdr = () => document.documentElement.style.setProperty('--hdr', $('.top').offsetHeight + 'px');
+setHdr(); window.addEventListener('resize', setHdr);
 const hm = location.hash.match(/d=(-?\d+)/);
 renderAbout();
 select(hm ? +hm[1] : today, true);

@@ -35,7 +35,8 @@ const civilYear = am => D.yearLabel(am - D.EPOCH_OFFSET);
 // ---------------------------------------------------------------------------
 // Screen: vertical scrolling line. Labels are packed so none overlap, with a
 // leader line back to their true position on the scale.
-export function renderLine(el, events, { ppy = 1, from = 1, to = 7000 } = {}) {
+export function renderLine(el, events, opts = {}) {
+  const { ppy = 1, from = 1, to = 7000 } = opts;
   // Elastic scale: empty centuries keep their proportional length (ppy px/year),
   // and the line stretches wherever events need room, so every event sits right
   // beside its own point on the line.
@@ -86,7 +87,7 @@ export function renderLine(el, events, { ppy = 1, from = 1, to = 7000 } = {}) {
     if (o.age != null) { html += `<div class="tl-age" style="top:${o.y}px">${AGE_NAMES[o.age]}</div>`; continue; }
     const t = TYPES[o.e.k], c = t?.color || '#555', cy = o.y + 11;
     svg += `<line x1="${axisX}" y1="${cy}" x2="${labelX - 2}" y2="${cy}" stroke="${c}" stroke-opacity=".6"/><circle cx="${axisX}" cy="${cy}" r="4" fill="${c}"/>`;
-    html += `<button class="tl-ev" style="top:${o.y}px" data-go="${o.e.j}"><span class="tl-t">${xmlEsc(o.e.t)}</span><span class="tl-d">${xmlEsc(whenText(o.e))}</span></button>`;
+    html += `<button class="tl-ev${o.e.id === opts.lastId ? ' seen' : ''}" style="top:${o.y}px" data-ev="${xmlEsc(o.e.id)}" id="tl-${xmlEsc(o.e.id)}"><span class="tl-t">${xmlEsc(o.e.t)}</span><span class="tl-d">${xmlEsc(whenText(o.e))}</span></button>`;
   }
   if (!items.some(o => o.age == null)) html += `<p class="tl-empty">No events are switched on for this span. Turn on a category above.</p>`;
   el.innerHTML = `<div class="tl" style="height:${height}px"><svg class="tl-svg" width="100%" height="${height}" aria-hidden="true">${svg}</svg>${html}</div>`;
@@ -157,7 +158,7 @@ export function wheelSVG(events, size, { from = 1, to = 7000, print = false, tit
     const deg = o.a * 180 / Math.PI, flip = deg > 90 && deg < 270;
     const [tx, ty] = P(rLab, o.a);
     let label = o.e.t; if (label.length > maxChars) label = label.slice(0, maxChars - 1) + '…';
-    g += `<text ${print ? '' : `data-go="${o.e.j}" class="wh-ev" `}x="${f(tx)}" y="${f(ty)}" font-family="${font}" font-size="${f(fs)}" fill="${ink}" text-anchor="${flip ? 'end' : 'start'}" dominant-baseline="middle" transform="rotate(${f(flip ? deg - 180 : deg)} ${f(tx)} ${f(ty)})">${xmlEsc(label)}</text>`;
+    g += `<text ${print ? '' : `data-ev="${xmlEsc(o.e.id)}" class="wh-ev" `}x="${f(tx)}" y="${f(ty)}" font-family="${font}" font-size="${f(fs)}" fill="${ink}" text-anchor="${flip ? 'end' : 'start'}" dominant-baseline="middle" transform="rotate(${f(flip ? deg - 180 : deg)} ${f(tx)} ${f(ty)})">${xmlEsc(label)}</text>`;
   }
   // centre
   g += `<text x="${C}" y="${f(C - S * 0.03)}" font-family="${serif}" font-size="${f(S * 0.034)}" fill="${print ? '#0F4C5A' : 'var(--brine)'}" text-anchor="middle">${from === 1 && to === 7000 ? '7000 years' : `${from}–${to} AM`}</text>`;

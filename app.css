@@ -221,3 +221,17 @@ dialog::backdrop { background: rgba(5, 25, 30, .45); }
   body.printing #printArea { display: block; }
   body.printing { background: #fff; }
 }
+
+/* Event reader */
+.ev-when { font: 500 21px/1.3 var(--serif); color: var(--brine); margin: 4px 0 2px; }
+.ev-read { margin: 10px 0; }
+.ev-read::after { content: ''; display: block; clear: both; }
+.verse { margin: 0; padding: 10px 14px; border-left: 3px solid var(--sun); background: var(--sun-soft); font: 400 18px/1.55 var(--serif); border-radius: 0 8px 8px 0; }
+.verse cite { display: block; margin-top: 6px; font: 400 13px var(--sans); color: var(--ink-2); font-style: normal; }
+.tl-ev.seen, .hist button.seen { background: var(--mineral-soft); border-radius: 8px; outline: 2px solid var(--brine-2); outline-offset: 1px; }
+#eventDlg { max-height: 88vh; }
+
+.back-place { position: fixed; left: 50%; transform: translateX(-50%); bottom: max(16px, env(safe-area-inset-bottom)); z-index: 20;
+  background: var(--brine); color: #fff; border: 0; border-radius: 99px; padding: 12px 20px; font-weight: 700; box-shadow: 0 6px 20px rgba(5, 25, 30, .3); }
+/* Tabs stay visible while scrolling, so switching views never loses your place */
+.tabs { position: sticky; top: var(--hdr, 58px); z-index: 9; background: var(--bg); }

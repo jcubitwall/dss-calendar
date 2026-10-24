@@ -21,6 +21,8 @@ Owner: Johnny Wall. Static web app, deployed on Cloudflare Pages from GitHub (`m
 14. Timelines: straight line (elastic scale) and 7000-year wheel; print posters as vector PDF/SVG up to 72 × 24 in.
 15. Bible events: every month/day-dated verse; years via Ken Johnson's anchors; basis shown per event. Kings chain check: Samaria 3205 = Hezekiah 6 → Zedekiah 11 = 3338 ✓.
 
+16. Event reader (owner, Oct 2026): tapping an event opens a panel over the view (KJV verse text via bible-api.com for Bible events; Wikipedia summary otherwise) with Wikipedia + Grokipedia (grokipedia.com/page/<Title>) links; closing keeps the scroll position; "Open this day" shows a "Back to my place" button; tabs are sticky.
+
 ## Where things are
 - Engine: `engine/dss.js` (pure). Table: `scripts/build-table.mjs`. Tests: `scripts/test-engine.mjs` (must pass).
 - Events: edit `data/sources/*.json`, then `node scripts/build-events.mjs`. Bible: `data/bible/` + `scripts/build-bible.mjs`.
