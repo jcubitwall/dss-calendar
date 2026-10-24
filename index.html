@@ -20,7 +20,7 @@
     <span>DSS Calendar</span>
   </button>
   <div class="search">
-    <input id="q" type="search" autocomplete="off" placeholder="Search a date, year or event" aria-label="Search a date, year or event">
+    <input id="q" type="search" autocomplete="off" placeholder="Search any name, place, date or event" aria-label="Search any name, place, date or event">
     <div id="results" class="results" role="listbox" hidden></div>
   </div>
   <button class="icon-btn" id="openSettings" aria-label="Settings and about">
@@ -66,6 +66,13 @@
     <label class="field"><span>Title</span><input name="title" required maxlength="80" placeholder="e.g. Cubit Home founded"></label>
     <label class="field"><span>Note (optional)</span><input name="note" maxlength="200"></label>
     <div class="row-end"><button class="btn" value="save">Save event</button></div>
+  </form>
+</dialog>
+
+<dialog id="lookup">
+  <form method="dialog" class="sheet">
+    <div class="sheet-head"><span class="muted">Lookup</span><button class="icon-btn" value="close" aria-label="Close">✕</button></div>
+    <div id="lookupBody"></div>
   </form>
 </dialog>
 

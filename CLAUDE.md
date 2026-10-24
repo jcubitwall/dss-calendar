@@ -14,6 +14,9 @@ Owner: Johnny Wall. Static web app, deployed on Cloudflare Pages from GitHub (`m
 9. Users can add their own events (localStorage, per device).
 10. Public, credited to Ken Johnson / dsscalendar.org, original design.
 
+11. Source priority (owner, Oct 2026): Scripture's own dates are fixed truth; Ken Johnson's studies and chronology place them in years and outrank secular sources; secular dating is shown alongside only where it differs.
+12. Live lookup: search box also queries Wikidata/Wikipedia (lookup.js) for any person, place or event; those dates are labelled as standard (secular) dating.
+
 ## Where things are
 - Engine: `engine/dss.js` (pure). Table: `scripts/build-table.mjs`. Tests: `scripts/test-engine.mjs` (must pass).
 - Events: edit `data/sources/*.json`, then `node scripts/build-events.mjs`.

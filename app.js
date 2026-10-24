@@ -1,4 +1,5 @@
 import * as D from './engine/dss.js';
+import * as L from './lookup.js';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -359,11 +360,19 @@ let results = [], active = -1;
 function showResults() {
   const box = $('#results');
   if (!results.length) { box.hidden = true; return; }
-  box.innerHTML = results.map((r, i) => `<button role="option" data-ri="${i}" class="${i === active ? 'active' : ''}">${esc(r.label)}${r.sub ? `<small>${esc(r.sub)}</small>` : ''}</button>`).join('');
+  let h = '', wikiHead = false;
+  results.forEach((r, i) => {
+    if (r.wd && !wikiHead) { h += '<div class="res-head">People, places and events from Wikipedia</div>'; wikiHead = true; }
+    if (r.loading) { h += `<div class="res-head">${esc(r.label)}</div>`; return; }
+    h += `<button role="option" data-ri="${i}" class="${i === active ? 'active' : ''}">${esc(r.label)}${r.sub ? `<small>${esc(r.sub)}</small>` : ''}</button>`;
+  });
+  box.innerHTML = h;
   box.hidden = false;
 }
 function pick(r) {
+  if (!r || r.loading) return;
   $('#results').hidden = true; $('#q').value = ''; $('#q').blur();
+  if (r.wd) { openLookup(r.wd); return; }
   if (r.am && view === 'ring') ringAm = r.am;
   select(r.j, true);
 }
@@ -413,6 +422,12 @@ function renderAbout() {
 document.addEventListener('click', e => {
   const t = e.target.closest('button, path'); if (!t) return;
   if (t.dataset.j) { select(+t.dataset.j); window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); return; }
+  if (t.dataset.closelookup) $('#lookup').close();
+  if (t.dataset.savelookup && lookupCurrent) {
+    const d = lookupCurrent.dates[+t.dataset.savelookup];
+    mine.push({ id: 'm' + Date.now(), t: `${lookupCurrent.label}: ${d.label.toLowerCase()}`, n: lookupCurrent.description || '', j: d.jdn, r: '', u: lookupCurrent.wikiUrl, s: 'Wikipedia' });
+    store.set('mine', mine); t.textContent = 'Saved'; t.disabled = true; render(); return;
+  }
   if (t.dataset.go) { select(+t.dataset.go, true); window.scrollTo({ top: 0 }); return; }
   if (t.dataset.mnav) { stepMonth(+t.dataset.mnav); return; }
   if (t.dataset.ynav) { ringAm = Math.max(1, Math.min(D.lastAM(), ringAm + +t.dataset.ynav)); renderRing(); return; }
@@ -443,7 +458,73 @@ document.querySelectorAll('[data-set]').forEach(inp => {
   inp.addEventListener('change', () => { settings[k] = inp.type === 'checkbox' ? inp.checked : inp.value; store.set('settings', settings); render(); });
 });
 const q = $('#q');
-q.addEventListener('input', () => { results = parseQuery(q.value); active = results.length ? 0 : -1; showResults(); });
+let wikiTimer = 0, wikiCtl = null;
+q.addEventListener('input', () => {
+  const text = q.value.trim();
+  results = parseQuery(q.value); active = results.length ? 0 : -1;
+  clearTimeout(wikiTimer); wikiCtl?.abort();
+  // Names and events (not bare numbers or dates) also go to Wikipedia
+  if (text.length >= 3 && /[a-z]/i.test(text) && !/^\d/.test(text)) {
+    results.push({ loading: true, label: 'Searching Wikipedia…', wd: 'x' });
+    wikiTimer = setTimeout(async () => {
+      wikiCtl = new AbortController();
+      try {
+        const hits = await L.search(text, wikiCtl.signal);
+        if (q.value.trim() !== text) return;
+        results = results.filter(r => !r.loading).concat(hits.map(h => ({ label: h.label, sub: h.description || 'Wikipedia', wd: h.id })));
+        if (active < 0 && results.length) active = 0;
+        showResults();
+      } catch (e) {
+        if (e.name === 'AbortError') return;
+        results = results.filter(r => !r.loading).concat([{ loading: true, label: 'Wikipedia search is unavailable right now. Check your connection and try again.' }]);
+        showResults();
+      }
+    }, 350);
+  }
+  showResults();
+});
+
+// ---------- Lookup panel ----------
+async function openLookup(id) {
+  const dlg = $('#lookup'), body = $('#lookupBody');
+  body.innerHTML = '<p class="muted">Loading…</p>';
+  dlg.showModal();
+  try {
+    const x = await L.details(id);
+    const rows = x.dates.map(dateRow).join('') || '<p class="muted">Wikipedia lists no dates for this entry. Try searching for a specific event connected to it.</p>';
+    body.innerHTML = `
+      ${x.image ? `<img class="lk-img" src="${esc(x.image)}" alt="">` : ''}
+      <h2 class="lk-title">${esc(x.label)}</h2>
+      ${x.description ? `<p class="muted lk-desc">${esc(x.description)}</p>` : ''}
+      ${x.summary ? `<p class="lk-sum">${esc(x.summary)}</p>` : ''}
+      <h3 class="lk-h">Dates on the DSS calendar</h3>
+      <ul class="lk-dates">${rows}</ul>
+      <p class="lk-note">Dates come from Wikidata and follow standard (secular) dating. For people and events in Scripture, the app's biblical timeline follows the Bible's own dates and Ken Johnson's chronology.</p>
+      <p class="lk-links">${x.wikiUrl ? `<a href="${esc(x.wikiUrl)}" target="_blank" rel="noopener">Read on Wikipedia</a>` : ''} <a href="${esc(x.wikidataUrl)}" target="_blank" rel="noopener">Wikidata</a></p>`;
+    lookupCurrent = x;
+  } catch (e) {
+    body.innerHTML = `<p>Couldn't load this entry: ${esc(e.message)}. Check your connection and try again.</p>`;
+  }
+}
+let lookupCurrent = null;
+function dateRow(t, i) {
+  const cal = t.cal === 'julian' ? 'Julian' : 'Gregorian';
+  if (t.precision === 'day') {
+    const x = D.fromJdn(t.jdn);
+    if (!x) return `<li><b>${esc(t.label)}</b> ${t.d} ${MONTH_FULL[t.m - 1]} ${D.yearShort(t.y)} — outside the calendar range</li>`;
+    return `<li><b>${esc(t.label)}</b><span class="lk-dss">${esc(D.WEEKDAYS[x.weekday])}, ${esc(dssShort(x))}</span>
+      <span class="muted">${t.d} ${MONTH_FULL[t.m - 1]} ${D.yearShort(t.y)} (${cal})</span>
+      <span><button class="linkbtn" data-go="${t.jdn}" data-closelookup="1">Go to day</button> <button type="button" class="linkbtn" data-savelookup="${i}">Save to my events</button></span></li>`;
+  }
+  if (t.precision === 'month') {
+    const a = D.fromJdn(t.jdn);
+    return `<li><b>${esc(t.label)}</b><span class="lk-dss">${MONTH_FULL[t.m - 1]} ${D.yearShort(t.y)} — month only</span>
+      <span class="muted">Begins around ${esc(dssShort(a))}</span><span><button class="linkbtn" data-go="${t.jdn}" data-closelookup="1">Go to month</button></span></li>`;
+  }
+  const am = t.y + D.EPOCH_OFFSET;
+  const span = t.precision === 'year' ? `${am - 1}–${am} AM` : t.precision === 'decade' ? `around ${am} AM (decade)` : `around ${am} AM (century)`;
+  return `<li><b>${esc(t.label)}</b><span class="lk-dss">${esc(span)}</span><span class="muted">${D.yearLabel(t.y)} — ${t.precision} only, no day recorded</span></li>`;
+}
 q.addEventListener('keydown', e => {
   if (e.key === 'ArrowDown') { active = Math.min(results.length - 1, active + 1); showResults(); e.preventDefault(); }
   if (e.key === 'ArrowUp') { active = Math.max(0, active - 1); showResults(); e.preventDefault(); }
