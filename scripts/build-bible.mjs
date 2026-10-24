@@ -65,10 +65,9 @@ const Y = {
   98: [AD(11), D, 'Twelve years after a birth in 2 BC (Ken Johnson).'],
   99: [AD(29), D, 'First Passover after the ministry began in AD 28 (Ken Johnson).'],
   100: [AD(31), D], 101: [AD(31), D], 102: [AD(31), D], 103: [AD(31), D],
-  104: [AD(32), K], 105: [AD(32), K],
-  108: [AD(32), K, 'Pentecost is always Sivan 15 on this calendar.'],
+  108: [AD(32), K, "Ken Johnson: Sunday, Sivan 6 (lunar), AD 32 — 50 days after the resurrection. That Sunday, 1 June AD 32, is also Sivan 15, Pentecost, on this calendar."],
 };
-// Not placed: 13 (a law, not an event); 22, 23, 80, 86 (no month or no year); 106, 107 (the crucifixion
+// Not placed: 104, 105 (Passion week is in biblical.json on Ken Johnson's AD 32 dates); 13 (a law, not an event); 22, 23, 80, 86 (no month or no year); 106, 107 (the crucifixion
 // is already on the calendar as Ken Johnson dates it, Nisan 14 3957 AM); 109–112 (no year in Ken Johnson's work).
 const DAY_FILL = { 108: 15 }; // Pentecost day from this calendar's fixed feast
 

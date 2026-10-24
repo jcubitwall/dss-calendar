@@ -23,6 +23,8 @@ Owner: Johnny Wall. Static web app, deployed on Cloudflare Pages from GitHub (`m
 
 16. Event reader (owner, Oct 2026): tapping an event opens a panel over the view (KJV verse text via bible-api.com for Bible events; Wikipedia summary otherwise) with Wikipedia + Grokipedia (grokipedia.com/page/<Title>) links; closing keeps the scroll position; "Open this day" shows a "Back to my place" button; tabs are sticky.
 
+17. Passion week (owner, Oct 2026): use Ken Johnson's dates — Thursday Nisan 14 crucifixion, Sunday Nisan 17 resurrection, Sunday Sivan 6 Pentecost (lunar reckoning), civil dates counted from his April 6, AD 32 (Nisan 10): anointing Fri 4 Apr, entry Sun 6 Apr, crucifixion Thu 10 Apr, resurrection Sun 13 Apr (= DSS 26 Nisan, First Fruits), Pentecost Sun 1 Jun (= DSS 15 Sivan). Replaces dsscalendar.org's "Nisan 14" on the DSS calendar (a Tuesday).
+
 ## Where things are
 - Engine: `engine/dss.js` (pure). Table: `scripts/build-table.mjs`. Tests: `scripts/test-engine.mjs` (must pass).
 - Events: edit `data/sources/*.json`, then `node scripts/build-events.mjs`. Bible: `data/bible/` + `scripts/build-bible.mjs`.
