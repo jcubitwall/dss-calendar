@@ -1,0 +1,468 @@
+import * as D from './engine/dss.js';
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTH_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+// ---------- Storage (per-viewer conveniences only) ----------
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('dss:' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('dss:' + k, JSON.stringify(v)); } catch { /* storage unavailable */ } },
+};
+const settings = Object.assign({ courses: true, moon: true, cycles: true, civil: 'historian' }, store.get('settings', {}));
+let mine = store.get('mine', []);
+
+// ---------- State ----------
+let EVENTS = [];
+let byJdn = new Map();
+const today = (() => { const n = new Date(); return D.gregToJdn(n.getFullYear(), n.getMonth() + 1, n.getDate()); })();
+let sel = today;                // selected JDN
+let view = 'month';
+let histFilter = 'all';
+let histQuery = '';
+
+// ---------- Helpers ----------
+function civil(jdn, mode = settings.civil) {
+  const c = mode === 'gregorian' ? { ...D.jdnToGreg(jdn), cal: 'gregorian' } : mode === 'julian' ? { ...D.jdnToJul(jdn), cal: 'julian' } : D.jdnToCivil(jdn);
+  return c;
+}
+const fmtCivil = (c, long) => `${c.d} ${long ? MONTH_FULL[c.m - 1] : MON[c.m - 1]} ${D.yearShort(c.y)}`;
+const short = c => `${MON[c.m - 1]} ${c.d}`;
+const calName = cal => (cal === 'julian' ? 'Julian' : 'Gregorian');
+
+function dssShort(x) {
+  if (!x) return '';
+  if (x.kind === 'creation') return `Creation day ${x.creationDay}`;
+  if (x.kind === 'tekufah') return `Tekufah ${D.TEKUFOT[x.q].split(' ')[0]} ${x.am} AM`;
+  if (x.kind === 'leap') return `Leap day ${x.day}, ${x.am} AM`;
+  return `${x.day} ${D.MONTHS[x.month - 1].name} ${x.am} AM`;
+}
+function monthOf(x) {               // which month page a day belongs to
+  if (x.kind === 'month') return x.month;
+  if (x.kind === 'leap') return 12;
+  if (x.kind === 'tekufah') return x.q === 3 ? 12 : x.q * 3 + 4;
+  return 1;
+}
+function eventsOn(jdn) {
+  return [...(byJdn.get(jdn) || []), ...mine.filter(e => e.j === jdn).map(e => ({ ...e, k: 'mine' }))];
+}
+
+// Moon (astronomy-engine, loaded with defer)
+function moonAt(jdn) {
+  const A = window.Astronomy; if (!A) return null;
+  const ut = j => A.MakeTime(j - 0.5 - 2 / 24 - 2451545.0); // local midnight, Jerusalem
+  const a0 = A.MoonPhase(ut(jdn)), a1 = A.MoonPhase(ut(jdn + 1));
+  const crosses = t => { const d = (a1 - a0 + 360) % 360; return ((t - a0 + 360) % 360) < d; };
+  const mid = A.MoonPhase(A.MakeTime(jdn - 2 / 24 - 2451545.0));
+  const illum = Math.round((1 - Math.cos(mid * Math.PI / 180)) / 2 * 100);
+  let name = mid < 22.5 || mid >= 337.5 ? 'New moon' : mid < 67.5 ? 'Waxing crescent' : mid < 112.5 ? 'First quarter' : mid < 157.5 ? 'Waxing gibbous'
+    : mid < 202.5 ? 'Full moon' : mid < 247.5 ? 'Waning gibbous' : mid < 292.5 ? 'Last quarter' : 'Waning crescent';
+  return { newMoon: crosses(0), fullMoon: crosses(180), illum, name };
+}
+
+// ---------- Day card ----------
+function renderDay() {
+  const x = D.fromJdn(sel);
+  const c = D.jdnToCivil(sel), g = D.jdnToGreg(sel), j = D.jdnToJul(sel);
+  const el = $('#day');
+  if (!x) { el.innerHTML = '<p>Outside the calendar range.</p>'; return; }
+  const wd = D.WEEKDAYS[x.weekday] + (x.weekday === 6 ? ' — Sabbath' : '');
+  let title;
+  if (x.kind === 'creation') title = esc(D.CREATION_DAYS[x.creationDay - 1]);
+  else if (x.kind === 'tekufah') title = `Tekufah ${esc(D.TEKUFOT[x.q])}<span class="yr">${x.am} AM</span>`;
+  else if (x.kind === 'leap') title = `Leap week, day ${x.day}<span class="yr">${x.am} AM</span>`;
+  else title = `${x.day} ${D.MONTHS[x.month - 1].name}<span class="yr">${x.am} AM</span>`;
+  const creationLine = x.creationDay && x.kind !== 'creation' ? `<p class="muted">${esc(D.CREATION_DAYS[x.creationDay - 1])}</p>` : '';
+
+  const other = c.cal === 'julian' ? g : j;
+  const otherCal = c.cal === 'julian' ? 'Gregorian' : 'Julian';
+  let facts = '';
+  const am = x.am || 1;
+  const cy = D.cycles(am);
+  const yearTxt = cy.jubileeYear ? 'Jubilee year' : `Year ${cy.year} of Shemitah ${cy.shemitah}`;
+  facts += `<dt>Cycle</dt><dd>${yearTxt}, Jubilee ${cy.jubilee}, Onah ${cy.onah} · ${D.AGES[cy.age - 1]}</dd>`;
+  if (settings.cycles) {
+    const b = [];
+    if (cy.sabbathYear) b.push('<span class="badge">Sabbath year</span>');
+    if (cy.jubileeYear) b.push('<span class="badge">Jubilee year</span>');
+    if (D.isLeapYear(am)) b.push('<span class="badge teal">Leap-week year</span>');
+    if (b.length) facts += `<dt></dt><dd>${b.join('')}</dd>`;
+  }
+  facts += `<dt>Enoch</dt><dd>Week ${cy.enochWeek} of 10, century ${cy.century}</dd>`;
+  if (settings.courses) facts += `<dt>Priests</dt><dd>Course of ${D.priestlyCourse(sel)} on duty</dd>`;
+  if (settings.moon) { const m = moonAt(sel); if (m) facts += `<dt>Moon</dt><dd>${m.newMoon ? 'New moon' : m.fullMoon ? 'Full moon' : m.name}, ${m.illum}% lit</dd>`; }
+  const eq = x.am ? D.equinoxOf(x.am) : null;
+  if (eq) { const e = civil(eq.jdn); facts += `<dt>Equinox</dt><dd>${fmtCivil(e)} (${D.WEEKDAYS[D.weekdayOf(eq.jdn)]}), ${Math.floor(eq.hour)}:${String(Math.round((eq.hour % 1) * 60)).padStart(2, '0')} Jerusalem</dd>`; }
+
+  const mk = D.marks(x);
+  const marks = mk.length ? `<div class="marks">${mk.map(m => `<span class="mark${m.major ? ' major' : ''}">${esc(m.label)}</span>`).join('')}</div>` : '';
+  const evs = eventsOn(sel);
+  const evHtml = evs.length ? `<ul class="evlist">${evs.map(evItem).join('')}</ul>` : '';
+  // Same DSS date in other years
+  let echo = '';
+  if (x.kind === 'month') {
+    const same = EVENTS.filter(e => { if (e.j === sel) return false; const y = D.fromJdn(e.j); return y && y.kind === 'month' && y.month === x.month && y.day === x.day; });
+    if (same.length) echo = `<h3>On ${x.day} ${D.MONTHS[x.month - 1].name} in other years</h3><ul class="evlist">${same.slice(0, 12).map(e => evItem(e, true)).join('')}</ul>`;
+  }
+  const borderline = x.am && D.isBorderline(x.am) && x.am < 5000
+    ? `<p class="note-borderline">This year's equinox falls within six hours of a week boundary. Uncertainty in ancient clock time (ΔT) means this year could start one week later.</p>` : '';
+
+  el.innerHTML = `
+    <div class="weekday">${wd}${sel === today ? ' · Today' : ''}</div>
+    <h1>${title}</h1>
+    ${creationLine}
+    <div class="civil">${fmtCivil(c, true)} <em>${calName(c.cal)}</em>${c.y < 1700 ? ` · ${fmtCivil(other)} <em>${otherCal}</em>` : ''}</div>
+    ${marks}
+    <dl class="facts">${facts}</dl>
+    ${borderline}
+    ${evHtml}
+    ${echo}
+    <div class="day-actions">
+      ${sel !== today ? '<button class="linkbtn" data-act="today">Back to today</button>' : ''}
+      <button class="linkbtn" data-act="add">Add your event on this day</button>
+      <button class="linkbtn" data-act="share">Copy link to this day</button>
+    </div>`;
+}
+function evItem(e, withDate) {
+  const kind = e.k === 'mine' ? 'Your event' : e.k === 'biblical' ? 'Biblical · DSS chronology' : e.k === 'church' ? 'Church history' : 'History';
+  const when = withDate ? `<div class="kind">${esc(dssShort(D.fromJdn(e.j)))} · ${fmtCivil(D.jdnToCivil(e.j))}</div>` : '';
+  const del = e.k === 'mine' ? ` <button class="linkbtn" data-del="${esc(e.id)}">Delete</button>` : '';
+  const go = withDate ? ` <button class="linkbtn" data-go="${e.j}">Go to day</button>` : '';
+  const src = e.u ? ` <a href="${esc(e.u)}" target="_blank" rel="noopener">${esc(e.s || 'Source')}</a>` : e.s ? ` <span class="kind">${esc(e.s)}</span>` : '';
+  const cert = e.c === 'probable' ? ' · day probable' : '';
+  return `<li><div class="kind ${e.k}">${kind}${cert}</div><div class="t">${esc(e.t)}</div>${when}${e.n ? `<div class="n">${esc(e.n)}</div>` : ''}<div>${src}${go}${del}</div></li>`;
+}
+
+// ---------- Month view ----------
+let viewAm = null, viewMonth = null;
+function renderMonth() {
+  const x = D.fromJdn(sel);
+  if (viewAm == null) { viewAm = x.am || 1; viewMonth = x.am ? monthOf(x) : 1; }
+  const am = viewAm, m = viewMonth;
+  const first = D.toJdn(am, m, 1);
+  const cells = [];
+  if ((m - 1) % 3 === 0) cells.push(m === 1 ? D.yearStart(am) - 1 : D.tekufahJdn(am, (m - 1) / 3 - 1));
+  for (let d = 0; d < 30; d++) cells.push(first + d);
+  if (m === 12) { const end = D.yearStart(am) + D.yearLength(am) - 1; for (let k = first + 30; k <= end; k++) cells.push(k); }
+  const lead = D.weekdayOf(cells[0]);
+  const mo = D.MONTHS[m - 1];
+  const g0 = civil(first), g1 = civil(first + 29);
+  const sub = `${MON[g0.m - 1]} ${g0.d}${g0.y !== g1.y ? ' ' + D.yearShort(g0.y) : ''} – ${MON[g1.m - 1]} ${g1.d}, ${D.yearShort(g1.y)} ${settings.civil === 'historian' ? '' : '(' + calName(g1.cal) + ')'}`;
+  let h = `<div class="month-head">
+    <button class="nav" data-mnav="-1" aria-label="Previous month">‹</button>
+    <h2>${mo.name}${mo.alt ? ' / ' + mo.alt : ''} ${am} AM<small>${sub}</small></h2>
+    <button class="nav" data-mnav="1" aria-label="Next month">›</button></div>
+    <div class="grid" role="grid">${D.WEEKDAYS.map((w, i) => `<div class="wd${i === 6 ? ' sab' : ''}">${w.slice(0, 3)}</div>`).join('')}`;
+  for (let i = 0; i < lead; i++) h += '<div class="blank"></div>';
+  for (const j of cells) {
+    const y = D.fromJdn(j); if (!y) { h += '<div class="blank"></div>'; continue; }
+    const cv = civil(j);
+    const mk = D.marks(y);
+    const evs = eventsOn(j);
+    let cls = 'cell', num;
+    if (y.kind === 'tekufah') { cls += ' tek'; num = '☉'; }
+    else if (y.kind === 'leap') { cls += ' leap'; num = 'L' + y.day; }
+    else if (y.kind === 'creation') { num = 'C' + y.creationDay; }
+    else num = y.day;
+    if (y.weekday === 6) cls += ' sab';
+    if (mk.some(k => k.major)) cls += ' feast';
+    if (j === sel) cls += ' sel';
+    if (j === today) cls += ' today';
+    const lab = y.kind === 'tekufah' ? `Tekufah ${D.TEKUFOT[y.q].split(' ')[0]}` : mk[0]?.label || (evs[0]?.t ?? '');
+    let dots = '';
+    if (settings.moon) { const mm = moonAt(j); if (mm?.newMoon) dots += '<span title="New moon">●</span>'; else if (mm?.fullMoon) dots += '<span title="Full moon">○</span>'; }
+    if (evs.some(e => e.k !== 'mine')) dots += '<span class="dot"></span>';
+    if (evs.some(e => e.k === 'mine')) dots += '<span class="dot mine"></span>';
+    h += `<button class="${cls}" data-j="${j}" aria-label="${esc(dssShort(y))}, ${esc(fmtCivil(cv, true))}">
+      <span class="n">${num}</span><span class="g">${short(cv)}</span>${lab ? `<span class="lab">${esc(lab)}</span>` : ''}${dots ? `<span class="dots">${dots}</span>` : ''}</button>`;
+  }
+  h += `</div><div class="legend"><span><i style="background:var(--sun-soft);border:1px solid var(--sun)"></i>Tekufah</span><span><i style="background:var(--sabbath);border:1px solid var(--line)"></i>Sabbath</span><span><span class="dot" style="display:inline-block;margin-right:5px"></span>History</span>${settings.moon ? '<span>● New moon ○ Full moon</span>' : ''}</div>`;
+  $('#view-month').innerHTML = h;
+}
+function stepMonth(dir) {
+  viewMonth += dir;
+  if (viewMonth > 12) { if (viewAm >= D.lastAM()) { viewMonth = 12; return; } viewMonth = 1; viewAm++; }
+  if (viewMonth < 1) { if (viewAm <= 1) { viewMonth = 1; return; } viewMonth = 12; viewAm--; }
+  renderMonth();
+}
+
+// ---------- Year ring ----------
+let ringAm = null;
+function renderRing() {
+  const x = D.fromJdn(sel);
+  if (ringAm == null) ringAm = x.am || 1;
+  const am = ringAm, len = D.yearLength(am), start = D.yearStart(am);
+  const S = 600, C = S / 2, R1 = 250, R0 = 205;
+  const ang = i => (i / len) * 2 * Math.PI - Math.PI / 2;
+  const pt = (r, a) => `${(C + r * Math.cos(a)).toFixed(2)},${(C + r * Math.sin(a)).toFixed(2)}`;
+  const seasonCol = ['#9FCFB8', '#E6C27A', '#D9A07A', '#9DB9D6'];
+  let segs = '';
+  for (let i = 0; i < len; i++) {
+    const y = D.fromJdn(start + i);
+    const a0 = ang(i), a1 = ang(i + 1);
+    let fill;
+    if (y.kind === 'tekufah') fill = 'var(--sun)';
+    else if (y.kind === 'leap') fill = 'var(--mineral)';
+    else fill = seasonCol[Math.floor((y.month - 1) / 3)];
+    const sabbath = y.weekday === 6;
+    const r0 = sabbath ? R0 - 8 : R0;
+    segs += `<path data-j="${start + i}" d="M${pt(r0, a0)} L${pt(R1, a0)} A${R1},${R1} 0 0 1 ${pt(R1, a1)} L${pt(r0, a1)} A${r0},${r0} 0 0 0 ${pt(r0, a0)}Z" fill="${fill}" opacity="${sabbath ? 1 : .72}" stroke="var(--bg)" stroke-width=".4"/>`;
+    const mk = D.marks(y).filter(m => m.major);
+    if (mk.length && y.kind === 'month') segs += `<circle cx="${pt(R1 + 10, (a0 + a1) / 2).split(',')[0]}" cy="${pt(R1 + 10, (a0 + a1) / 2).split(',')[1]}" r="3.2" fill="var(--sun)"><title>${esc(mk[0].label)}</title></circle>`;
+  }
+  let labels = '';
+  for (let m = 1; m <= 12; m++) {
+    const i = D.toJdn(am, m, 15) - start;
+    const a = ang(i + .5);
+    const [lx, ly] = pt(R0 - 26, a).split(',');
+    labels += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-family="var(--serif)" font-size="15" fill="var(--ink)">${D.MONTHS[m - 1].name}</text>`;
+  }
+  let selMark = '';
+  if (x.am === am) {
+    const i = sel - start, a = ang(i + .5);
+    const [sx, sy] = pt(R1 + 24, a).split(',');
+    selMark = `<line x1="${pt(R0 - 6, a).split(',')[0]}" y1="${pt(R0 - 6, a).split(',')[1]}" x2="${sx}" y2="${sy}" stroke="var(--brine)" stroke-width="3" stroke-linecap="round"/><circle cx="${sx}" cy="${sy}" r="7" fill="var(--brine)"/>`;
+  }
+  let todayMark = '';
+  const tx = D.fromJdn(today);
+  if (tx && tx.am === am && today !== sel) {
+    const a = ang(today - start + .5); const [qx, qy] = pt(R1 + 22, a).split(',');
+    todayMark = `<circle cx="${qx}" cy="${qy}" r="5" fill="none" stroke="var(--brine)" stroke-width="2"><title>Today</title></circle>`;
+  }
+  const g0 = civil(start), g1 = civil(start + len - 1);
+  const cy = D.cycles(am);
+  const centre = `<text x="${C}" y="${C - 26}" text-anchor="middle" font-family="var(--serif)" font-size="46" font-weight="500" fill="var(--brine)">${am} AM</text>
+    <text x="${C}" y="${C + 8}" text-anchor="middle" font-size="17" fill="var(--ink-2)">${fmtCivil(g0)} – ${fmtCivil(g1)}</text>
+    <text x="${C}" y="${C + 34}" text-anchor="middle" font-size="16" fill="var(--ink)">${len} days${len === 371 ? ' · leap week' : ''}</text>
+    <text x="${C}" y="${C + 58}" text-anchor="middle" font-size="15" fill="var(--ink-2)">${cy.jubileeYear ? 'Jubilee year' : `Year ${cy.year} · Shemitah ${cy.shemitah}`}${cy.sabbathYear ? ' · Sabbath year' : ''}</text>`;
+  $('#view-ring').innerHTML = `<div class="ring-wrap">
+    <div class="ring-head"><button class="nav" data-ynav="-1" aria-label="Previous year">‹</button><h2>${am} AM</h2><button class="nav" data-ynav="1" aria-label="Next year">›</button></div>
+    <svg viewBox="0 0 ${S} ${S}" role="img" aria-label="Year ${am} AM as a ring of ${len} days; tap a day to open it">${segs}${labels}${todayMark}${selMark}${centre}</svg>
+    <div class="ring-cycles"><table>
+      <tr><td>Age</td><td>${D.AGES[cy.age - 1]}</td></tr>
+      <tr><td>Onah (500 years)</td><td>${cy.onah} of 14</td></tr>
+      <tr><td>Jubilee (50 years)</td><td>${cy.jubilee} of 10 in this Onah · ${cy.jubileeTotal} since Creation</td></tr>
+      <tr><td>Enoch's weeks (700 years)</td><td>${cy.enochWeek} of 10</td></tr>
+      <tr><td>Priestly 6-year cycle</td><td>Year ${cy.priestlyCycleYear}</td></tr>
+    </table>
+    <p class="muted">Each wedge is one day; the four gold wedges are the Tekufah Tuesdays, longer wedges are Sabbaths, and gold dots mark feasts. Tap a day to open it.</p></div></div>`;
+}
+
+// ---------- History ----------
+function renderHistory() {
+  const q = histQuery.trim().toLowerCase();
+  const all = [...EVENTS, ...mine.map(e => ({ ...e, k: 'mine' }))].sort((a, b) => a.j - b.j);
+  const list = all.filter(e => (histFilter === 'all' || e.k === histFilter) && (!q || (e.t + ' ' + e.n + ' ' + e.r).toLowerCase().includes(q)));
+  const chips = [['all', 'All'], ['biblical', 'Biblical'], ['secular', 'History'], ['church', 'Church'], ['mine', 'Yours']]
+    .map(([k, l]) => `<button class="chip" data-filter="${k}" aria-pressed="${histFilter === k}">${l}</button>`).join('');
+  let h = `<div class="filters">${chips}</div>
+    <div class="field"><input id="hq" type="search" placeholder="Filter ${all.length} events" value="${esc(histQuery)}" aria-label="Filter events"></div><ul class="hist">`;
+  let lastEra = '';
+  for (const e of list) {
+    const x = D.fromJdn(e.j), c = D.jdnToCivil(e.j);
+    const era = x?.am ? `Onah ${D.cycles(x.am).onah} · ${D.AGES[D.cycles(x.am).age - 1]}` : 'Creation';
+    if (era !== lastEra) { h += `<li class="era">${era}</li>`; lastEra = era; }
+    h += `<li><button data-go="${e.j}"><span class="d1">${esc(dssShort(x))}</span><span class="t">${esc(e.t)}</span><span class="d2">${D.WEEKDAYS[D.weekdayOf(e.j)]}, ${fmtCivil(c, true)} ${calName(c.cal)}</span></button></li>`;
+  }
+  if (!list.length) h += `<li class="muted" style="padding:12px 0">No events match. Try a shorter word, or pick All.</li>`;
+  h += '</ul>';
+  $('#view-history').innerHTML = h;
+  const hq = $('#hq');
+  hq.addEventListener('input', () => { histQuery = hq.value; const pos = hq.selectionStart; renderHistory(); const n = $('#hq'); n.focus(); n.setSelectionRange(pos, pos); });
+}
+
+// ---------- Search ----------
+const MONTH_WORDS = {};
+MONTH_FULL.forEach((m, i) => { MONTH_WORDS[m.toLowerCase()] = i + 1; MONTH_WORDS[m.slice(0, 3).toLowerCase()] = i + 1; });
+MONTH_WORDS.sept = 9;
+const DSS_WORDS = {};
+D.MONTHS.forEach((m, i) => { DSS_WORDS[m.name.toLowerCase()] = i + 1; if (m.alt) DSS_WORDS[m.alt.toLowerCase()] = i + 1; });
+Object.assign(DSS_WORDS, { tishri: 7, cheshvan: 8, marcheshvan: 8, chislev: 9, tebeth: 10, tevet: 10, shebat: 11, sh: 0 });
+delete DSS_WORDS.sh;
+
+function parseQuery(raw) {
+  const s = raw.trim().toLowerCase().replace(/,/g, ' ').replace(/\s+/g, ' ');
+  const out = [];
+  if (!s) return out;
+  if (s === 'today' || s === 'now') out.push({ label: 'Today', j: today });
+  if (s === 'creation') out.push({ label: 'Creation week', sub: 'Day 1, the Sunday before Nisan 1, 1 AM', j: D.yearStart(1) - 3 });
+  let era = null, t = s;
+  const eraRe = /\b(bc|bce|b\.c\.|ad|ce|a\.d\.|am|a\.m\.)\b/;
+  const em = t.match(eraRe);
+  if (em) { era = em[1].replace(/\./g, ''); if (era === 'bce') era = 'bc'; if (era === 'ce') era = 'ad'; t = t.replace(eraRe, ' ').replace(/\s+/g, ' ').trim(); }
+  // ISO 1945-05-08
+  let m = t.match(/^(-?\d{1,4})-(\d{1,2})-(\d{1,2})$/);
+  if (m) pushCivil(out, +m[1], +m[2], +m[3]);
+  // 8 may 1945 / may 8 1945 / 15 march 44 (bc)
+  const parts = t.split(' ');
+  if (parts.length === 3) {
+    let d, mo, y, dssMo;
+    for (const order of [[0, 1, 2], [1, 0, 2]]) {
+      const [di, mi, yi] = order;
+      if (/^\d{1,2}$/.test(parts[di]) && /^\d{1,5}$/.test(parts[yi])) {
+        if (MONTH_WORDS[parts[mi]]) { d = +parts[di]; mo = MONTH_WORDS[parts[mi]]; y = +parts[yi]; }
+        if (DSS_WORDS[parts[mi]]) { d = +parts[di]; dssMo = DSS_WORDS[parts[mi]]; y = +parts[yi]; }
+      }
+    }
+    if (dssMo && y >= 1 && y <= D.lastAM() && d >= 1 && d <= 30 && era !== 'bc' && era !== 'ad') {
+      out.push({ label: `${d} ${D.MONTHS[dssMo - 1].name} ${y} AM`, sub: 'DSS date', j: D.toJdn(y, dssMo, d) });
+    }
+    if (mo && d >= 1 && d <= 31) {
+      const ay = era === 'bc' ? 1 - y : y;
+      if (era !== 'am') pushCivil(out, ay, mo, d);
+    }
+  }
+  // two parts: "may 1945" or "iyar 1656"
+  if (parts.length === 2 && /^\d{1,5}$/.test(parts[1])) {
+    const y = +parts[1];
+    if (DSS_WORDS[parts[0]] && y >= 1 && y <= D.lastAM()) out.push({ label: `${D.MONTHS[DSS_WORDS[parts[0]] - 1].name} ${y} AM`, sub: 'Start of the month', j: D.toJdn(y, DSS_WORDS[parts[0]], 1) });
+    if (MONTH_WORDS[parts[0]]) pushCivil(out, era === 'bc' ? 1 - y : y, MONTH_WORDS[parts[0]], 1);
+  }
+  // bare year
+  if (/^\d{1,5}$/.test(t)) {
+    const n = +t;
+    if (era === 'am' || !era) if (n >= 1 && n <= D.lastAM()) out.push({ label: `${n} AM`, sub: `Nisan 1 — ${fmtCivil(D.jdnToCivil(D.yearStart(n)), true)}`, j: D.yearStart(n), am: n });
+    if (era === 'bc' && n >= 1 && n <= 3925) yearOut(out, 1 - n);
+    if ((era === 'ad' || !era) && n >= 1 && n <= 3075) yearOut(out, n);
+    if (!era) out.sort((a, b) => (b.adFirst ? 1 : 0) - (a.adFirst ? 1 : 0));
+  }
+  // events
+  if (s.length >= 2 && !/^\d+$/.test(s)) {
+    const words = s.split(' ');
+    const all = [...EVENTS, ...mine.map(e => ({ ...e, k: 'mine' }))];
+    const hits = all.filter(e => { const hay = (e.t + ' ' + e.r + ' ' + e.n).toLowerCase(); return words.every(w => hay.includes(w)); })
+      .sort((a, b) => (a.t.toLowerCase().includes(s) ? 0 : 1) - (b.t.toLowerCase().includes(s) ? 0 : 1));
+    for (const e of hits.slice(0, 12)) out.push({ label: e.t, sub: `${dssShort(D.fromJdn(e.j))} · ${fmtCivil(D.jdnToCivil(e.j))}`, j: e.j });
+  }
+  return out;
+}
+function yearOut(out, ay) {
+  // Find the AM year that contains 1 Jan… simplest: show the DSS year beginning in this civil year
+  const am = ay + D.EPOCH_OFFSET;
+  if (am < 1 || am > D.lastAM()) return;
+  out.push({ label: D.yearLabel(ay), sub: `${am} AM begins ${fmtCivil(D.jdnToCivil(D.yearStart(am)), true)}`, j: D.yearStart(am), adFirst: ay > 0 && ay > 1000 });
+}
+function pushCivil(out, y, m, d) {
+  const useJulian = y < 1582 || (y === 1582 && (m < 10 || (m === 10 && d < 15)));
+  const j = useJulian ? D.julToJdn(y, m, d) : D.gregToJdn(y, m, d);
+  if (j < D.minJdn() || j > D.maxJdn()) return;
+  const x = D.fromJdn(j);
+  out.push({ label: `${d} ${MONTH_FULL[m - 1]} ${D.yearShort(y)}`, sub: `${useJulian ? 'Julian' : 'Gregorian'} → ${dssShort(x)}`, j });
+  if (useJulian && y > -3000) {
+    const g = D.gregToJdn(y, m, d);
+    if (g !== j && g >= D.minJdn()) out.push({ label: `${d} ${MONTH_FULL[m - 1]} ${D.yearShort(y)} (proleptic Gregorian)`, sub: `→ ${dssShort(D.fromJdn(g))}`, j: g });
+  }
+}
+
+let results = [], active = -1;
+function showResults() {
+  const box = $('#results');
+  if (!results.length) { box.hidden = true; return; }
+  box.innerHTML = results.map((r, i) => `<button role="option" data-ri="${i}" class="${i === active ? 'active' : ''}">${esc(r.label)}${r.sub ? `<small>${esc(r.sub)}</small>` : ''}</button>`).join('');
+  box.hidden = false;
+}
+function pick(r) {
+  $('#results').hidden = true; $('#q').value = ''; $('#q').blur();
+  if (r.am && view === 'ring') ringAm = r.am;
+  select(r.j, true);
+}
+
+// ---------- Selection, routing ----------
+function select(j, jumpViews) {
+  sel = Math.max(D.minJdn(), Math.min(D.maxJdn(), j));
+  const x = D.fromJdn(sel);
+  if (jumpViews) { viewAm = x.am || 1; viewMonth = x.am ? monthOf(x) : 1; ringAm = x.am || 1; }
+  try { history.replaceState(null, '', sel === today ? location.pathname : `#d=${sel}`); } catch { /* sandboxed */ }
+  render();
+}
+function render() {
+  renderDay();
+  if (view === 'month') renderMonth();
+  if (view === 'ring') renderRing();
+  if (view === 'history') renderHistory();
+}
+function setView(v) {
+  view = v;
+  document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.view === v));
+  ['month', 'ring', 'history'].forEach(k => { $('#view-' + k).hidden = k !== v; });
+  render();
+}
+
+// ---------- About ----------
+function renderAbout() {
+  const n1 = D.yearStart(1), eq = D.equinoxOf(1);
+  $('#about').innerHTML = `
+    <h3>How this calendar works</h3>
+    <p>Twelve months of 30 days, plus four Tekufah days at the solstices and equinoxes, make a 364-day year of exactly 52 weeks. Every date falls on the same weekday every year: Nisan 1 is always a Wednesday and every Tekufah is a Tuesday.</p>
+    <p>To stay with the sun, a leap week is added after Adar 30 every five or six years. The rule used here: <b>Tekufah Nisan is the last Tuesday on or before the day of the true spring equinox in Jerusalem</b>. It reproduces every date published on dsscalendar.org and gives ${[...Array(D.lastAM()).keys()].filter(i => D.isLeapYear(i + 1)).length} leap weeks from Creation to 7000 AM.</p>
+    <h3>Creation</h3>
+    <p>1 AM = 3925 BC (AM = AD + 3925). Run back with the equinox computed for each year, Nisan 1 of 1 AM falls on <b>Wednesday ${fmtCivil(D.jdnToGreg(n1), true)} (Gregorian) = ${fmtCivil(D.jdnToJul(n1), true)} (Julian)</b>, Creation day 4. That year's equinox was ${D.WEEKDAYS[D.weekdayOf(eq.jdn)]} ${fmtCivil(D.jdnToGreg(eq.jdn))} (Gregorian).</p>
+    <h3>Days and dates</h3>
+    <p>A DSS day runs from sunrise, so each DSS day matches the daylight of the civil date shown; the night before sunrise belongs to the previous day. Civil dates follow historians: Julian before 15 October 1582, Gregorian after (change this above).</p>
+    <p>Ancient equinox times carry clock uncertainty (ΔT) of hours. Years whose equinox is within six hours of a week boundary are flagged on their day card.</p>
+    <h3>Cycles</h3>
+    <p>Year and Shemitah (7 years), Jubilee (50), Onah (500), Age (2000) and Enoch's weeks (700) follow dsscalendar.org. A few rows of that site's own table disagree with each other by one year; this app uses the single rule that matches most of them. Priestly courses rotate weekly without a break from Creation week, starting with Gamul as in the Qumran texts.</p>
+    <h3>Events</h3>
+    <p>Historical events are matched by their documented civil date. Biblical events are placed by the DSS chronology (Genesis, Exodus and dsscalendar.org), not by independent historical dating.</p>
+    <h3>Credit</h3>
+    <p>Based on the Dead Sea Scroll calendar research of Ken Johnson at <a href="https://dsscalendar.org" target="_blank" rel="noopener">dsscalendar.org</a> and <a href="https://biblefacts.org" target="_blank" rel="noopener">biblefacts.org</a>. Independent app; equinoxes from the open-source Astronomy Engine.</p>`;
+}
+
+// ---------- Events wiring ----------
+document.addEventListener('click', e => {
+  const t = e.target.closest('button, path'); if (!t) return;
+  if (t.dataset.j) { select(+t.dataset.j); window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); return; }
+  if (t.dataset.go) { select(+t.dataset.go, true); window.scrollTo({ top: 0 }); return; }
+  if (t.dataset.mnav) { stepMonth(+t.dataset.mnav); return; }
+  if (t.dataset.ynav) { ringAm = Math.max(1, Math.min(D.lastAM(), ringAm + +t.dataset.ynav)); renderRing(); return; }
+  if (t.dataset.view) { setView(t.dataset.view); return; }
+  if (t.dataset.filter) { histFilter = t.dataset.filter; renderHistory(); return; }
+  if (t.dataset.ri) { pick(results[+t.dataset.ri]); return; }
+  if (t.dataset.del) { mine = mine.filter(m => m.id !== t.dataset.del); store.set('mine', mine); render(); return; }
+  if (t.dataset.act === 'today') { select(today, true); return; }
+  if (t.dataset.act === 'add') { $('#addWhen').textContent = `${dssShort(D.fromJdn(sel))} · ${fmtCivil(D.jdnToCivil(sel), true)}`; $('#addForm').reset(); $('#addEvent').showModal(); return; }
+  if (t.dataset.act === 'share') {
+    const url = `${location.origin}${location.pathname}#d=${sel}`;
+    (navigator.clipboard?.writeText(url) || Promise.reject()).then(() => { t.textContent = 'Link copied'; }, () => { prompt('Copy this link', url); });
+    return;
+  }
+});
+$('#goToday').addEventListener('click', () => select(today, true));
+$('#openSettings').addEventListener('click', () => $('#settings').showModal());
+$('#addEvent').addEventListener('close', () => {
+  if ($('#addEvent').returnValue !== 'save') return;
+  const f = new FormData($('#addForm'));
+  const title = String(f.get('title') || '').trim(); if (!title) return;
+  mine.push({ id: 'm' + Date.now(), t: title, n: String(f.get('note') || '').trim(), j: sel, r: '' });
+  store.set('mine', mine); render();
+});
+document.querySelectorAll('[data-set]').forEach(inp => {
+  const k = inp.dataset.set;
+  if (inp.type === 'checkbox') inp.checked = !!settings[k]; else inp.value = settings[k];
+  inp.addEventListener('change', () => { settings[k] = inp.type === 'checkbox' ? inp.checked : inp.value; store.set('settings', settings); render(); });
+});
+const q = $('#q');
+q.addEventListener('input', () => { results = parseQuery(q.value); active = results.length ? 0 : -1; showResults(); });
+q.addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown') { active = Math.min(results.length - 1, active + 1); showResults(); e.preventDefault(); }
+  if (e.key === 'ArrowUp') { active = Math.max(0, active - 1); showResults(); e.preventDefault(); }
+  if (e.key === 'Enter' && results[active]) pick(results[active]);
+  if (e.key === 'Escape') { $('#results').hidden = true; }
+});
+document.addEventListener('click', e => { if (!e.target.closest('.search')) $('#results').hidden = true; });
+window.addEventListener('hashchange', () => { const m = location.hash.match(/d=(-?\d+)/); if (m) select(+m[1], true); });
+
+// ---------- Boot ----------
+const [table, events] = await Promise.all([
+  fetch('engine/tekufah-table.json').then(r => r.json()),
+  fetch('data/events.json').then(r => r.json()).catch(() => []),
+]);
+D.init(table);
+EVENTS = events;
+for (const e of EVENTS) { if (!byJdn.has(e.j)) byJdn.set(e.j, []); byJdn.get(e.j).push(e); }
+const hm = location.hash.match(/d=(-?\d+)/);
+renderAbout();
+select(hm ? +hm[1] : today, true);
+// Moon data arrives with the deferred script
+if (!window.Astronomy) window.addEventListener('load', () => render(), { once: true });

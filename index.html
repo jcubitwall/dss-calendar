@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DSS Calendar</title>
+<meta name="description" content="The Dead Sea Scroll (Zadok) calendar from Creation to 7000 AM, with history matched to the day.">
+<meta name="theme-color" content="#0F4C5A">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <button class="brand" id="goToday" aria-label="Go to today">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="4" r="3" fill="var(--sun)"/><circle cx="28" cy="16" r="2" fill="var(--sun)"/><circle cx="16" cy="28" r="2" fill="var(--sun)"/><circle cx="4" cy="16" r="2" fill="var(--sun)"/></svg>
+    <span>DSS Calendar</span>
+  </button>
+  <div class="search">
+    <input id="q" type="search" autocomplete="off" placeholder="Search a date, year or event" aria-label="Search a date, year or event">
+    <div id="results" class="results" role="listbox" hidden></div>
+  </div>
+  <button class="icon-btn" id="openSettings" aria-label="Settings and about">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+</header>
+
+<main>
+  <section id="day" class="day" aria-live="polite"></section>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-view="month" aria-selected="true">Month</button>
+    <button role="tab" data-view="ring" aria-selected="false">Year</button>
+    <button role="tab" data-view="history" aria-selected="false">History</button>
+  </nav>
+
+  <section id="view-month" class="view"></section>
+  <section id="view-ring" class="view" hidden></section>
+  <section id="view-history" class="view" hidden></section>
+</main>
+
+<dialog id="settings">
+  <form method="dialog" class="sheet">
+    <div class="sheet-head"><h2>Settings</h2><button class="icon-btn" value="close" aria-label="Close">✕</button></div>
+    <label class="toggle"><input type="checkbox" data-set="courses"> <span>Priestly courses</span></label>
+    <label class="toggle"><input type="checkbox" data-set="moon"> <span>Moon phases</span></label>
+    <label class="toggle"><input type="checkbox" data-set="cycles"> <span>Highlight Sabbath and Jubilee years</span></label>
+    <label class="field"><span>Dates shown under each day</span>
+      <select data-set="civil">
+        <option value="historian">Julian before 1582, Gregorian after</option>
+        <option value="gregorian">Always Gregorian</option>
+        <option value="julian">Always Julian</option>
+      </select>
+    </label>
+    <div class="about" id="about"></div>
+  </form>
+</dialog>
+
+<dialog id="addEvent">
+  <form method="dialog" class="sheet" id="addForm">
+    <div class="sheet-head"><h2>Add your event</h2><button class="icon-btn" value="cancel" aria-label="Close">✕</button></div>
+    <p class="muted" id="addWhen"></p>
+    <label class="field"><span>Title</span><input name="title" required maxlength="80" placeholder="e.g. Cubit Home founded"></label>
+    <label class="field"><span>Note (optional)</span><input name="note" maxlength="200"></label>
+    <div class="row-end"><button class="btn" value="save">Save event</button></div>
+  </form>
+</dialog>
+
+<script src="vendor/astronomy.browser.min.js" defer></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
