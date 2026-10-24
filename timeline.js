@@ -7,6 +7,7 @@ export const TYPES = {
   secular: { label: 'History', color: '#1B6577' },
   church: { label: 'Church', color: '#7B4F8E' },
   mine: { label: 'Yours', color: '#B4533A' },
+  prophecy: { label: 'Prophecy', color: '#3B4FA0' },
 };
 const AGE_COLORS = ['#DCEBDD', '#F3E7CC', '#DCE7F2', '#F2DDD5'];
 const AGE_NAMES = ['Age of Creation', 'Age of Torah', 'Age of Grace', 'Age of the Kingdom'];
@@ -33,35 +34,47 @@ export function whenText(e) {
 const civilYear = am => D.yearLabel(am - D.EPOCH_OFFSET);
 
 // ---------------------------------------------------------------------------
-// Screen: vertical scrolling line. Labels are packed so none overlap, with a
-// leader line back to their true position on the scale.
+// Screen: vertical scrolling line on an elastic scale. Empty centuries keep their
+// proportional length (ppy px/year) and the line stretches wherever rows need
+// room, so every row sits right beside its own point on the line.
+// Prophecies (optional) get a "foretold" row and a "fulfilled" row joined by an
+// arrow drawn in the gutter left of the line.
+export const PROPHECY_COLOR = '#3B4FA0';
+export const FUTURE_AM = 5951.95;   // where arrows for unfulfilled prophecies end
+const pYear = t => t.label || '';
 export function renderLine(el, events, opts = {}) {
-  const { ppy = 1, from = 1, to = 7000 } = opts;
-  // Elastic scale: empty centuries keep their proportional length (ppy px/year),
-  // and the line stretches wherever events need room, so every event sits right
-  // beside its own point on the line.
-  const top = 20, axisX = 58, labelX = 76, rowH = 44, ageH = 28;
+  const { ppy = 1, from = 1, to = 7000, prophecies = [] } = opts;
+  const hasP = prophecies.length > 0;
+  const top = 20, axisX = hasP ? 122 : 58, labelX = axisX + 18, rowH = 44, ageH = 28;
   const items = events.map(e => ({ e, am: amPos(e.j) })).filter(o => o.am >= from - 1 && o.am <= to + 1);
   AGE_SPANS.forEach(([a, b], i) => { if (b >= from && a <= to) items.push({ age: i, am: Math.max(a, from) - 0.0001 }); });
+  const inSpan = am => am >= from - 1 && am <= to + 1;
+  let anyFuture = false;
+  for (const p of prophecies) {
+    if (inSpan(p.g.am)) items.push({ pg: p, am: p.g.am });
+    if (p.f && inSpan(p.f.am)) items.push({ pf: p, am: p.f.am });
+    if (!p.f) anyFuture = true;
+  }
+  if (anyFuture && inSpan(FUTURE_AM)) items.push({ future: true, am: FUTURE_AM });
   items.sort((a, b) => a.am - b.am);
   let y = top, am0 = from;
   const anchors = [[from, top]];
   for (const o of items) {
-    y += Math.max(o.age != null ? 4 : 0, (Math.max(o.am, from) - am0) * ppy);
+    y += Math.max(o.age != null || o.future ? 4 : 0, (Math.max(o.am, from) - am0) * ppy);
     o.y = y; anchors.push([Math.max(o.am, from), y]);
-    y += o.age != null ? ageH : rowH;
+    y += o.age != null || o.future ? ageH : rowH;
     am0 = Math.max(o.am, from);
     anchors.push([am0 + 1e-6, y]);
   }
   const yEnd = y + Math.max(30, (to + 1 - am0) * ppy);
   anchors.push([to + 1, yEnd]);
-  const yAt = am => {           // interpolate along the stretched scale
+  const yAt = am => {
     let i = 1; while (i < anchors.length - 1 && anchors[i][0] < am) i++;
     const [a0, y0] = anchors[i - 1], [a1, y1] = anchors[i];
     return a1 === a0 ? y1 : y0 + (y1 - y0) * (am - a0) / (a1 - a0);
   };
   const height = yEnd + 20;
-  let svg = '';
+  let svg = `<defs><marker id="parr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="${PROPHECY_COLOR}"/></marker></defs>`;
   AGE_SPANS.forEach(([a, b], i) => {
     if (b < from || a > to) return;
     const y0 = yAt(Math.max(a, from)), y1 = yAt(Math.min(b + 1, to + 1));
@@ -69,7 +82,6 @@ export function renderLine(el, events, opts = {}) {
   });
   svg += `<line x1="${axisX}" y1="${top}" x2="${axisX}" y2="${yEnd}" stroke="var(--ink-2)" stroke-width="1.5"/>`;
   let html = '';
-  // ticks every 100 years; drop a minor tick that would crowd a 500-year tick
   const ticks = [];
   for (let am = Math.ceil(from / 100) * 100; am <= to; am += 100) ticks.push({ am, y: yAt(am), major: am % 500 === 0 });
   const keep = [];
@@ -83,19 +95,46 @@ export function renderLine(el, events, opts = {}) {
     svg += `<line x1="${axisX - (t.major ? 7 : 4)}" y1="${t.y}" x2="${axisX + (t.major ? 7 : 4)}" y2="${t.y}" stroke="var(--ink-2)"/>`;
     html += `<div class="tl-tick${t.major ? ' major' : ''}" style="top:${t.y - 8}px">${t.am}<small>${civilYear(t.am)}</small></div>`;
   }
-  for (const o of items) {
-    if (o.age != null) { html += `<div class="tl-age" style="top:${o.y}px">${AGE_NAMES[o.age]}</div>`; continue; }
-    const t = TYPES[o.e.k], c = t?.color || '#555', cy = o.y + 11;
-    svg += `<line x1="${axisX}" y1="${cy}" x2="${labelX - 2}" y2="${cy}" stroke="${c}" stroke-opacity=".6"/><circle cx="${axisX}" cy="${cy}" r="4" fill="${c}"/>`;
-    html += `<button class="tl-ev${o.e.id === opts.lastId ? ' seen' : ''}" style="top:${o.y}px" data-ev="${xmlEsc(o.e.id)}" id="tl-${xmlEsc(o.e.id)}"><span class="tl-t">${xmlEsc(o.e.t)}</span><span class="tl-d">${xmlEsc(whenText(o.e))}</span></button>`;
+  // Prophecy arrows: one arc per prophecy in the gutter between the year labels and the line
+  if (hasP) {
+    const gutter = axisX - 54;                       // available width for arc bulge
+    const rowOf = {};
+    for (const o of items) { if (o.pg) (rowOf[o.pg.id] ||= {}).g = o.y + 11; if (o.pf) (rowOf[o.pf.id] ||= {}).f = o.y + 11; if (o.future) rowOf.__future = o.y + 14; }
+    for (const p of prophecies) {
+      const r = rowOf[p.id] || {};
+      const yg = r.g ?? yAt(Math.max(from, Math.min(to, p.g.am)));
+      const yf = p.f ? (r.f ?? yAt(Math.max(from, Math.min(to, p.f.am)))) : rowOf.__future;
+      if (yf == null || (r.g == null && r.f == null)) continue;
+      const span = Math.abs(yf - yg);
+      const bulge = Math.min(gutter, 8 + Math.sqrt(span) * 0.9);
+      const hot = p.id === opts.lastId;
+      svg += `<path d="M${axisX - 2},${yg} C${axisX - bulge},${yg} ${axisX - bulge},${yf} ${axisX - 3},${yf}" fill="none" stroke="${PROPHECY_COLOR}" stroke-width="${hot ? 2.6 : 1.2}" stroke-opacity="${hot ? 0.95 : 0.4}"${p.f ? '' : ' stroke-dasharray="4 3"'} marker-end="url(#parr)"/>`;
+    }
   }
-  if (!items.some(o => o.age == null)) html += `<p class="tl-empty">No events are switched on for this span. Turn on a category above.</p>`;
+  for (const o of items) {
+    if (o.age != null) { html += `<div class="tl-age" style="top:${o.y}px;left:${labelX}px">${AGE_NAMES[o.age]}</div>`; continue; }
+    if (o.future) { html += `<div class="tl-age tl-future" style="top:${o.y}px;left:${labelX}px">Yet to be fulfilled (dashed arrows)</div>`; continue; }
+    const cy = o.y + 11;
+    if (o.pg || o.pf) {
+      const p = o.pg || o.pf;
+      svg += `<line x1="${axisX}" y1="${cy}" x2="${labelX - 2}" y2="${cy}" stroke="${PROPHECY_COLOR}" stroke-opacity=".6"/><circle cx="${axisX}" cy="${cy}" r="4.5" fill="${o.pf ? PROPHECY_COLOR : 'var(--bg)'}" stroke="${PROPHECY_COLOR}" stroke-width="2"/>`;
+      const line2 = o.pg
+        ? `Foretold ${pYear(p.g)} · ${p.ref}${p.f ? ` → ${pYear(p.f)}` : ' → yet future'}`
+        : `Fulfilled ${pYear(p.f)}${p.fr ? ' · ' + p.fr : ''} ← ${pYear(p.g)}`;
+      html += `<button class="tl-ev tl-p${p.id === opts.lastId ? ' seen' : ''}" style="top:${o.y}px;left:${labelX}px" data-pr="${xmlEsc(p.id)}" id="tl-p${o.pg ? 'g' : 'f'}-${xmlEsc(p.id)}"><span class="tl-t">${o.pg ? 'Foretold: ' : 'Fulfilled: '}${xmlEsc(p.t)}</span><span class="tl-d">${xmlEsc(line2)}</span></button>`;
+      continue;
+    }
+    const t = TYPES[o.e.k], c = t?.color || '#555';
+    svg += `<line x1="${axisX}" y1="${cy}" x2="${labelX - 2}" y2="${cy}" stroke="${c}" stroke-opacity=".6"/><circle cx="${axisX}" cy="${cy}" r="4" fill="${c}"/>`;
+    html += `<button class="tl-ev${o.e.id === opts.lastId ? ' seen' : ''}" style="top:${o.y}px;left:${labelX}px" data-ev="${xmlEsc(o.e.id)}" id="tl-${xmlEsc(o.e.id)}"><span class="tl-t">${xmlEsc(o.e.t)}</span><span class="tl-d">${xmlEsc(whenText(o.e))}</span></button>`;
+  }
+  if (!items.some(o => o.age == null && !o.future)) html += `<p class="tl-empty" style="left:${labelX}px">No events are switched on for this span. Turn on a category above.</p>`;
   el.innerHTML = `<div class="tl" style="height:${height}px"><svg class="tl-svg" width="100%" height="${height}" aria-hidden="true">${svg}</svg>${html}</div>`;
 }
 
 // ---------------------------------------------------------------------------
 // Wheel (screen and print): Creation at the top, clockwise to 7000 AM.
-export function wheelSVG(events, size, { from = 1, to = 7000, print = false, title = '' } = {}) {
+export function wheelSVG(events, size, { from = 1, to = 7000, print = false, title = '', prophecies = [], lastId = '' } = {}) {
   const S = size, C = S / 2, span = to - from + 1;
   const ang = am => ((am - from) / span) * 2 * Math.PI - Math.PI / 2;
   const P = (r, a) => [C + r * Math.cos(a), C + r * Math.sin(a)];
@@ -103,7 +142,8 @@ export function wheelSVG(events, size, { from = 1, to = 7000, print = false, tit
   const font = print ? 'Helvetica, Arial, sans-serif' : 'var(--sans)';
   const serif = print ? 'Times, Georgia, serif' : 'var(--serif)';
   const ink = print ? '#1B2427' : 'var(--ink)', ink2 = print ? '#4E5D61' : 'var(--ink-2)';
-  const r0 = S * 0.13, r1 = S * 0.19, r2 = S * 0.235, r3 = S * 0.25, rDot = S * 0.262, rLab = S * 0.285, rMax = S * 0.495;
+  const wide = prophecies.length > 0;   // give the prophecy chords a larger inner circle
+  const r0 = S * (wide ? 0.175 : 0.13), r1 = S * (wide ? 0.207 : 0.19), r2 = S * 0.235, r3 = S * 0.25, rDot = S * 0.262, rLab = S * 0.285, rMax = S * 0.495;
   let g = '';
   const arc = (ra, rb, a0, a1, fill) => {
     const large = a1 - a0 > Math.PI ? 1 : 0;
@@ -160,10 +200,25 @@ export function wheelSVG(events, size, { from = 1, to = 7000, print = false, tit
     let label = o.e.t; if (label.length > maxChars) label = label.slice(0, maxChars - 1) + '…';
     g += `<text ${print ? '' : `data-ev="${xmlEsc(o.e.id)}" class="wh-ev" `}x="${f(tx)}" y="${f(ty)}" font-family="${font}" font-size="${f(fs)}" fill="${ink}" text-anchor="${flip ? 'end' : 'start'}" dominant-baseline="middle" transform="rotate(${f(flip ? deg - 180 : deg)} ${f(tx)} ${f(ty)})">${xmlEsc(label)}</text>`;
   }
+  // Prophecy chords: from the moment foretold to the moment fulfilled, across the inner circle
+  if (prophecies.length) {
+    const rc = r0 * 0.97;
+    g += `<defs><marker id="wparr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="${f(S * 0.006)}" markerHeight="${f(S * 0.006)}" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="${PROPHECY_COLOR}"/></marker></defs>`;
+    for (const p of prophecies) {
+      const fa = p.f ? p.f.am : FUTURE_AM;
+      if (p.g.am < from || p.g.am > to + 1 || fa < from || fa > to + 1) continue;
+      const a0 = ang(p.g.am), a1 = ang(fa);
+      const d = Math.abs(a1 - a0), mid = (a0 + a1) / 2;
+      const k = Math.max(0.05, 1 - d / Math.PI) * 0.85;      // short spans hug the rim, long spans cross the middle
+      const [x0, y0] = P(rc, a0), [x1, y1] = P(rc, a1), [cx, cy] = P(rc * k, mid);
+      const hot = p.id === lastId;
+      g += `<path ${print ? '' : `data-pr="${xmlEsc(p.id)}" class="wh-ev" `}d="M${f(x0)},${f(y0)} Q${f(cx)},${f(cy)} ${f(x1)},${f(y1)}" fill="none" stroke="${PROPHECY_COLOR}" stroke-width="${f(S * (hot ? 0.003 : 0.0011))}" stroke-opacity="${hot ? 0.95 : 0.4}"${p.f ? '' : ` stroke-dasharray="${f(S * 0.004)} ${f(S * 0.003)}"`} marker-end="url(#wparr)"><title>${xmlEsc(p.t)} (${xmlEsc(p.ref)})</title></path>`;
+    }
+  }
   // centre
   g += `<text x="${C}" y="${f(C - S * 0.03)}" font-family="${serif}" font-size="${f(S * 0.034)}" fill="${print ? '#0F4C5A' : 'var(--brine)'}" text-anchor="middle">${from === 1 && to === 7000 ? '7000 years' : `${from}–${to} AM`}</text>`;
   g += `<text x="${C}" y="${f(C + S * 0.005)}" font-family="${font}" font-size="${f(S * 0.0135)}" fill="${ink2}" text-anchor="middle">${xmlEsc(civilYear(from))} – ${xmlEsc(civilYear(to))}</text>`;
-  g += `<text x="${C}" y="${f(C + S * 0.03)}" font-family="${font}" font-size="${f(S * 0.0125)}" fill="${ink2}" text-anchor="middle">${n} events${title ? ' · ' + xmlEsc(title) : ''}</text>`;
+  g += `<text x="${C}" y="${f(C + S * 0.03)}" font-family="${font}" font-size="${f(S * 0.0125)}" fill="${ink2}" text-anchor="middle">${n} events${prophecies.length ? ` · ${prophecies.length} prophecies` : ''}${title ? ' · ' + xmlEsc(title) : ''}</text>`;
   return { svg: g, fontSize: fs, count: n };
 }
 
@@ -176,7 +231,7 @@ export function linePosterSVG(events, W, H, { from = 1, to = 7000, header = 64 }
   const rowSpan = span / rowsCount;
   const margin = 36, left = margin + 56, right = W - margin;
   const rowW = right - left;
-  const list = events.map(e => ({ e, am: amPos(e.j) })).filter(o => o.am >= from && o.am < to + 1).sort((a, b) => a.am - b.am);
+  const list = events.map(e => ({ e, am: e.am ?? amPos(e.j) })).filter(o => o.am >= from && o.am < to + 1).sort((a, b) => a.am - b.am);
   const maxLen = 46;
   const text = e => (e.t.length > maxLen ? e.t.slice(0, maxLen - 1) + '…' : e.t);
   function layout(fs) {
@@ -242,17 +297,23 @@ export function linePosterSVG(events, W, H, { from = 1, to = 7000, header = 64 }
 }
 
 /** Wrap poster content in a full SVG document with title, legend and credit. */
-export function posterDoc(kind, events, W, H, { from, to, cats }) {
+export function posterDoc(kind, events, W, H, { from, to, cats, prophecies = [] }) {
   const margin = 36;
   const titleSize = Math.max(18, Math.min(W, H) * 0.028);
   let body, fs;
   if (kind === 'wheel') {
     const size = Math.min(W, H - titleSize * 2.4) - margin;
-    const r = wheelSVG(events, size, { from, to, print: true });
+    const r = wheelSVG(events, size, { from, to, print: true, prophecies });
     body = `<g transform="translate(${((W - size) / 2).toFixed(1)}, ${(H - size - margin * 0.5).toFixed(1)})">${r.svg}</g>`;
     fs = r.fontSize;
   } else {
-    const r = linePosterSVG(events, W, H, { from, to, header: titleSize * 2.2 });
+    // prophecies print as a 'foretold' and a 'fulfilled' label each
+    const pe = [];
+    for (const p of prophecies) {
+      pe.push({ t: `Foretold: ${p.t} (${p.ref})`, k: 'prophecy', am: p.g.am });
+      if (p.f) pe.push({ t: `Fulfilled: ${p.t}${p.f.label ? ' (' + p.f.label + ')' : ''}`, k: 'prophecy', am: p.f.am });
+    }
+    const r = linePosterSVG([...events, ...pe], W, H, { from, to, header: titleSize * 2.2 });
     body = r.svg; fs = r.fontSize;
   }
   const legend = cats.map((k, i) => `<circle cx="${(W - margin - (cats.length - i) * titleSize * 4.2).toFixed(1)}" cy="${(margin + titleSize * 0.15).toFixed(1)}" r="${(titleSize * 0.22).toFixed(1)}" fill="${TYPES[k].color}"/><text x="${(W - margin - (cats.length - i) * titleSize * 4.2 + titleSize * 0.4).toFixed(1)}" y="${(margin + titleSize * 0.35).toFixed(1)}" font-family="Helvetica, Arial, sans-serif" font-size="${(titleSize * 0.55).toFixed(1)}" fill="#1B2427">${TYPES[k].label}</text>`).join('');
