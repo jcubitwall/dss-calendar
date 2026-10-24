@@ -1,0 +1,1154 @@
+[
+ {
+  "ref": "Genesis 7:11",
+  "event": "Flood begins; fountains of the deep broken up",
+  "month": 2,
+  "day": 17,
+  "yearAsWritten": "600th year of Noah's life",
+  "note": "Noah's family and the animals enter the ark the same day (7:13).",
+  "parallel": [
+   "Genesis 7:13"
+  ]
+ },
+ {
+  "ref": "Genesis 8:4",
+  "event": "Ark rests on the mountains of Ararat",
+  "month": 7,
+  "day": 17,
+  "yearAsWritten": "600th year of Noah's life (implied)",
+  "note": "Exactly five months after the flood began; 7:24 and 8:3 give 150 days.",
+  "parallel": []
+ },
+ {
+  "ref": "Genesis 8:5",
+  "event": "Tops of the mountains seen",
+  "month": 10,
+  "day": 1,
+  "yearAsWritten": "600th year of Noah's life (implied)",
+  "note": "Waters receded until the tenth month.",
+  "parallel": []
+ },
+ {
+  "ref": "Genesis 8:13",
+  "event": "Waters dried up; Noah removes the ark's covering",
+  "month": 1,
+  "day": 1,
+  "yearAsWritten": "601st year (of Noah's life)",
+  "note": "First day of the new year after the flood.",
+  "parallel": []
+ },
+ {
+  "ref": "Genesis 8:14",
+  "event": "Earth fully dry; Noah told to leave the ark",
+  "month": 2,
+  "day": 27,
+  "yearAsWritten": "601st year (of Noah's life, implied)",
+  "note": "Ten days more than one lunar year after the flood began on 2/17; the command to leave follows in 8:15–16.",
+  "parallel": []
+ },
+ {
+  "ref": "Exodus 12:3",
+  "event": "Passover lambs selected in Egypt",
+  "month": 1,
+  "day": 10,
+  "yearAsWritten": "Year of the Exodus",
+  "note": "The lamb was set apart on the 10th and kept until the 14th (12:6).",
+  "parallel": []
+ },
+ {
+  "ref": "Exodus 12:6",
+  "event": "First Passover; firstborn of Egypt struck at midnight",
+  "month": 1,
+  "day": 14,
+  "yearAsWritten": "Year of the Exodus",
+  "note": "The lamb is killed at evening on the 14th; the plague comes at midnight (12:29), the night of the 14th going into the 15th.",
+  "parallel": [
+   "Exodus 12:18",
+   "Exodus 12:29"
+  ]
+ },
+ {
+  "ref": "Numbers 33:3",
+  "event": "Israel departs from Rameses (the Exodus)",
+  "month": 1,
+  "day": 15,
+  "yearAsWritten": "Year of the Exodus",
+  "note": "The day after the Passover; Exodus 12:41 says it fell on the very day the 430 years ended.",
+  "parallel": [
+   "Exodus 12:41",
+   "Exodus 12:51",
+   "Exodus 13:4",
+   "Deuteronomy 16:1"
+  ]
+ },
+ {
+  "ref": "Exodus 16:1",
+  "event": "Arrival in the Wilderness of Sin; manna follows",
+  "month": 2,
+  "day": 15,
+  "yearAsWritten": "1st year after the Exodus (\"second month after their departing\")",
+  "note": "Quail come that evening and manna the next morning (16:12–14), so manna starts on the 16th by inference.",
+  "parallel": []
+ },
+ {
+  "ref": "Exodus 19:1",
+  "event": "Arrival at the Wilderness of Sinai",
+  "month": 3,
+  "day": null,
+  "yearAsWritten": "1st year after the Exodus (\"third month\")",
+  "note": "The text says \"the same day\" without naming the day; it is often read as the 1st of the month (new moon), and some read it as the 15th.",
+  "parallel": []
+ },
+ {
+  "ref": "Exodus 40:17",
+  "event": "Tabernacle set up",
+  "month": 1,
+  "day": 1,
+  "yearAsWritten": "2nd year after the Exodus",
+  "note": "The command is in 40:2. Numbers 7:1 and 9:15 describe the same day, with the cloud covering the tabernacle.",
+  "parallel": [
+   "Exodus 40:2",
+   "Numbers 7:1",
+   "Numbers 9:15"
+  ]
+ },
+ {
+  "ref": "Numbers 9:5",
+  "event": "Passover kept at Sinai",
+  "month": 1,
+  "day": 14,
+  "yearAsWritten": "2nd year after the Exodus (9:1)",
+  "note": "First anniversary Passover, kept in the wilderness.",
+  "parallel": [
+   "Numbers 9:1",
+   "Numbers 9:3"
+  ]
+ },
+ {
+  "ref": "Numbers 1:1",
+  "event": "Census of Israel ordered at Sinai",
+  "month": 2,
+  "day": 1,
+  "yearAsWritten": "2nd year after the Exodus",
+  "note": "The congregation assembled on the same day (1:18).",
+  "parallel": [
+   "Numbers 1:18"
+  ]
+ },
+ {
+  "ref": "Numbers 9:11",
+  "event": "Second-month Passover appointed for those who were unclean",
+  "month": 2,
+  "day": 14,
+  "yearAsWritten": "2nd year after the Exodus (implied)",
+  "note": "A ruling given for a specific case that year, and also a standing law; the text does not describe that year's observance, so the owner may skip it.",
+  "parallel": []
+ },
+ {
+  "ref": "Numbers 10:11",
+  "event": "Cloud lifts; Israel sets out from Sinai",
+  "month": 2,
+  "day": 20,
+  "yearAsWritten": "2nd year after the Exodus",
+  "note": "",
+  "parallel": []
+ },
+ {
+  "ref": "Numbers 20:1",
+  "event": "Israel at Kadesh in the Desert of Zin; Miriam dies",
+  "month": 1,
+  "day": null,
+  "yearAsWritten": "Year not stated (usually taken as the 40th year)",
+  "note": "Only the month is given; Aaron's death later the same year (33:38) points to the 40th year.",
+  "parallel": []
+ },
+ {
+  "ref": "Numbers 33:38",
+  "event": "Aaron dies on Mount Hor",
+  "month": 5,
+  "day": 1,
+  "yearAsWritten": "40th year after the Exodus",
+  "note": "Numbers 20:28 also records his death but gives no date.",
+  "parallel": [
+   "Numbers 20:28"
+  ]
+ },
+ {
+  "ref": "Deuteronomy 1:3",
+  "event": "Moses begins his addresses (Deuteronomy) in Moab",
+  "month": 11,
+  "day": 1,
+  "yearAsWritten": "40th year (after the Exodus)",
+  "note": "",
+  "parallel": []
+ },
+ {
+  "ref": "Joshua 4:19",
+  "event": "Israel crosses the Jordan and camps at Gilgal",
+  "month": 1,
+  "day": 10,
+  "yearAsWritten": "Year of entry into Canaan (41st year after the Exodus by inference)",
+  "note": "The same day of the month the Passover lamb was chosen in Egypt.",
+  "parallel": []
+ },
+ {
+  "ref": "Joshua 5:10",
+  "event": "Passover kept at Gilgal",
+  "month": 1,
+  "day": 14,
+  "yearAsWritten": "Year of entry into Canaan",
+  "note": "The month comes from 4:19; the verse itself gives only the 14th day.",
+  "parallel": []
+ },
+ {
+  "ref": "Joshua 5:11",
+  "event": "Israel first eats produce of Canaan",
+  "month": 1,
+  "day": 15,
+  "yearAsWritten": "Year of entry into Canaan",
+  "note": "\"The morrow after the passover\", read as the 15th.",
+  "parallel": []
+ },
+ {
+  "ref": "Joshua 5:12",
+  "event": "Manna ceases",
+  "month": 1,
+  "day": 16,
+  "yearAsWritten": "Year of entry into Canaan",
+  "note": "Worked out from the text: the day after they first ate the land's produce.",
+  "parallel": []
+ },
+ {
+  "ref": "1 Samuel 20:27",
+  "event": "New-moon feast; David's seat empty two days",
+  "month": null,
+  "day": 2,
+  "yearAsWritten": "During Saul's reign (no year given)",
+  "note": "The month is not named. The feast is on the new moon (day 1, 20:24) and David is missed again on day 2.",
+  "parallel": [
+   "1 Samuel 20:24",
+   "1 Samuel 20:34"
+  ]
+ },
+ {
+  "ref": "1 Chronicles 12:15",
+  "event": "Gadites cross the flooded Jordan to join David",
+  "month": 1,
+  "day": null,
+  "yearAsWritten": "While David was at Ziklag/the stronghold (no year)",
+  "note": "Month only.",
+  "parallel": []
+ },
+ {
+  "ref": "2 Chronicles 3:2",
+  "event": "Solomon begins building the Temple",
+  "month": 2,
+  "day": 2,
+  "yearAsWritten": "4th year of Solomon's reign; 480th year after the Exodus (1 Kings 6:1)",
+  "note": "1 Kings 6:1 and 6:37 give only the month (Zif = 2nd). The day comes from 2 Chronicles 3:2, where some scholars think \"second day\" may be a copying slip.",
+  "parallel": [
+   "1 Kings 6:1",
+   "1 Kings 6:37"
+  ]
+ },
+ {
+  "ref": "1 Kings 6:38",
+  "event": "Temple completed",
+  "month": 8,
+  "day": null,
+  "yearAsWritten": "11th year of Solomon",
+  "note": "Month Bul (8th), no day given.",
+  "parallel": []
+ },
+ {
+  "ref": "1 Kings 8:2",
+  "event": "Temple dedication assembly at the feast of the seventh month",
+  "month": 7,
+  "day": null,
+  "yearAsWritten": "Year not stated (after the Temple was finished)",
+  "note": "Month Ethanim (7th). The feast is Tabernacles (normally from day 15), held after a seven-day altar dedication (2 Chronicles 7:9).",
+  "parallel": [
+   "2 Chronicles 5:3",
+   "2 Chronicles 7:8",
+   "2 Chronicles 7:9"
+  ]
+ },
+ {
+  "ref": "2 Chronicles 7:10",
+  "event": "People sent home after the Temple dedication",
+  "month": 7,
+  "day": 23,
+  "yearAsWritten": "Year of the dedication",
+  "note": "1 Kings 8:66 says \"on the eighth day\" and 8:65 says fourteen days of feasting. Chronicles gives the 23rd, the day after the eighth-day assembly.",
+  "parallel": [
+   "1 Kings 8:65",
+   "1 Kings 8:66"
+  ]
+ },
+ {
+  "ref": "1 Kings 12:32",
+  "event": "Jeroboam's rival feast at Bethel",
+  "month": 8,
+  "day": 15,
+  "yearAsWritten": "Early in Jeroboam's reign (no year)",
+  "note": "This feast is set one month after Judah's feast of the 7th month.",
+  "parallel": [
+   "1 Kings 12:33"
+  ]
+ },
+ {
+  "ref": "2 Chronicles 15:10",
+  "event": "Asa's covenant assembly in Jerusalem",
+  "month": 3,
+  "day": null,
+  "yearAsWritten": "15th year of Asa",
+  "note": "Month only.",
+  "parallel": []
+ },
+ {
+  "ref": "2 Chronicles 29:17",
+  "event": "Hezekiah begins cleansing the Temple",
+  "month": 1,
+  "day": 1,
+  "yearAsWritten": "1st year of Hezekiah's reign",
+  "note": "29:3 says he opened the Temple doors in the first month of his first year.",
+  "parallel": [
+   "2 Chronicles 29:3"
+  ]
+ },
+ {
+  "ref": "2 Chronicles 29:17",
+  "event": "Cleansing reaches the porch of the Temple",
+  "month": 1,
+  "day": 8,
+  "yearAsWritten": "1st year of Hezekiah's reign",
+  "note": "",
+  "parallel": []
+ },
+ {
+  "ref": "2 Chronicles 29:17",
+  "event": "Temple cleansing completed",
+  "month": 1,
+  "day": 16,
+  "yearAsWritten": "1st year of Hezekiah's reign",
+  "note": "Completed too late for the normal 1/14 Passover, so it was moved to the second month (30:2–3).",
+  "parallel": []
+ },
+ {
+  "ref": "2 Chronicles 30:15",
+  "event": "Hezekiah's Passover in the second month",
+  "month": 2,
+  "day": 14,
+  "yearAsWritten": "1st year of Hezekiah (implied by ch. 29–30)",
+  "note": "Seven days of Unleavened Bread followed (30:21), and the people extended it by seven more days (30:23).",
+  "parallel": [
+   "2 Chronicles 30:2",
+   "2 Chronicles 30:13",
+   "2 Chronicles 30:21",
+   "2 Chronicles 30:23"
+  ]
+ },
+ {
+  "ref": "2 Chronicles 31:7",
+  "event": "Tithe heaps begun",
+  "month": 3,
+  "day": null,
+  "yearAsWritten": "1st year of Hezekiah (implied)",
+  "note": "Month only.",
+  "parallel": []
+ },
+ {
+  "ref": "2 Chronicles 31:7",
+  "event": "Tithe heaps completed",
+  "month": 7,
+  "day": null,
+  "yearAsWritten": "1st year of Hezekiah (implied)",
+  "note": "Month only.",
+  "parallel": []
+ },
+ {
+  "ref": "2 Chronicles 35:1",
+  "event": "Josiah's Passover",
+  "month": 1,
+  "day": 14,
+  "yearAsWritten": "18th year of Josiah (35:19; 2 Kings 23:23)",
+  "note": "2 Kings 23:21–23 describes the same Passover and gives the year but not the day.",
+  "parallel": [
+   "2 Kings 23:21",
+   "2 Kings 23:23",
+   "2 Chronicles 35:17",
+   "2 Chronicles 35:19"
+  ]
+ },
+ {
+  "ref": "2 Kings 25:1",
+  "event": "Nebuchadnezzar begins the siege of Jerusalem",
+  "month": 10,
+  "day": 10,
+  "yearAsWritten": "9th year of Zedekiah",
+  "note": "Jeremiah 52:4 and Ezekiel 24:1 agree on 10/10; Jeremiah 39:1 gives only the month.",
+  "parallel": [
+   "Jeremiah 52:4",
+   "Jeremiah 39:1",
+   "Ezekiel 24:1"
+  ]
+ },
+ {
+  "ref": "2 Kings 25:3",
+  "event": "Famine in the city; wall breached; Zedekiah flees",
+  "month": 4,
+  "day": 9,
+  "yearAsWritten": "11th year of Zedekiah (25:2)",
+  "note": "In the KJV 2 Kings 25:3, \"fourth month\" is in italics, meaning the translators added it from Jeremiah 52:6; Jeremiah 39:2 also states it.",
+  "parallel": [
+   "Jeremiah 39:2",
+   "Jeremiah 52:6",
+   "Jeremiah 52:7"
+  ]
+ },
+ {
+  "ref": "2 Kings 25:8",
+  "event": "Nebuzaradan comes to Jerusalem (2 Kings reckoning)",
+  "month": 5,
+  "day": 7,
+  "yearAsWritten": "19th year of Nebuchadnezzar",
+  "note": "Disagrees with Jeremiah 52:12, which gives the 10th. The two are often reconciled as arrival on the 7th and burning on the 10th.",
+  "parallel": [
+   "Jeremiah 52:12",
+   "Jeremiah 1:3"
+  ]
+ },
+ {
+  "ref": "Jeremiah 52:12",
+  "event": "Nebuzaradan enters Jerusalem; Temple burned (Jeremiah reckoning)",
+  "month": 5,
+  "day": 10,
+  "yearAsWritten": "19th year of Nebuchadnezzar",
+  "note": "The parallel 2 Kings 25:8 gives the 7th day.",
+  "parallel": [
+   "2 Kings 25:8",
+   "2 Kings 25:9",
+   "Jeremiah 52:13"
+  ]
+ },
+ {
+  "ref": "2 Kings 25:25",
+  "event": "Gedaliah assassinated at Mizpah",
+  "month": 7,
+  "day": null,
+  "yearAsWritten": "Year of the fall (implied)",
+  "note": "Month only; Jeremiah 41:1 likewise gives only the month.",
+  "parallel": [
+   "Jeremiah 41:1"
+  ]
+ },
+ {
+  "ref": "2 Kings 25:27",
+  "event": "Evil-merodach releases Jehoiachin (2 Kings reckoning)",
+  "month": 12,
+  "day": 27,
+  "yearAsWritten": "37th year of Jehoiachin's captivity; Evil-merodach's accession year",
+  "note": "Disagrees with Jeremiah 52:31, which gives the 25th.",
+  "parallel": [
+   "Jeremiah 52:31"
+  ]
+ },
+ {
+  "ref": "Jeremiah 52:31",
+  "event": "Evil-merodach releases Jehoiachin (Jeremiah reckoning)",
+  "month": 12,
+  "day": 25,
+  "yearAsWritten": "37th year of Jehoiachin's captivity; first year of Evil-merodach",
+  "note": "The parallel 2 Kings 25:27 gives the 27th.",
+  "parallel": [
+   "2 Kings 25:27"
+  ]
+ },
+ {
+  "ref": "Jeremiah 28:1",
+  "event": "Hananiah's false prophecy in the Temple",
+  "month": 5,
+  "day": null,
+  "yearAsWritten": "4th year of Zedekiah (\"beginning of the reign\")",
+  "note": "Month only.",
+  "parallel": []
+ },
+ {
+  "ref": "Jeremiah 28:17",
+  "event": "Hananiah dies",
+  "month": 7,
+  "day": null,
+  "yearAsWritten": "Same year (4th of Zedekiah)",
+  "note": "Month only; two months after his prophecy.",
+  "parallel": []
+ },
+ {
+  "ref": "Jeremiah 36:9",
+  "event": "Fast proclaimed; Baruch reads Jeremiah's scroll",
+  "month": 9,
+  "day": null,
+  "yearAsWritten": "5th year of Jehoiakim",
+  "note": "Month only.",
+  "parallel": []
+ },
+ {
+  "ref": "Jeremiah 36:22",
+  "event": "Jehoiakim burns the scroll in his winter house",
+  "month": 9,
+  "day": null,
+  "yearAsWritten": "5th year of Jehoiakim (implied)",
+  "note": "Month only, and the same month as 36:9. It may be the same day or soon after.",
+  "parallel": []
+ },
+ {
+  "ref": "Ezra 3:6",
+  "event": "Returned exiles resume burnt offerings on the altar",
+  "month": 7,
+  "day": 1,
+  "yearAsWritten": "1st year of the return under Cyrus (implied)",
+  "note": "The people gathered as the seventh month arrived (3:1).",
+  "parallel": [
+   "Ezra 3:1"
+  ]
+ },
+ {
+  "ref": "Ezra 3:4",
+  "event": "Returned exiles keep the Feast of Tabernacles",
+  "month": 7,
+  "day": 15,
+  "yearAsWritten": "1st year of the return (implied)",
+  "note": "The feast is named but no day is given; 15 is the feast's set day.",
+  "parallel": []
+ },
+ {
+  "ref": "Ezra 3:8",
+  "event": "Work on the second Temple foundation begins",
+  "month": 2,
+  "day": null,
+  "yearAsWritten": "2nd year of their coming to Jerusalem",
+  "note": "Month only.",
+  "parallel": []
+ },
+ {
+  "ref": "Ezra 6:15",
+  "event": "Second Temple completed",
+  "month": 12,
+  "day": 3,
+  "yearAsWritten": "6th year of Darius",
+  "note": "Month Adar. The apocryphal 1 Esdras 7:5 gives the 23rd of Adar.",
+  "parallel": []
+ },
+ {
+  "ref": "Ezra 6:19",
+  "event": "Passover after the Temple's completion",
+  "month": 1,
+  "day": 14,
+  "yearAsWritten": "7th year of Darius by inference (the month after Adar of year 6)",
+  "note": "Unleavened Bread followed for seven days (6:22).",
+  "parallel": [
+   "Ezra 6:22"
+  ]
+ },
+ {
+  "ref": "Ezra 7:9",
+  "event": "Ezra begins the journey up from Babylon",
+  "month": 1,
+  "day": 1,
+  "yearAsWritten": "7th year of Artaxerxes",
+  "note": "8:31 gives the departure from the Ahava river as 1/12. The 1st is the start of the journey and the 12th the actual setting out.",
+  "parallel": [
+   "Ezra 8:31"
+  ]
+ },
+ {
+  "ref": "Ezra 8:31",
+  "event": "Ezra's company departs from the river Ahava",
+  "month": 1,
+  "day": 12,
+  "yearAsWritten": "7th year of Artaxerxes (implied)",
+  "note": "See Ezra 7:9.",
+  "parallel": [
+   "Ezra 7:9"
+  ]
+ },
+ {
+  "ref": "Ezra 7:9",
+  "event": "Ezra arrives in Jerusalem",
+  "month": 5,
+  "day": 1,
+  "yearAsWritten": "7th year of Artaxerxes",
+  "note": "7:8 gives only the month.",
+  "parallel": [
+   "Ezra 7:8"
+  ]
+ },
+ {
+  "ref": "Ezra 10:9",
+  "event": "Assembly in the rain over foreign marriages",
+  "month": 9,
+  "day": 20,
+  "yearAsWritten": "Year not stated (presumably the 7th of Artaxerxes)",
+  "note": "",
+  "parallel": []
+ },
+ {
+  "ref": "Ezra 10:16",
+  "event": "Inquiry into foreign marriages begins",
+  "month": 10,
+  "day": 1,
+  "yearAsWritten": "Same year (implied)",
+  "note": "",
+  "parallel": []
+ },
+ {
+  "ref": "Ezra 10:17",
+  "event": "Inquiry into foreign marriages completed",
+  "month": 1,
+  "day": 1,
+  "yearAsWritten": "The following year (implied)",
+  "note": "",
+  "parallel": []
+ },
+ {
+  "ref": "Nehemiah 1:1",
+  "event": "Nehemiah hears of Jerusalem's ruin in Shushan",
+  "month": 9,
+  "day": null,
+  "yearAsWritten": "20th year (of Artaxerxes)",
+  "note": "Month Chisleu (9th), no day given.",
+  "parallel": []
+ },
+ {
+  "ref": "Nehemiah 2:1",
+  "event": "Nehemiah's request to Artaxerxes",
+  "month": 1,
+  "day": null,
+  "yearAsWritten": "20th year of Artaxerxes",
+  "note": "Month Nisan, no day given. Both 1:1 and 2:1 are in the 20th year, which suggests a regnal year that does not begin in Nisan.",
+  "parallel": []
+ },
+ {
+  "ref": "Nehemiah 6:15",
+  "event": "Jerusalem's wall completed in 52 days",
+  "month": 6,
+  "day": 25,
+  "yearAsWritten": "20th year of Artaxerxes (implied)",
+  "note": "Month Elul (6th).",
+  "parallel": []
+ },
+ {
+  "ref": "Nehemiah 8:2",
+  "event": "Ezra reads the Law to the assembly",
+  "month": 7,
+  "day": 1,
+  "yearAsWritten": "Year of the wall's completion (implied by 7:73)",
+  "note": "",
+  "parallel": [
+   "Nehemiah 7:73"
+  ]
+ },
+ {
+  "ref": "Nehemiah 8:13",
+  "event": "Leaders gather to study the Law; booths commandment found",
+  "month": 7,
+  "day": 2,
+  "yearAsWritten": "Same year",
+  "note": "\"On the second day\" of the month.",
+  "parallel": []
+ },
+ {
+  "ref": "Nehemiah 8:14",
+  "event": "Feast of Booths kept",
+  "month": 7,
+  "day": 15,
+  "yearAsWritten": "Same year",
+  "note": "The feast is named but no start day is given; 15 is the feast's set day. Ezra read from the Law on each of the seven days (8:18).",
+  "parallel": [
+   "Nehemiah 8:18"
+  ]
+ },
+ {
+  "ref": "Nehemiah 8:18",
+  "event": "Solemn assembly on the eighth day of the feast",
+  "month": 7,
+  "day": 22,
+  "yearAsWritten": "Same year",
+  "note": "Day worked out as the eighth day from 7/15.",
+  "parallel": []
+ },
+ {
+  "ref": "Nehemiah 9:1",
+  "event": "Fast and confession of sins",
+  "month": 7,
+  "day": 24,
+  "yearAsWritten": "Same year",
+  "note": "\"This month\" refers back to the 7th month.",
+  "parallel": []
+ },
+ {
+  "ref": "Esther 2:16",
+  "event": "Esther taken to King Ahasuerus",
+  "month": 10,
+  "day": null,
+  "yearAsWritten": "7th year of Ahasuerus",
+  "note": "Month Tebeth, no day given.",
+  "parallel": []
+ },
+ {
+  "ref": "Esther 3:7",
+  "event": "Pur (the lot) cast before Haman",
+  "month": 1,
+  "day": null,
+  "yearAsWritten": "12th year of Ahasuerus",
+  "note": "Month Nisan; the lot fell on the 12th month, Adar.",
+  "parallel": []
+ },
+ {
+  "ref": "Esther 3:12",
+  "event": "Haman's decree written and sealed",
+  "month": 1,
+  "day": 13,
+  "yearAsWritten": "12th year of Ahasuerus (implied)",
+  "note": "The decree set the attack for 12/13 (3:13).",
+  "parallel": [
+   "Esther 3:13"
+  ]
+ },
+ {
+  "ref": "Esther 8:9",
+  "event": "Mordecai's counter-decree written",
+  "month": 3,
+  "day": 23,
+  "yearAsWritten": "12th year of Ahasuerus (implied)",
+  "note": "Month Sivan.",
+  "parallel": []
+ },
+ {
+  "ref": "Esther 9:1",
+  "event": "Day appointed for the attack; the Jews prevail",
+  "month": 12,
+  "day": 13,
+  "yearAsWritten": "12th year of Ahasuerus (implied)",
+  "note": "Month Adar. The date was set by both decrees (3:13, 8:12).",
+  "parallel": [
+   "Esther 3:13",
+   "Esther 8:12",
+   "Esther 9:17"
+  ]
+ },
+ {
+  "ref": "Esther 9:15",
+  "event": "Second day of fighting in Shushan",
+  "month": 12,
+  "day": 14,
+  "yearAsWritten": "Same year",
+  "note": "",
+  "parallel": [
+   "Esther 9:13"
+  ]
+ },
+ {
+  "ref": "Esther 9:17",
+  "event": "Jews of the provinces rest and feast",
+  "month": 12,
+  "day": 14,
+  "yearAsWritten": "Same year",
+  "note": "Unwalled villages kept the 14th (9:19).",
+  "parallel": [
+   "Esther 9:19"
+  ]
+ },
+ {
+  "ref": "Esther 9:18",
+  "event": "Jews of Shushan rest and feast",
+  "month": 12,
+  "day": 15,
+  "yearAsWritten": "Same year",
+  "note": "",
+  "parallel": []
+ },
+ {
+  "ref": "Esther 9:21",
+  "event": "Purim established as a yearly feast (14th and 15th of Adar)",
+  "month": 12,
+  "day": 14,
+  "yearAsWritten": "After the 12th year of Ahasuerus",
+  "note": "Mordecai's letter (9:20) is not dated. The feast covers 12/14–15, and the queen confirms it in 9:29–32.",
+  "parallel": [
+   "Esther 9:20",
+   "Esther 9:26",
+   "Esther 9:29"
+  ]
+ },
+ {
+  "ref": "Ezekiel 1:1",
+  "event": "Ezekiel's opening vision by the Chebar",
+  "month": 4,
+  "day": 5,
+  "yearAsWritten": "\"30th year\"; 5th year of Jehoiachin's captivity (1:2)",
+  "note": "What the \"thirtieth year\" counts from is unclear; it is often taken as Ezekiel's age.",
+  "parallel": [
+   "Ezekiel 1:2"
+  ]
+ },
+ {
+  "ref": "Ezekiel 8:1",
+  "event": "Vision of abominations in the Temple",
+  "month": 6,
+  "day": 5,
+  "yearAsWritten": "6th year (of the captivity)",
+  "note": "The Greek Septuagint reads the fifth month.",
+  "parallel": []
+ },
+ {
+  "ref": "Ezekiel 20:1",
+  "event": "Elders come to inquire of the LORD",
+  "month": 5,
+  "day": 10,
+  "yearAsWritten": "7th year (of the captivity)",
+  "note": "",
+  "parallel": []
+ },
+ {
+  "ref": "Ezekiel 24:1",
+  "event": "Word that Babylon has begun the siege",
+  "month": 10,
+  "day": 10,
+  "yearAsWritten": "9th year (of the captivity)",
+  "note": "Same day as the siege's start in 2 Kings 25:1 and Jeremiah 52:4.",
+  "parallel": [
+   "2 Kings 25:1",
+   "Jeremiah 52:4"
+  ]
+ },
+ {
+  "ref": "Ezekiel 26:1",
+  "event": "Oracle against Tyre",
+  "month": null,
+  "day": 1,
+  "yearAsWritten": "11th year (of the captivity)",
+  "note": "No month is named; only \"the first day of the month\" is given.",
+  "parallel": []
+ },
+ {
+  "ref": "Ezekiel 29:1",
+  "event": "Oracle against Pharaoh and Egypt",
+  "month": 10,
+  "day": 12,
+  "yearAsWritten": "10th year (of the captivity)",
+  "note": "",
+  "parallel": []
+ },
+ {
+  "ref": "Ezekiel 29:17",
+  "event": "Egypt given to Nebuchadnezzar as wages",
+  "month": 1,
+  "day": 1,
+  "yearAsWritten": "27th year (of the captivity)",
+  "note": "The latest dated oracle in Ezekiel.",
+  "parallel": []
+ },
+ {
+  "ref": "Ezekiel 30:20",
+  "event": "Pharaoh's arm broken",
+  "month": 1,
+  "day": 7,
+  "yearAsWritten": "11th year (of the captivity)",
+  "note": "",
+  "parallel": []
+ },
+ {
+  "ref": "Ezekiel 31:1",
+  "event": "Pharaoh compared to the fallen cedar",
+  "month": 3,
+  "day": 1,
+  "yearAsWritten": "11th year (of the captivity)",
+  "note": "",
+  "parallel": []
+ },
+ {
+  "ref": "Ezekiel 32:1",
+  "event": "Lament over Pharaoh",
+  "month": 12,
+  "day": 1,
+  "yearAsWritten": "12th year (of the captivity)",
+  "note": "Some Hebrew manuscripts and the Syriac read the 11th year.",
+  "parallel": []
+ },
+ {
+  "ref": "Ezekiel 32:17",
+  "event": "Lament over Egypt's descent to the pit",
+  "month": null,
+  "day": 15,
+  "yearAsWritten": "12th year (of the captivity)",
+  "note": "No month is named in the Hebrew. It is usually taken as the 12th month (as in 32:1); the Septuagint reads the first month.",
+  "parallel": []
+ },
+ {
+  "ref": "Ezekiel 33:21",
+  "event": "Fugitive reports that Jerusalem has fallen",
+  "month": 10,
+  "day": 5,
+  "yearAsWritten": "12th year of our captivity",
+  "note": "Some Hebrew manuscripts, the Septuagint and the Syriac read the 11th year.",
+  "parallel": []
+ },
+ {
+  "ref": "Ezekiel 40:1",
+  "event": "Vision of the future Temple",
+  "month": 1,
+  "day": 10,
+  "yearAsWritten": "25th year of our captivity; 14th year after the city was struck",
+  "note": "The text says \"beginning of the year\", not a numbered month. It is usually read as month 1. Some read it as the 7th month, where the 10th is the Day of Atonement and the start of a Jubilee year.",
+  "parallel": []
+ },
+ {
+  "ref": "Daniel 10:4",
+  "event": "Daniel's vision by the Tigris (Hiddekel)",
+  "month": 1,
+  "day": 24,
+  "yearAsWritten": "3rd year of Cyrus king of Persia (10:1)",
+  "note": "Follows three weeks of mourning (10:2–3).",
+  "parallel": [
+   "Daniel 10:1"
+  ]
+ },
+ {
+  "ref": "Haggai 1:1",
+  "event": "Haggai's first message: rebuild the house",
+  "month": 6,
+  "day": 1,
+  "yearAsWritten": "2nd year of Darius",
+  "note": "",
+  "parallel": []
+ },
+ {
+  "ref": "Haggai 1:15",
+  "event": "Work on the Temple resumes",
+  "month": 6,
+  "day": 24,
+  "yearAsWritten": "2nd year of Darius",
+  "note": "",
+  "parallel": []
+ },
+ {
+  "ref": "Haggai 2:1",
+  "event": "Haggai's message on the latter glory of the house",
+  "month": 7,
+  "day": 21,
+  "yearAsWritten": "2nd year of Darius (implied by 1:15)",
+  "note": "The last day of the Feast of Tabernacles (7/15–21).",
+  "parallel": []
+ },
+ {
+  "ref": "Haggai 2:10",
+  "event": "Haggai's message on defilement and blessing",
+  "month": 9,
+  "day": 24,
+  "yearAsWritten": "2nd year of Darius",
+  "note": "2:18 links this day to the laying of the Temple foundation.",
+  "parallel": [
+   "Haggai 2:18"
+  ]
+ },
+ {
+  "ref": "Haggai 2:20",
+  "event": "Haggai's second message the same day, to Zerubbabel",
+  "month": 9,
+  "day": 24,
+  "yearAsWritten": "2nd year of Darius",
+  "note": "The verse gives only \"the 24th day of the month\"; the month comes from 2:10.",
+  "parallel": []
+ },
+ {
+  "ref": "Zechariah 1:1",
+  "event": "Zechariah's first call to return",
+  "month": 8,
+  "day": null,
+  "yearAsWritten": "2nd year of Darius",
+  "note": "Month only.",
+  "parallel": []
+ },
+ {
+  "ref": "Zechariah 1:7",
+  "event": "Zechariah's night visions begin",
+  "month": 11,
+  "day": 24,
+  "yearAsWritten": "2nd year of Darius",
+  "note": "Month Sebat.",
+  "parallel": []
+ },
+ {
+  "ref": "Zechariah 7:1",
+  "event": "Question from Bethel about the fasts",
+  "month": 9,
+  "day": 4,
+  "yearAsWritten": "4th year of Darius",
+  "note": "Month Chisleu. The fasts mentioned (7:3, 7:5, 8:19) are yearly observances in months 4, 5, 7 and 10, not separate events.",
+  "parallel": [
+   "Zechariah 7:3",
+   "Zechariah 8:19"
+  ]
+ },
+ {
+  "ref": "Luke 2:42",
+  "event": "Jesus at age twelve in the Temple at Passover",
+  "month": 1,
+  "day": 14,
+  "yearAsWritten": "When Jesus was twelve",
+  "note": "The feast is named but no day is given. He stayed behind after \"the days\" of the feast were fulfilled (2:43).",
+  "parallel": [
+   "Luke 2:41",
+   "Luke 2:43"
+  ]
+ },
+ {
+  "ref": "John 2:13",
+  "event": "Passover visit; Jesus cleanses the Temple",
+  "month": 1,
+  "day": 14,
+  "yearAsWritten": "First Passover of the ministry in John",
+  "note": "Signs are done \"at the passover, in the feast day\" (2:23). The day is the feast's set day, not given in the text.",
+  "parallel": [
+   "John 2:23"
+  ]
+ },
+ {
+  "ref": "John 6:4",
+  "event": "Feeding of the five thousand, with Passover near",
+  "month": 1,
+  "day": null,
+  "yearAsWritten": "Second Passover named in John",
+  "note": "The text says Passover was \"nigh\", so the event comes shortly before 1/14.",
+  "parallel": []
+ },
+ {
+  "ref": "John 7:2",
+  "event": "Feast of Tabernacles at hand; Jesus goes up secretly",
+  "month": 7,
+  "day": 15,
+  "yearAsWritten": "Autumn before the final Passover",
+  "note": "The feast is named but no day is given. 7:14 has him teaching \"about the midst of the feast\", which by inference is about 7/18.",
+  "parallel": [
+   "John 7:10",
+   "John 7:14"
+  ]
+ },
+ {
+  "ref": "John 7:37",
+  "event": "\"Last day, that great day of the feast\"",
+  "month": 7,
+  "day": null,
+  "yearAsWritten": "Same feast",
+  "note": "The day is ambiguous: 7/21 (seventh day) or 7/22 (eighth-day assembly).",
+  "parallel": []
+ },
+ {
+  "ref": "John 10:22",
+  "event": "Jesus at the Feast of Dedication",
+  "month": 9,
+  "day": 25,
+  "yearAsWritten": "Winter before the final Passover",
+  "note": "The feast is not in the Hebrew Bible. Its date (25 Chislev) comes from 1 Maccabees 4:52–59.",
+  "parallel": []
+ },
+ {
+  "ref": "John 12:1",
+  "event": "Jesus comes to Bethany six days before Passover; anointed by Mary",
+  "month": 1,
+  "day": 8,
+  "yearAsWritten": "Final Passover",
+  "note": "Worked out as six days before 1/14; it could be the 8th or 9th depending on how the days are counted. The triumphal entry is \"the next day\" (12:12).",
+  "parallel": [
+   "John 12:12"
+  ]
+ },
+ {
+  "ref": "Matthew 26:2",
+  "event": "\"After two days is the passover\": the plot to kill Jesus",
+  "month": 1,
+  "day": 12,
+  "yearAsWritten": "Final Passover",
+  "note": "Worked out from \"after two days\"; it could be the 12th or 13th.",
+  "parallel": [
+   "Mark 14:1",
+   "Luke 22:1"
+  ]
+ },
+ {
+  "ref": "Matthew 26:17",
+  "event": "Last Supper prepared on the \"first day of unleavened bread\"",
+  "month": 1,
+  "day": 14,
+  "yearAsWritten": "Final Passover",
+  "note": "The Synoptics put the meal on the evening the lamb was killed (Mark 14:12, Luke 22:7). John (13:1, 18:28, 19:14) puts the meal before Passover, which conflicts.",
+  "parallel": [
+   "Mark 14:12",
+   "Luke 22:7",
+   "Luke 22:15"
+  ]
+ },
+ {
+  "ref": "John 19:14",
+  "event": "Crucifixion on the preparation of the Passover",
+  "month": 1,
+  "day": 14,
+  "yearAsWritten": "Final Passover",
+  "note": "John puts the death on 1/14 and calls the next day a \"high\" sabbath (19:31). The Synoptic timeline implies 1/15.",
+  "parallel": [
+   "John 18:28",
+   "John 19:31",
+   "Mark 15:42",
+   "Matthew 27:62"
+  ]
+ },
+ {
+  "ref": "Acts 2:1",
+  "event": "Holy Spirit given on the day of Pentecost",
+  "month": 3,
+  "day": null,
+  "yearAsWritten": "Year of the resurrection",
+  "note": "Pentecost falls in the 3rd month, 50 days after the wave-sheaf. Which day depends on the calendar (the DSS calendar gives 3/15; the rabbinic calendar 3/6), so the day is left for the engine.",
+  "parallel": []
+ },
+ {
+  "ref": "Acts 12:3",
+  "event": "Herod arrests Peter during the days of Unleavened Bread",
+  "month": 1,
+  "day": null,
+  "yearAsWritten": "Year of Herod Agrippa I's persecution",
+  "note": "Sometime between 1/15 and 1/21. Herod intended to bring Peter out after the Passover (12:4; KJV \"Easter\").",
+  "parallel": [
+   "Acts 12:4"
+  ]
+ },
+ {
+  "ref": "Acts 20:6",
+  "event": "Paul sails from Philippi after Unleavened Bread",
+  "month": 1,
+  "day": null,
+  "yearAsWritten": "Paul's final journey to Jerusalem",
+  "note": "After 1/21; he reaches Troas five days later.",
+  "parallel": []
+ },
+ {
+  "ref": "Acts 20:16",
+  "event": "Paul hurries to reach Jerusalem by Pentecost",
+  "month": 3,
+  "day": null,
+  "yearAsWritten": "Same year as Acts 20:6",
+  "note": "An intention rather than a dated arrival; he arrives in 21:17 with no date given.",
+  "parallel": [
+   "Acts 21:17"
+  ]
+ },
+ {
+  "ref": "Acts 27:9",
+  "event": "Paul's warning after \"the fast\" had passed",
+  "month": 7,
+  "day": null,
+  "yearAsWritten": "Voyage to Rome",
+  "note": "\"The fast\" is the Day of Atonement (7/10); the warning comes after it.",
+  "parallel": []
+ }
+]

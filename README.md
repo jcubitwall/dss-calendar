@@ -32,6 +32,24 @@ node scripts/test-engine.mjs    # checks against dsscalendar.org
 python3 -m http.server          # preview at http://localhost:8000
 ```
 
+## Features
+
+- Month grid, year ring, day card (feasts, cycles, priestly course, moon, equinox).
+- **Timeline** tab: a straight-line timeline (elastic scale, four zoom levels) or a 7000-year wheel.
+- **Category toggles** (Bible, History, Church, Yours) apply everywhere: day card, month dots, history, search, timelines and prints.
+- **Print or save**: posters from Letter to 72 × 24 in, exported as vector PDF or SVG, or sent to the printer. The dialog shows the smallest text size so you can pick a paper that keeps it readable.
+- **Live lookup**: search any person, place or event; Wikipedia/Wikidata dates are converted to the DSS calendar (labelled as secular dating).
+
+## Bible events
+
+`data/bible/dated-verses.json` lists every event Scripture dates by month (and usually day). `scripts/build-bible.mjs` places each in an AM year and records the basis:
+
+- *Ken Johnson's stated year* — a figure from his work (see `data/bible/ken-johnson-chronology.md`).
+- *Scripture count from Ken Johnson's anchor* — e.g. Zedekiah's years counted from the Temple's destruction in 3338 AM.
+- *Derived from Ken Johnson's reign dates* — e.g. Darius I from 522 BC (marked "derived").
+
+Run `node scripts/build-bible.mjs && node scripts/build-events.mjs` after editing.
+
 ## Adding events
 
 Add an object to a file in `data/sources/`, then run `build-events`:

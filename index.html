@@ -34,11 +34,13 @@
   <nav class="tabs" role="tablist">
     <button role="tab" data-view="month" aria-selected="true">Month</button>
     <button role="tab" data-view="ring" aria-selected="false">Year</button>
+    <button role="tab" data-view="timeline" aria-selected="false">Timeline</button>
     <button role="tab" data-view="history" aria-selected="false">History</button>
   </nav>
 
   <section id="view-month" class="view"></section>
   <section id="view-ring" class="view" hidden></section>
+  <section id="view-timeline" class="view" hidden></section>
   <section id="view-history" class="view" hidden></section>
 </main>
 
@@ -75,6 +77,26 @@
     <div id="lookupBody"></div>
   </form>
 </dialog>
+
+<dialog id="printDlg">
+  <form method="dialog" class="sheet">
+    <div class="sheet-head"><h2>Print or save</h2><button class="icon-btn" value="close" aria-label="Close">✕</button></div>
+    <p class="muted">Uses the categories and span chosen on the Timeline. Posters are vector, so they stay sharp at any size.</p>
+    <label class="field"><span>Layout</span><select id="prKind"><option value="line">Straight line (rows of up to 500 years)</option><option value="wheel">Wheel</option></select></label>
+    <label class="field"><span>Paper</span><select id="prPaper">
+      <option value="letter">Letter 11 × 8.5 in</option><option value="tabloid">Tabloid 17 × 11 in</option><option value="a3">A3 16.5 × 11.7 in</option>
+      <option value="p2436">Poster 36 × 24 in</option><option value="p3648">Poster 48 × 36 in</option><option value="p4872">Banner 72 × 24 in</option></select></label>
+    <p id="prInfo" class="pr-info"></p>
+    <div id="prPreview" class="pr-preview"></div>
+    <div class="pr-actions">
+      <button class="btn" id="prPdf" type="button">Download PDF</button>
+      <button class="btn ghost" id="prSvg" type="button">Download SVG</button>
+      <button class="btn ghost" id="prPrint" type="button">Print</button>
+    </div>
+    <p class="muted small">For a large poster, send the PDF or SVG to a print shop and ask for it at the paper size chosen here.</p>
+  </form>
+</dialog>
+<div id="printArea"></div>
 
 <script src="vendor/astronomy.browser.min.js" defer></script>
 <script type="module" src="app.js"></script>

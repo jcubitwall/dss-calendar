@@ -11,7 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "astronomy-engine": "^2.1.19"
+    "astronomy-engine": "^2.1.19",
+    "jspdf": "^4.2.1",
+    "svg2pdf.js": "^2.8.1"
   },
   "type": "module",
   "private": true

@@ -1,5 +1,6 @@
 import * as D from './engine/dss.js';
 import * as L from './lookup.js';
+import * as TL from './timeline.js';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -12,6 +13,13 @@ const store = {
   set(k, v) { try { localStorage.setItem('dss:' + k, JSON.stringify(v)); } catch { /* storage unavailable */ } },
 };
 const settings = Object.assign({ courses: true, moon: true, cycles: true, civil: 'historian' }, store.get('settings', {}));
+settings.show = Object.assign({ biblical: true, secular: true, church: true, mine: true }, settings.show || {});
+const shown = e => settings.show[e.k] !== false;
+const allEvents = () => [...EVENTS, ...mine.map(e => ({ ...e, k: 'mine' }))].filter(shown).sort((a, b) => a.j - b.j);
+function catBar() {
+  return `<div class="filters" role="group" aria-label="Show events">${Object.entries(TL.TYPES).map(([k, t]) =>
+    `<button class="chip cat" data-cat="${k}" aria-pressed="${settings.show[k] !== false}"><i style="background:${t.color}"></i>${t.label}</button>`).join('')}</div>`;
+}
 let mine = store.get('mine', []);
 
 // ---------- State ----------
@@ -46,7 +54,7 @@ function monthOf(x) {               // which month page a day belongs to
   return 1;
 }
 function eventsOn(jdn) {
-  return [...(byJdn.get(jdn) || []), ...mine.filter(e => e.j === jdn).map(e => ({ ...e, k: 'mine' }))];
+  return [...(byJdn.get(jdn) || []), ...mine.filter(e => e.j === jdn).map(e => ({ ...e, k: 'mine' }))].filter(shown);
 }
 
 // Moon (astronomy-engine, loaded with defer)
@@ -103,7 +111,7 @@ function renderDay() {
   // Same DSS date in other years
   let echo = '';
   if (x.kind === 'month') {
-    const same = EVENTS.filter(e => { if (e.j === sel) return false; const y = D.fromJdn(e.j); return y && y.kind === 'month' && y.month === x.month && y.day === x.day; });
+    const same = EVENTS.filter(e => { if (e.j === sel || !shown(e) || e.p === 'm') return false; const y = D.fromJdn(e.j); return y && y.kind === 'month' && y.month === x.month && y.day === x.day; });
     if (same.length) echo = `<h3>On ${x.day} ${D.MONTHS[x.month - 1].name} in other years</h3><ul class="evlist">${same.slice(0, 12).map(e => evItem(e, true)).join('')}</ul>`;
   }
   const borderline = x.am && D.isBorderline(x.am) && x.am < 5000
@@ -126,13 +134,14 @@ function renderDay() {
     </div>`;
 }
 function evItem(e, withDate) {
-  const kind = e.k === 'mine' ? 'Your event' : e.k === 'biblical' ? 'Biblical · DSS chronology' : e.k === 'church' ? 'Church history' : 'History';
-  const when = withDate ? `<div class="kind">${esc(dssShort(D.fromJdn(e.j)))} · ${fmtCivil(D.jdnToCivil(e.j))}</div>` : '';
+  const kind = e.k === 'mine' ? 'Your event' : e.k === 'biblical' ? 'Bible' : e.k === 'church' ? 'Church history' : 'History';
+  const when = withDate ? `<div class="kind">${esc(TL.whenText(e))}</div>` : (e.p === 'm' ? `<div class="kind">Scripture gives the month only; shown on the 1st</div>` : '');
+  const basis = e.b ? `<div class="basis">Year: ${esc(e.b)}${e.c === 'derived' ? ' (derived)' : ''}</div>` : '';
   const del = e.k === 'mine' ? ` <button class="linkbtn" data-del="${esc(e.id)}">Delete</button>` : '';
   const go = withDate ? ` <button class="linkbtn" data-go="${e.j}">Go to day</button>` : '';
   const src = e.u ? ` <a href="${esc(e.u)}" target="_blank" rel="noopener">${esc(e.s || 'Source')}</a>` : e.s ? ` <span class="kind">${esc(e.s)}</span>` : '';
   const cert = e.c === 'probable' ? ' · day probable' : '';
-  return `<li><div class="kind ${e.k}">${kind}${cert}</div><div class="t">${esc(e.t)}</div>${when}${e.n ? `<div class="n">${esc(e.n)}</div>` : ''}<div>${src}${go}${del}</div></li>`;
+  return `<li><div class="kind ${e.k}">${kind}${cert}</div><div class="t">${esc(e.t)}</div>${when}${e.n ? `<div class="n">${esc(e.n)}</div>` : ''}${basis}<div>${src}${go}${del}</div></li>`;
 }
 
 // ---------- Month view ----------
@@ -253,20 +262,18 @@ function renderRing() {
 // ---------- History ----------
 function renderHistory() {
   const q = histQuery.trim().toLowerCase();
-  const all = [...EVENTS, ...mine.map(e => ({ ...e, k: 'mine' }))].sort((a, b) => a.j - b.j);
-  const list = all.filter(e => (histFilter === 'all' || e.k === histFilter) && (!q || (e.t + ' ' + e.n + ' ' + e.r).toLowerCase().includes(q)));
-  const chips = [['all', 'All'], ['biblical', 'Biblical'], ['secular', 'History'], ['church', 'Church'], ['mine', 'Yours']]
-    .map(([k, l]) => `<button class="chip" data-filter="${k}" aria-pressed="${histFilter === k}">${l}</button>`).join('');
-  let h = `<div class="filters">${chips}</div>
+  const all = allEvents();
+  const list = all.filter(e => !q || (e.t + ' ' + e.n + ' ' + e.r).toLowerCase().includes(q));
+  let h = `${catBar()}
     <div class="field"><input id="hq" type="search" placeholder="Filter ${all.length} events" value="${esc(histQuery)}" aria-label="Filter events"></div><ul class="hist">`;
   let lastEra = '';
   for (const e of list) {
     const x = D.fromJdn(e.j), c = D.jdnToCivil(e.j);
     const era = x?.am ? `Onah ${D.cycles(x.am).onah} · ${D.AGES[D.cycles(x.am).age - 1]}` : 'Creation';
     if (era !== lastEra) { h += `<li class="era">${era}</li>`; lastEra = era; }
-    h += `<li><button data-go="${e.j}"><span class="d1">${esc(dssShort(x))}</span><span class="t">${esc(e.t)}</span><span class="d2">${D.WEEKDAYS[D.weekdayOf(e.j)]}, ${fmtCivil(c, true)} ${calName(c.cal)}</span></button></li>`;
+    h += `<li><button data-go="${e.j}"><span class="d1">${esc(TL.whenText(e).split(' · ')[0])}</span><span class="t">${esc(e.t)}</span><span class="d2">${D.WEEKDAYS[D.weekdayOf(e.j)]}, ${fmtCivil(c, true)} ${calName(c.cal)}</span></button></li>`;
   }
-  if (!list.length) h += `<li class="muted" style="padding:12px 0">No events match. Try a shorter word, or pick All.</li>`;
+  if (!list.length) h += `<li class="muted" style="padding:12px 0">No events match. Try a shorter word, or switch on more categories above.</li>`;
   h += '</ul>';
   $('#view-history').innerHTML = h;
   const hq = $('#hq');
@@ -331,10 +338,10 @@ function parseQuery(raw) {
   // events
   if (s.length >= 2 && !/^\d+$/.test(s)) {
     const words = s.split(' ');
-    const all = [...EVENTS, ...mine.map(e => ({ ...e, k: 'mine' }))];
+    const all = allEvents();
     const hits = all.filter(e => { const hay = (e.t + ' ' + e.r + ' ' + e.n).toLowerCase(); return words.every(w => hay.includes(w)); })
       .sort((a, b) => (a.t.toLowerCase().includes(s) ? 0 : 1) - (b.t.toLowerCase().includes(s) ? 0 : 1));
-    for (const e of hits.slice(0, 12)) out.push({ label: e.t, sub: `${dssShort(D.fromJdn(e.j))} · ${fmtCivil(D.jdnToCivil(e.j))}`, j: e.j });
+    for (const e of hits.slice(0, 12)) out.push({ label: e.t, sub: TL.whenText(e), j: e.j });
   }
   return out;
 }
@@ -390,11 +397,12 @@ function render() {
   if (view === 'month') renderMonth();
   if (view === 'ring') renderRing();
   if (view === 'history') renderHistory();
+  if (view === 'timeline') renderTimeline();
 }
 function setView(v) {
   view = v;
   document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.view === v));
-  ['month', 'ring', 'history'].forEach(k => { $('#view-' + k).hidden = k !== v; });
+  ['month', 'ring', 'timeline', 'history'].forEach(k => { $('#view-' + k).hidden = k !== v; });
   render();
 }
 
@@ -418,9 +426,107 @@ function renderAbout() {
     <p>Based on the Dead Sea Scroll calendar research of Ken Johnson at <a href="https://dsscalendar.org" target="_blank" rel="noopener">dsscalendar.org</a> and <a href="https://biblefacts.org" target="_blank" rel="noopener">biblefacts.org</a>. Independent app; equinoxes from the open-source Astronomy Engine.</p>`;
 }
 
+// ---------- Timeline ----------
+const ZOOMS = [[0, 'Compact'], [0.3, 'Normal'], [2, 'Wide'], [10, 'Detail']];
+const tl = Object.assign({ mode: 'line', zoom: 0.3, from: 1, to: 7000 }, store.get('tl', {}));
+if (![0, 0.3, 2, 10].includes(tl.zoom)) tl.zoom = 0.3;
+function renderTimeline() {
+  store.set('tl', tl);
+  const evs = allEvents();
+  const range = `<label class="tl-range">From <input type="number" id="tlFrom" min="1" max="7000" value="${tl.from}"> to <input type="number" id="tlTo" min="1" max="7000" value="${tl.to}"> AM</label>`;
+  let h = `${catBar()}
+    <div class="tl-bar">
+      <div class="seg" role="group" aria-label="Timeline style">
+        <button data-tlmode="line" aria-pressed="${tl.mode === 'line'}">Line</button>
+        <button data-tlmode="wheel" aria-pressed="${tl.mode === 'wheel'}">Wheel</button>
+      </div>
+      ${tl.mode === 'line' ? `<div class="seg" role="group" aria-label="Zoom">${ZOOMS.map(([z, l]) => `<button data-tlzoom="${z}" aria-pressed="${tl.zoom === z}">${l}</button>`).join('')}</div>` : ''}
+      <button class="btn" data-act="print">Print or save</button>
+    </div>
+    <div class="tl-sub">${range}<span class="muted">${evs.length} events shown</span></div>
+    <div id="tlBody"></div>`;
+  $('#view-timeline').innerHTML = h;
+  const body = $('#tlBody');
+  const from = Math.max(1, Math.min(tl.from, tl.to)), to = Math.min(7000, Math.max(tl.from, tl.to));
+  if (tl.mode === 'line') TL.renderLine(body, evs, { ppy: tl.zoom, from, to });
+  else {
+    const size = 1000;
+    const w = TL.wheelSVG(evs, size, { from, to });
+    body.innerHTML = `<div class="wheel-wrap"><svg viewBox="0 0 ${size} ${size}" role="img" aria-label="Wheel of ${w.count} events from ${from} to ${to} AM">${w.svg}</svg></div>
+      <p class="muted">Creation is at the top; time runs clockwise. Tap a label to open its day. Pinch to zoom, or print it large for full detail.</p>`;
+  }
+  const upd = () => { tl.from = +$('#tlFrom').value || 1; tl.to = +$('#tlTo').value || 7000; renderTimeline(); };
+  $('#tlFrom').addEventListener('change', upd); $('#tlTo').addEventListener('change', upd);
+}
+
+// ---------- Print and export ----------
+const PAPERS = [
+  ['letter', 'Letter 11 × 8.5 in', 11, 8.5], ['tabloid', 'Tabloid 17 × 11 in', 17, 11],
+  ['a3', 'A3 16.5 × 11.7 in', 16.54, 11.69], ['p2436', 'Poster 36 × 24 in', 36, 24],
+  ['p3648', 'Poster 48 × 36 in', 48, 36], ['p4872', 'Banner 72 × 24 in', 72, 24],
+];
+const pr = Object.assign({ kind: 'line', paper: 'p2436' }, store.get('print', {}));
+function posterNow() {
+  const [, , wi, hi] = PAPERS.find(p => p[0] === pr.paper) || PAPERS[3];
+  const W = wi * 72, H = hi * 72;
+  const cats = Object.keys(TL.TYPES).filter(k => settings.show[k] !== false);
+  const from = Math.max(1, Math.min(tl.from, tl.to)), to = Math.min(7000, Math.max(tl.from, tl.to));
+  const doc = TL.posterDoc(pr.kind === 'wheel' ? 'wheel' : 'line', allEvents(), W, H, { from, to, cats });
+  return { ...doc, W, H, wi, hi };
+}
+function openPrint() {
+  const dlg = $('#printDlg');
+  const draw = () => {
+    store.set('print', pr);
+    const p = posterNow();
+    const pt = p.fontSize, mm = pt * 0.3528;
+    const ok = pt >= 7;
+    $('#prPreview').innerHTML = p.svg.replace(/width="[\d.]+pt" height="[\d.]+pt"/, 'width="100%"');
+    $('#prInfo').innerHTML = `${allEvents().length} events · smallest event text <b>${pt.toFixed(1)} pt</b> (${mm.toFixed(1)} mm tall)` +
+      (ok ? '' : ' — too small to read comfortably. Pick a larger paper, a shorter span, or fewer categories.');
+    $('#prInfo').classList.toggle('warn', !ok);
+  };
+  $('#prKind').value = pr.kind; $('#prPaper').value = pr.paper;
+  $('#prKind').onchange = e => { pr.kind = e.target.value; draw(); };
+  $('#prPaper').onchange = e => { pr.paper = e.target.value; draw(); };
+  dlg.showModal(); draw();
+}
+function doPrint() {
+  const p = posterNow();
+  const area = $('#printArea');
+  area.innerHTML = p.svg.replace(/width="[\d.]+pt" height="[\d.]+pt"/, `width="${p.wi}in" height="${p.hi}in"`);
+  let st = $('#pageSize'); if (!st) { st = document.createElement('style'); st.id = 'pageSize'; document.head.appendChild(st); }
+  st.textContent = `@page { size: ${p.wi}in ${p.hi}in; margin: 0; }`;
+  $('#printDlg').close();
+  document.body.classList.add('printing');
+  setTimeout(() => { window.print(); }, 50);
+}
+window.addEventListener('afterprint', () => { document.body.classList.remove('printing'); $('#printArea').innerHTML = ''; });
+function download(name, blob) {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+const fileBase = () => `dss-timeline-${pr.kind}-${tl.from}-${tl.to}AM-${pr.paper}`;
+function loadScript(src) { return new Promise((ok, bad) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => bad(new Error('Could not load ' + src)); document.head.appendChild(s); }); }
+async function doPdf(btn) {
+  const label = btn.textContent; btn.textContent = 'Building PDF…'; btn.disabled = true;
+  try {
+    if (!window.jspdf) await loadScript('vendor/jspdf.umd.min.js');
+    if (!window.svg2pdf) await loadScript('vendor/svg2pdf.umd.min.js');
+    const p = posterNow();
+    const holder = document.createElement('div'); holder.style.cssText = 'position:fixed;left:-99999px;top:0';
+    holder.innerHTML = p.svg; document.body.appendChild(holder);
+    const doc = new window.jspdf.jsPDF({ orientation: p.W > p.H ? 'landscape' : 'portrait', unit: 'pt', format: [p.W, p.H] });
+    await doc.svg(holder.firstElementChild, { x: 0, y: 0, width: p.W, height: p.H });
+    holder.remove();
+    download(fileBase() + '.pdf', doc.output('blob'));
+  } catch (e) { alert('PDF export failed: ' + e.message + '. Use Download SVG instead; print shops accept it.'); }
+  btn.textContent = label; btn.disabled = false;
+}
+
 // ---------- Events wiring ----------
 document.addEventListener('click', e => {
-  const t = e.target.closest('button, path'); if (!t) return;
+  const t = e.target.closest('button, path, [data-go]'); if (!t) return;
   if (t.dataset.j) { select(+t.dataset.j); window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); return; }
   if (t.dataset.closelookup) $('#lookup').close();
   if (t.dataset.savelookup && lookupCurrent) {
@@ -432,7 +538,10 @@ document.addEventListener('click', e => {
   if (t.dataset.mnav) { stepMonth(+t.dataset.mnav); return; }
   if (t.dataset.ynav) { ringAm = Math.max(1, Math.min(D.lastAM(), ringAm + +t.dataset.ynav)); renderRing(); return; }
   if (t.dataset.view) { setView(t.dataset.view); return; }
-  if (t.dataset.filter) { histFilter = t.dataset.filter; renderHistory(); return; }
+  if (t.dataset.cat) { settings.show[t.dataset.cat] = !(settings.show[t.dataset.cat] !== false); store.set('settings', settings); render(); return; }
+  if (t.dataset.tlmode) { tl.mode = t.dataset.tlmode; renderTimeline(); return; }
+  if (t.dataset.tlzoom) { tl.zoom = +t.dataset.tlzoom; renderTimeline(); return; }
+  if (t.dataset.act === 'print') { openPrint(); return; }
   if (t.dataset.ri) { pick(results[+t.dataset.ri]); return; }
   if (t.dataset.del) { mine = mine.filter(m => m.id !== t.dataset.del); store.set('mine', mine); render(); return; }
   if (t.dataset.act === 'today') { select(today, true); return; }
@@ -444,6 +553,9 @@ document.addEventListener('click', e => {
   }
 });
 $('#goToday').addEventListener('click', () => select(today, true));
+$('#prPrint').addEventListener('click', e => { e.preventDefault(); doPrint(); });
+$('#prPdf').addEventListener('click', e => { e.preventDefault(); doPdf(e.currentTarget); });
+$('#prSvg').addEventListener('click', e => { e.preventDefault(); download(fileBase() + '.svg', new Blob([posterNow().svg], { type: 'image/svg+xml' })); });
 $('#openSettings').addEventListener('click', () => $('#settings').showModal());
 $('#addEvent').addEventListener('close', () => {
   if ($('#addEvent').returnValue !== 'save') return;

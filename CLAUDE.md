@@ -17,9 +17,14 @@ Owner: Johnny Wall. Static web app, deployed on Cloudflare Pages from GitHub (`m
 11. Source priority (owner, Oct 2026): Scripture's own dates are fixed truth; Ken Johnson's studies and chronology place them in years and outrank secular sources; secular dating is shown alongside only where it differs.
 12. Live lookup: search box also queries Wikidata/Wikipedia (lookup.js) for any person, place or event; those dates are labelled as standard (secular) dating.
 
+13. Category toggles (owner, Oct 2026): Bible / History / Church / Yours on and off everywhere, incl. timelines and prints.
+14. Timelines: straight line (elastic scale) and 7000-year wheel; print posters as vector PDF/SVG up to 72 × 24 in.
+15. Bible events: every month/day-dated verse; years via Ken Johnson's anchors; basis shown per event. Kings chain check: Samaria 3205 = Hezekiah 6 → Zedekiah 11 = 3338 ✓.
+
 ## Where things are
 - Engine: `engine/dss.js` (pure). Table: `scripts/build-table.mjs`. Tests: `scripts/test-engine.mjs` (must pass).
-- Events: edit `data/sources/*.json`, then `node scripts/build-events.mjs`.
+- Events: edit `data/sources/*.json`, then `node scripts/build-events.mjs`. Bible: `data/bible/` + `scripts/build-bible.mjs`.
+- Timelines/print: `timeline.js`; live lookup: `lookup.js`; PDF libs vendored in `vendor/`.
 - Design: palette "Dead Sea" (salt, brine teal, ochre sun); fonts Alegreya and Alegreya Sans; the year ring is the signature element.
 
 ## Known limits

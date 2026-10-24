@@ -22,7 +22,7 @@ for (const f of readdirSync(dir).filter(f => f.endsWith('.json')).sort()) {
     let id = e.id;
     if (seen.has(id)) { problems.push(`${f}: duplicate id ${id}`); continue; }
     seen.add(id);
-    out.push({ id, t: e.title, j: jdn, k: e.type || 'secular', r: e.region || '', n: e.note || '', s: e.source || '', u: e.url || '', c: e.certainty || 'exact', o: e.cal || 'dss' });
+    out.push({ id, t: e.title, j: jdn, k: e.type || 'secular', r: e.region || '', n: e.note || '', s: e.source || '', u: e.url || '', c: e.certainty || 'exact', o: e.cal || 'dss', ...(e.precision === 'month' ? { p: 'm' } : {}), ...(e.basis ? { b: e.basis } : {}) });
   }
 }
 out.sort((a, b) => a.j - b.j);
