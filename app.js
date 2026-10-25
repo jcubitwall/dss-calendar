@@ -565,7 +565,7 @@ function openProphecy(id) {
     <div class="p-span">
       <div><span class="muted small">Foretold</span><b>${esc(p.g.label)}</b><span class="muted small">${amTxt(p.g)} · ${esc(p.who ? p.who + ', ' : '')}${esc(p.ref)}</span></div>
       <div class="p-arrow" aria-hidden="true">→</div>
-      <div><span class="muted small">${p.f ? 'Fulfilled' : 'Fulfilment'}</span><b>${p.f ? esc(p.f.label) : 'Yet future'}</b><span class="muted small">${p.f ? amTxt(p.f) + (p.fr ? ' · ' + esc(p.fr) : '') : ''}</span></div>
+      <div><span class="muted small">${p.f ? 'Fulfilled' : p.x ? 'Expected' : 'Fulfilment'}</span><b>${p.f ? esc(p.f.label) : p.x ? esc(p.x.label) : 'Yet future'}</b><span class="muted small">${p.f ? amTxt(p.f) + (p.fr ? ' · ' + esc(p.fr) : '') : p.x ? amTxt(p.x) + " · Ken Johnson's projection" : ''}</span></div>
     </div>
     ${p.f ? `<p class="muted small">${Math.round(p.f.am - p.g.am)} years from prediction to fulfilment${p.g.approx || p.f.approx ? ' (approximate)' : ''}.</p>` : ''}
     ${p.s ? `<p>${esc(p.s)}</p>` : ''}
@@ -577,7 +577,7 @@ function openProphecy(id) {
     ${p.src.length ? `<p class="lk-links">${p.src.map(x => x.u ? `<a href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.n)}</a>` : `<span class="muted small">${esc(x.n)}</span>`).join(' ')}</p>` : ''}
     <div class="pr-actions">
       <button type="button" class="btn" data-pjump="${esc(p.id)}" data-end="g">Show where it was foretold</button>
-      ${p.f ? `<button type="button" class="btn" data-pjump="${esc(p.id)}" data-end="f">Show its fulfilment</button>` : ''}
+      ${p.f || p.x ? `<button type="button" class="btn" data-pjump="${esc(p.id)}" data-end="f">${p.f ? 'Show its fulfilment' : 'Show the expected time'}</button>` : ''}
       <button type="button" class="btn ghost" onclick="this.closest('dialog').close()">Back to where I was</button>
     </div>`;
   $('#eventDlg').showModal(); $('#eventDlg').scrollTop = 0;

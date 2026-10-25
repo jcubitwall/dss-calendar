@@ -53,7 +53,8 @@ export function renderLine(el, events, opts = {}) {
   for (const p of prophecies) {
     if (inSpan(p.g.am)) items.push({ pg: p, am: p.g.am });
     if (p.f && inSpan(p.f.am)) items.push({ pf: p, am: p.f.am });
-    if (!p.f) anyFuture = true;
+    else if (!p.f && p.x && inSpan(p.x.am)) items.push({ px: p, am: p.x.am });
+    else if (!p.f) anyFuture = true;
   }
   if (anyFuture && inSpan(FUTURE_AM)) items.push({ future: true, am: FUTURE_AM });
   items.sort((a, b) => a.am - b.am);
@@ -99,11 +100,12 @@ export function renderLine(el, events, opts = {}) {
   if (hasP) {
     const gutter = axisX - 54;                       // available width for arc bulge
     const rowOf = {};
-    for (const o of items) { if (o.pg) (rowOf[o.pg.id] ||= {}).g = o.y + 11; if (o.pf) (rowOf[o.pf.id] ||= {}).f = o.y + 11; if (o.future) rowOf.__future = o.y + 14; }
+    for (const o of items) { if (o.pg) (rowOf[o.pg.id] ||= {}).g = o.y + 11; if (o.pf) (rowOf[o.pf.id] ||= {}).f = o.y + 11; if (o.px) (rowOf[o.px.id] ||= {}).f = o.y + 11; if (o.future) rowOf.__future = o.y + 14; }
     for (const p of prophecies) {
       const r = rowOf[p.id] || {};
       const yg = r.g ?? yAt(Math.max(from, Math.min(to, p.g.am)));
-      const yf = p.f ? (r.f ?? yAt(Math.max(from, Math.min(to, p.f.am)))) : rowOf.__future;
+      const endAm = p.f ? p.f.am : p.x ? p.x.am : null;
+      const yf = endAm != null ? (r.f ?? yAt(Math.max(from, Math.min(to, endAm)))) : rowOf.__future;
       if (yf == null || (r.g == null && r.f == null)) continue;
       const span = Math.abs(yf - yg);
       const bulge = Math.min(gutter, 8 + Math.sqrt(span) * 0.9);
@@ -115,13 +117,15 @@ export function renderLine(el, events, opts = {}) {
     if (o.age != null) { html += `<div class="tl-age" style="top:${o.y}px;left:${labelX}px">${AGE_NAMES[o.age]}</div>`; continue; }
     if (o.future) { html += `<div class="tl-age tl-future" style="top:${o.y}px;left:${labelX}px">Yet to be fulfilled (dashed arrows)</div>`; continue; }
     const cy = o.y + 11;
-    if (o.pg || o.pf) {
-      const p = o.pg || o.pf;
-      svg += `<line x1="${axisX}" y1="${cy}" x2="${labelX - 2}" y2="${cy}" stroke="${PROPHECY_COLOR}" stroke-opacity=".6"/><circle cx="${axisX}" cy="${cy}" r="4.5" fill="${o.pf ? PROPHECY_COLOR : 'var(--bg)'}" stroke="${PROPHECY_COLOR}" stroke-width="2"/>`;
+    if (o.pg || o.pf || o.px) {
+      const p = o.pg || o.pf || o.px;
+      svg += `<line x1="${axisX}" y1="${cy}" x2="${labelX - 2}" y2="${cy}" stroke="${PROPHECY_COLOR}" stroke-opacity=".6"/><circle cx="${axisX}" cy="${cy}" r="4.5" fill="${o.pf ? PROPHECY_COLOR : 'var(--bg)'}" stroke="${PROPHECY_COLOR}" stroke-width="2"${o.px ? ' stroke-dasharray="2 2"' : ''}/>`;
       const line2 = o.pg
-        ? `Foretold ${pYear(p.g)} · ${p.ref}${p.f ? ` → ${pYear(p.f)}` : ' → yet future'}`
-        : `Fulfilled ${pYear(p.f)}${p.fr ? ' · ' + p.fr : ''} ← ${pYear(p.g)}`;
-      html += `<button class="tl-ev tl-p${p.id === opts.lastId ? ' seen' : ''}" style="top:${o.y}px;left:${labelX}px" data-pr="${xmlEsc(p.id)}" id="tl-p${o.pg ? 'g' : 'f'}-${xmlEsc(p.id)}"><span class="tl-t">${o.pg ? 'Foretold: ' : 'Fulfilled: '}${xmlEsc(p.t)}</span><span class="tl-d">${xmlEsc(line2)}</span></button>`;
+        ? `Foretold ${pYear(p.g)} · ${p.ref}${p.f ? ` → ${pYear(p.f)}` : p.x ? ` → expected ${pYear(p.x)}` : ' → yet future'}`
+        : o.pf ? `Fulfilled ${pYear(p.f)}${p.fr ? ' · ' + p.fr : ''} ← ${pYear(p.g)}`
+        : `Expected ${pYear(p.x)} (Ken Johnson's projection) ← ${pYear(p.g)}`;
+      const lead = o.pg ? 'Foretold: ' : o.pf ? 'Fulfilled: ' : 'Expected: ';
+      html += `<button class="tl-ev tl-p${p.id === opts.lastId ? ' seen' : ''}" style="top:${o.y}px;left:${labelX}px" data-pr="${xmlEsc(p.id)}" id="tl-p${o.pg ? 'g' : 'f'}-${xmlEsc(p.id)}"><span class="tl-t">${lead}${xmlEsc(p.t)}</span><span class="tl-d">${xmlEsc(line2)}</span></button>`;
       continue;
     }
     const t = TYPES[o.e.k], c = t?.color || '#555';
@@ -205,7 +209,7 @@ export function wheelSVG(events, size, { from = 1, to = 7000, print = false, tit
     const rc = r0 * 0.97;
     g += `<defs><marker id="wparr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="${f(S * 0.006)}" markerHeight="${f(S * 0.006)}" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="${PROPHECY_COLOR}"/></marker></defs>`;
     for (const p of prophecies) {
-      const fa = p.f ? p.f.am : FUTURE_AM;
+      const fa = p.f ? p.f.am : p.x ? p.x.am : FUTURE_AM;
       if (p.g.am < from || p.g.am > to + 1 || fa < from || fa > to + 1) continue;
       const a0 = ang(p.g.am), a1 = ang(fa);
       const d = Math.abs(a1 - a0), mid = (a0 + a1) / 2;
