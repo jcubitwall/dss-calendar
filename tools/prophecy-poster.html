@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Prophecy Map Poster</title>
+<style>
+@font-face { font-family: 'Alegreya'; font-weight: 400; src: url(fonts/alegreya-latin-400-normal.woff2); }
+@font-face { font-family: 'Alegreya'; font-weight: 400; font-style: italic; src: url(fonts/alegreya-latin-400-italic.woff2); }
+@font-face { font-family: 'Alegreya'; font-weight: 500; src: url(fonts/alegreya-latin-500-normal.woff2); }
+@font-face { font-family: 'Alegreya'; font-weight: 700; src: url(fonts/alegreya-latin-700-normal.woff2); }
+@font-face { font-family: 'Alegreya Sans'; font-weight: 400; src: url(fonts/alegreya-sans-latin-400-normal.woff2); }
+@font-face { font-family: 'Alegreya Sans'; font-weight: 400; font-style: italic; src: url(fonts/alegreya-sans-latin-400-italic.woff2); }
+@font-face { font-family: 'Alegreya Sans'; font-weight: 500; src: url(fonts/alegreya-sans-latin-500-normal.woff2); }
+@font-face { font-family: 'Alegreya Sans'; font-weight: 700; src: url(fonts/alegreya-sans-latin-700-normal.woff2); }
+@font-face { font-family: 'Alegreya Sans SC'; font-weight: 500; src: url(fonts/alegreya-sans-sc-latin-500-normal.woff2); }
+@font-face { font-family: 'Alegreya Sans SC'; font-weight: 700; src: url(fonts/alegreya-sans-sc-latin-700-normal.woff2); }
+@page { size: 48in 12in; margin: 0; }
+html, body { margin: 0; padding: 0; background: #FAF7F0; }
+svg { display: block; width: 48in; height: 12in; }
+</style>
+</head>
+<body>
+<svg id="poster" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3456 864"></svg>
+<script type="module">
+// Prophecy Map: 7,000 years, foretold → fulfilled. 48 × 12 in, units = points (1/72 in).
+import * as D from '../engine/dss.js';
+
+const W = 3456, H = 864, M = 36;
+const params = new URLSearchParams(location.search);
+const OTHERS = params.get('others') !== '0';          // add Dead Sea Scroll–referenced items from other teachers
+
+const C = {
+  paper: '#FAF7F0', ink: '#1B2427', muted: '#5C6A6E', faint: '#A9B3B5', rule: '#4E5D61', title: '#0F4C5A',
+  messiah: '#B7862C', israel: '#1B6577', church: '#7B4F8E', scrolls: '#5E7F3A', future: '#3B4FA0',
+};
+const DAYS = ['#EFE6D2', '#E6EDE4', '#E1EBEC', '#ECE4DA', '#E9E2EC', '#E3E7EF', '#F1EAD0'];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const f1 = n => (+n).toFixed(1);
+
+const [table, all, events] = await Promise.all(['../engine/tekufah-table.json', '../data/prophecies.json', '../data/events.json'].map(u => fetch(u).then(r => r.json())));
+D.init(table);
+await document.fonts.load('10px "Alegreya Sans"'); await document.fonts.load('700 10px "Alegreya Sans"');
+await document.fonts.load('10px Alegreya'); await document.fonts.load('italic 10px "Alegreya Sans"');
+await document.fonts.load('700 10px "Alegreya Sans SC"'); await document.fonts.load('500 10px "Alegreya Sans SC"'); await document.fonts.load('500 10px Alegreya');
+await document.fonts.ready;
+const cv = document.createElement('canvas').getContext('2d');
+const tw = (s, font) => { cv.font = font; return cv.measureText(s).width; };
+
+// ---------- selection ----------
+const isJ = p => p.kj || p.n || /^(apr|age)-/.test(p.id);
+let items = all.filter(isJ);
+if (OTHERS) {
+  const seen = new Set(items.map(p => (p.ref || '') + '|' + Math.round(p.f?.am ?? -1)));
+  for (const p of all.filter(p => !isJ(p) && p.dss)) {
+    const k = (p.ref || '') + '|' + Math.round(p.f?.am ?? -1);
+    if (seen.has(k)) continue; seen.add(k); items.push(p);
+  }
+}
+const NOW = 5951; // AD 2026
+const FUT = { 'The Birth Pangs': 5958, 'After 2008': 5956, 'First half of the Tribulation': 5970, 'The Invasion of Israel': 5968,
+  "The Antichrist's rise to power": 5966, 'The Person of the Antichrist': 5967, "The Antichrist's identifying characteristics": 5967,
+  'The Religion of the Antichrist': 5972, 'The Abomination of Desolation': 5974, 'Antichrist rules supreme': 5975, 'The Persecution': 5976,
+  'Second half of the Tribulation': 5978, 'The wars of the Antichrist': 5979, 'The Wrath': 5980, "The Antichrist's Destruction": 5982,
+  'The Second Coming': 5984, 'The Millennium': 6300 };
+const yearOf = am => { const y = Math.floor(am) - D.EPOCH_OFFSET; return y <= 0 ? `${1 - y} BC` : `AD ${y}`; };
+function shortDate(lbl, am, approx) {
+  const m = /(c\.\s*)?(AD\s*\d+(?:\s*[–-]\s*\d+)?|\d+(?:\s*[–-]\s*\d+)?\s*BC)/.exec(lbl || '');
+  let s = m ? m[2].replace(/\s*[–-]\s*/, '–') : yearOf(am);
+  if (/^\d{3,4}$/.test((lbl || '').match(/\b(1[5-9]\d\d|20\d\d)\b/)?.[0] || '') && !m) s = 'AD ' + lbl.match(/\b(1[5-9]\d\d|20\d\d)\b/)[0];
+  return ((m && m[1]) || approx || /^(c\.|before|late|circa)/i.test(lbl || '') ? 'c. ' : '') + s;
+}
+function cat(p) {
+  if (p.st === 'future' || !p.f) return 'future';
+  if (/^age-/.test(p.id)) return 'church';
+  if (p.dss) return 'scrolls';
+  if (p.f.am >= 3920 && p.f.am <= 3962) return 'messiah';
+  return 'israel';
+}
+const dssShort = s => (s || '').split(/[;,]/)[0].replace(/\s*\(.*$/, '').replace(/\s+(quotes|cols?\.).*$/, '').trim();
+const cleanTitle = t => t.replace(/\s*\((?:[1-3]?\s?[A-Z][a-z]+\.?\s+\d+[^)]*|[^)]*\d+:\d+[^)]*)\)\s*$/, '').replace(/\s+/g, ' ').trim();
+
+const rows = items.map(p => {
+  const k = cat(p);
+  const fam = p.f ? p.f.am : (FUT[p.sec] ?? 5985);
+  return {
+    p, k, gam: p.g.am, fam,
+    ref: (p.ref || '').replace(/\s*\([^)]*\)?\s*/g, ' ').replace(/\s+/g, ' ').trim(),
+    dss: dssShort(p.dss),
+    num: p.n ? '#' + p.n : '',
+    title: cleanTitle(p.t),
+    when: `${shortDate(p.g.label, p.g.am, p.g.approx)} → ${p.f ? shortDate(p.f.label, p.f.am, p.f.approx) : 'yet future'}`,
+    partial: p.st === 'partial',
+  };
+}).sort((a, b) => a.fam - b.fam || a.gam - b.gam || (a.p.n || 999) - (b.p.n || 999));
+
+// ---------- vertical layout ----------
+const headH = 74, arcTop = M + headH, axisY = 338, bandH = 26, fanTop = axisY + bandH + 4, colTop = fanTop + 58, colBot = H - M - 16;
+const left = M, right = W - M, span = right - left;
+
+// ---------- elastic scale: part linear, part density of fulfilments and foretellings ----------
+const BIN = 10, NB = 700, dens = new Float64Array(NB);
+for (const r of rows) { dens[Math.min(NB - 1, Math.floor(r.fam / BIN))] += 1; dens[Math.min(NB - 1, Math.floor(r.gam / BIN))] += 0.35; }
+const sm = new Float64Array(NB), SIG = 3;
+for (let i = 0; i < NB; i++) { let s = 0, w = 0; for (let j = -9; j <= 9; j++) { const k = i + j; if (k < 0 || k >= NB) continue; const g = Math.exp(-(j * j) / (2 * SIG * SIG)); s += dens[k] * g; w += g; } sm[i] = s / w; }
+const tot = sm.reduce((a, b) => a + b, 0), cdf = new Float64Array(NB + 1);
+for (let i = 0; i < NB; i++) cdf[i + 1] = cdf[i] + sm[i] / tot;
+const ALPHA = 0.30;
+const X = am => { const a = Math.max(0, Math.min(7000, am)); const i = Math.min(NB - 1, Math.floor(a / BIN)); const c = cdf[i] + (cdf[i + 1] - cdf[i]) * ((a - i * BIN) / BIN); return left + span * (ALPHA * a / 7000 + (1 - ALPHA) * c); };
+
+let svg = '';
+const T = (x, y, s, o = {}) => `<text x="${f1(x)}" y="${f1(y)}" font-family="${o.ff || 'Alegreya Sans'}" font-size="${f1(o.fs || 10)}"${o.fw ? ` font-weight="${o.fw}"` : ''}${o.it ? ' font-style="italic"' : ''} fill="${o.fill || C.ink}"${o.a ? ` text-anchor="${o.a}"` : ''}${o.ls ? ` letter-spacing="${o.ls}"` : ''}${o.op ? ` opacity="${o.op}"` : ''}>${esc(s)}</text>`;
+
+// ---------- background, the seven "days" ----------
+svg += `<rect width="${W}" height="${H}" fill="${C.paper}"/>`;
+const DAYNAMES = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh'];
+for (let d = 0; d < 7; d++) {
+  const x0 = X(d * 1000 + 1), x1 = X((d + 1) * 1000 + 1);
+  svg += `<rect x="${f1(x0)}" y="${axisY}" width="${f1(x1 - x0)}" height="${bandH}" fill="${DAYS[d]}"/>`;
+  svg += `<rect x="${f1(x0)}" y="${arcTop - 6}" width="${f1(x1 - x0)}" height="${axisY - arcTop + 6}" fill="${DAYS[d]}" opacity="0.28"/>`;
+  if (d) svg += `<line x1="${f1(x0)}" y1="${arcTop - 6}" x2="${f1(x0)}" y2="${axisY + bandH}" stroke="${C.faint}" stroke-width="0.6" stroke-dasharray="2 3"/>`;
+  const lbl = d === 6 ? 'Seventh day · the Sabbath millennium' : `${DAYNAMES[d]} day`;
+  const sub = `${d * 1000 + 1}–${(d + 1) * 1000} AM · ${yearOf(d * 1000 + 1)} – ${yearOf((d + 1) * 1000)}`;
+  const cx = (x0 + x1) / 2, wide = x1 - x0;
+  const fs = wide > 260 ? 10 : 8.5;
+  if (wide > 70) {
+    svg += T(cx, axisY + 11, lbl.toUpperCase(), { ff: 'Alegreya Sans SC', fw: 700, fs, a: 'middle', fill: C.title, ls: 1.2 });
+    if (wide > 150) svg += T(cx, axisY + 21.5, sub, { fs: 7.5, a: 'middle', fill: C.muted });
+  }
+}
+svg += `<line x1="${left}" y1="${axisY}" x2="${right}" y2="${axisY}" stroke="${C.rule}" stroke-width="1.2"/>`;
+svg += `<line x1="${left}" y1="${axisY + bandH}" x2="${right}" y2="${axisY + bandH}" stroke="${C.rule}" stroke-width="0.5"/>`;
+
+// "Yet future" hatching and Today marker
+const xNow = X(NOW);
+svg += `<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="${C.future}" stroke-width="0.6" opacity="0.18"/></pattern>
+  <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 z" fill="context-stroke"/></marker></defs>`;
+svg += `<rect x="${f1(xNow)}" y="${arcTop - 6}" width="${f1(right - xNow)}" height="${axisY - arcTop + 6}" fill="url(#hatch)"/>`;
+svg += `<line x1="${f1(xNow)}" y1="${arcTop - 6}" x2="${f1(xNow)}" y2="${axisY + bandH}" stroke="${C.future}" stroke-width="0.9"/>`;
+svg += T(xNow - 4, arcTop + 6, 'TODAY · 5951 AM · AD 2026', { ff: 'Alegreya Sans SC', fw: 700, fs: 7.5, a: 'end', fill: C.future, ls: 0.8 });
+svg += T(xNow + 5, arcTop + 6, 'YET FUTURE', { ff: 'Alegreya Sans SC', fw: 700, fs: 7.5, fill: C.future, ls: 0.8 });
+
+// ---------- ticks (deduped by distance) ----------
+let lastTick = -1e9;
+const tickYears = [];
+for (let am = 100; am < 7000; am += 100) tickYears.push(am);
+for (let am = 3900; am < 4000; am += 10) if (am % 100) tickYears.push(am);
+tickYears.sort((a, b) => a - b);
+for (const am of tickYears) {
+  const x = X(am);
+  const major = am % 500 === 0;
+  svg += `<line x1="${f1(x)}" y1="${axisY}" x2="${f1(x)}" y2="${axisY - (major ? 6 : 3.5)}" stroke="${C.rule}" stroke-width="${major ? 0.9 : 0.5}"/>`;
+}
+// ---------- landmarks ----------
+const amOf = re => { const e = events.find(v => re.test(v.t)); return e ? D.fromJdn(e.j).am : null; };
+const LM = [
+  [1, 'Creation'], [1656, 'The Flood'], [amOf(/^Abraham born/) ?? 2008, 'Abraham'], [amOf(/departs from Rameses/) ?? 2448, 'Exodus'],
+  [2935, "Solomon's Temple"], [3338, 'Jerusalem falls to Babylon'], [3957, 'The Cross · AD 32'], [3995, 'Temple destroyed · AD 70'],
+  [5873, 'Israel reborn · 1948'], [6000, '6000 AM'],
+];
+const lmPlaced = [], lmText = [];
+for (const [am, name] of LM) {
+  const x = X(am);
+  const w = tw(name, '700 7.5px "Alegreya Sans"') + 8;
+  let lane = 0; while (lmPlaced.some(o => o.lane === lane && Math.abs(o.x - x) < (o.w + w) / 2 + 4)) lane++;
+  lmPlaced.push({ x, w, lane });
+  const y = axisY - 9 - lane * 10;
+  svg += `<circle cx="${f1(x)}" cy="${axisY}" r="2.4" fill="${C.paper}" stroke="${C.rule}" stroke-width="1"/>`;
+  lmText.push(T(x, y, name, { fw: 700, fs: 7.5, a: am < 50 ? 'start' : 'middle', fill: C.rule }).replace('<text ', `<text stroke="${C.paper}" stroke-width="3" paint-order="stroke" stroke-linejoin="round" `));
+}
+
+// ---------- arcs ----------
+const groups = new Map();
+for (const r of rows) { const k = Math.round(X(r.gam)) + ':' + Math.round(X(r.fam)); r.rank = groups.get(k) || 0; groups.set(k, r.rank + 1); }
+const maxArc = axisY - arcTop - 24;
+const arcRows = [...rows].sort((a, b) => Math.abs(X(b.fam) - X(b.gam)) - Math.abs(X(a.fam) - X(a.gam)));
+for (const r of arcRows) {
+  const x1 = X(r.gam), x2 = X(r.fam), dx = Math.abs(x2 - x1);
+  const c = C[r.k];
+  const dash = r.k === 'future' ? ' stroke-dasharray="3 2.2"' : r.partial ? ' stroke-dasharray="6 2 1.5 2"' : '';
+  if (dx < 3) { svg += `<circle cx="${f1(x1)}" cy="${axisY - 5}" r="4" fill="none" stroke="${c}" stroke-width="0.6" opacity="0.6"/>`; continue; }
+  const h = Math.min(maxArc, 14 + maxArc * Math.pow(dx / span, 0.62) * 1.05) * (1 + 0.012 * Math.min(r.rank, 40));
+  const hh = Math.min(maxArc + 10, h);
+  // cubic arch from foretold to fulfilled
+  const cy = axisY - hh * 1.333;
+  svg += `<path d="M${f1(x1)},${axisY} C${f1(x1)},${f1(cy)} ${f1(x2)},${f1(cy)} ${f1(x2)},${axisY}" fill="none" stroke="${c}" stroke-width="${r.k === 'messiah' ? 0.55 : 0.7}" opacity="${r.k === 'messiah' ? 0.42 : 0.55}"${dash} marker-end="url(#ah)"/>`;
+}
+// foretold dots on the axis
+for (const r of rows) svg += `<circle cx="${f1(X(r.gam))}" cy="${axisY}" r="1.3" fill="${C[r.k]}" opacity="0.8"/>`;
+
+svg += lmText.join('');
+// ---------- index columns ----------
+const avail = colBot - colTop;
+let fs = 8.2, lh, perCol, ncol, colW, gutter;
+for (; fs > 5; fs -= 0.1) {
+  lh = fs * 1.22; perCol = Math.floor((avail - fs * 2.2) / lh);
+  ncol = Math.ceil(rows.length / perCol); gutter = 10; colW = (span - gutter * (ncol - 1)) / ncol;
+  if (colW >= fs * 38) break;
+}
+// balance: spread rows evenly
+perCol = Math.ceil(rows.length / ncol);
+const FONT = { ref: `700 ${fs}px "Alegreya Sans"`, num: `500 ${fs * 0.82}px "Alegreya Sans"`, title: `400 ${fs}px "Alegreya Sans"`, when: `500 ${fs}px "Alegreya Sans"`, dss: `italic 400 ${fs}px "Alegreya Sans"` };
+function fit(s, font, w) { if (tw(s, font) <= w) return s; let lo = 0, hi = s.length; while (lo < hi) { const m = (lo + hi + 1) >> 1; tw(s.slice(0, m) + '…', font) <= w ? lo = m : hi = m - 1; } return s.slice(0, lo).replace(/[\s,;:·–-]+$/, '') + '…'; }
+for (let c = 0; c < ncol; c++) {
+  const chunk = rows.slice(c * perCol, (c + 1) * perCol); if (!chunk.length) continue;
+  const cx0 = left + c * (colW + gutter), cx1 = cx0 + colW;
+  const f0 = chunk[0].fam, fN = chunk[chunk.length - 1].fam;
+  // dominant category colour for the funnel
+  const cnt = {}; chunk.forEach(r => cnt[r.k] = (cnt[r.k] || 0) + 1);
+  const dom = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0][0];
+  let ax0 = X(f0), ax1 = X(fN); if (ax1 - ax0 < 3) { ax0 -= 1.5; ax1 += 1.5; }
+  svg += `<path d="M${f1(ax0)},${axisY + bandH} L${f1(ax1)},${axisY + bandH} C${f1(ax1)},${f1(fanTop + 34)} ${f1(cx1)},${f1(fanTop + 20)} ${f1(cx1)},${colTop - fs * 2.2} L${f1(cx0)},${colTop - fs * 2.2} C${f1(cx0)},${f1(fanTop + 20)} ${f1(ax0)},${f1(fanTop + 34)} ${f1(ax0)},${axisY + bandH} Z" fill="${C[dom]}" opacity="0.09"/>`;
+  svg += `<line x1="${f1(ax0)}" y1="${axisY + bandH + 0.5}" x2="${f1(ax1)}" y2="${axisY + bandH + 0.5}" stroke="${C[dom]}" stroke-width="2"/>`;
+  // column header
+  const hdr = fN >= NOW ? (f0 >= NOW ? 'Yet future' : `Fulfilled ${yearOf(f0)} → yet future`) : (yearOf(f0) === yearOf(fN) ? `Fulfilled ${yearOf(f0)}` : `Fulfilled ${yearOf(f0)} – ${yearOf(fN)}`);
+  const hy = colTop - fs * 0.9;
+  svg += T(cx0, hy, hdr.toUpperCase(), { ff: 'Alegreya Sans SC', fw: 700, fs: fs * 0.95, fill: C[dom], ls: 0.6 });
+  svg += `<line x1="${f1(cx0)}" y1="${f1(hy + fs * 0.4)}" x2="${f1(cx1)}" y2="${f1(hy + fs * 0.4)}" stroke="${C[dom]}" stroke-width="0.6"/>`;
+  chunk.forEach((r, i) => {
+    const y = colTop + fs * 0.4 + (i + 1) * lh - lh * 0.25;
+    if (i % 2) svg += `<rect x="${f1(cx0 - 2)}" y="${f1(y - fs * 0.92)}" width="${f1(colW + 4)}" height="${f1(lh)}" fill="${C.ink}" opacity="0.028"/>`;
+    const col = C[r.k];
+    svg += `<rect x="${f1(cx0)}" y="${f1(y - fs * 0.72)}" width="${f1(fs * 0.28)}" height="${f1(fs * 0.86)}" fill="${col}"${r.k === 'future' ? ' opacity="0.65"' : ''}/>`;
+    let x = cx0 + fs * 0.6;
+    const whenW = tw(r.when, FONT.when);
+    const xr = cx1;
+    // reference (bold), then DSS manuscript (italic), then the prophecy, dates right-aligned
+    const refS = fit(r.ref, FONT.ref, colW * 0.36);
+    svg += T(x, y, refS, { fw: 700, fs, fill: C.ink }); x += tw(refS, FONT.ref) + fs * 0.4;
+    if (r.dss && !r.ref.includes(r.dss)) { const d = fit(r.dss, FONT.dss, colW * 0.18); svg += T(x, y, d, { it: 1, fs, fill: C.scrolls }); x += tw(d, FONT.dss) + fs * 0.4; }
+    const room = xr - whenW - fs * 0.8 - x - (r.num ? tw(r.num, FONT.num) + fs * 0.4 : 0);
+    const ttl = fit(r.title + (r.partial ? ' (in part)' : ''), FONT.title, Math.max(room, fs * 3));
+    svg += T(x, y, ttl, { fs, fill: '#34403F' }); x += tw(ttl, FONT.title) + fs * 0.35;
+    if (r.num) svg += T(x, y, r.num, { fw: 500, fs: fs * 0.82, fill: C.faint });
+    svg += T(xr, y, r.when, { fw: 500, fs, a: 'end', fill: r.k === 'future' ? C.future : C.muted });
+  });
+}
+
+// ---------- header ----------
+svg += T(M, M + 30, 'Seven Thousand Years of Prophecy', { ff: 'Alegreya', fw: 500, fs: 38, fill: C.title });
+const subX = M + tw('Seven Thousand Years of Prophecy', '500 38px Alegreya') + 22;
+svg += T(subX, M + 15, 'Foretold → fulfilled, from Creation (1 AM · 3925 BC) to the end of the seventh millennium', { fs: 12.5, fill: C.ink });
+svg += T(subX, M + 31, `${rows.length} prophecies · Scripture and Dead Sea Scroll references · dates on Ken Johnson's chronology (AM = AD + 3925) · "c." = approximate`, { fs: 10.5, fill: C.muted });
+// legend
+const LEG = [['messiah', "Messiah's first coming", ''], ['israel', 'Israel & the nations', ''], ['church', 'The church ages', ''], ['scrolls', 'With a Dead Sea Scroll witness', ''], ['future', 'Yet future', '3 2.2']];
+let lx = right;
+const legItems = LEG.map(([k, l, d]) => ({ k, l, d, w: tw(l, '500 10px "Alegreya Sans"') + 34 })).reverse();
+for (const it of legItems) {
+  lx -= it.w;
+  svg += `<path d="M${f1(lx)},${M + 20} q12,-14 24,0" fill="none" stroke="${C[it.k]}" stroke-width="1.6"${it.d ? ` stroke-dasharray="${it.d}"` : ''}/>`;
+  svg += T(lx + 28, M + 23, it.l, { fw: 500, fs: 10, fill: C.ink });
+}
+svg += T(right, M + 40, 'Arcs rise from when a prophecy was given to when it was fulfilled; each column below lists the prophecies fulfilled in the span its funnel marks on the timeline.', { fs: 8.5, a: 'end', fill: C.muted, it: 1 });
+svg += `<line x1="${M}" y1="${M + headH - 18}" x2="${right}" y2="${M + headH - 18}" stroke="${C.title}" stroke-width="0.8"/>`;
+
+// ---------- footer ----------
+svg += T(M, H - M + 6, "Sources: Ken Johnson, Ancient Prophecies Revealed (#1–485; numbers in grey) and his biblical chronology; Scripture (KJV); Dead Sea Scroll manuscripts in italic green (e.g. 1QIsa-a, the Great Isaiah Scroll; 4Q174; 11Q13). Fulfilment years follow Johnson where he gives them; foretold dates are approximate dates of the prophet.", { fs: 7.5, fill: C.muted });
+svg += T(right, H - M + 6, 'DSS Calendar · dss-calendar.pages.dev · after Ken Johnson & dsscalendar.org', { fs: 7.5, a: 'end', fill: C.muted });
+
+document.getElementById('poster').innerHTML = svg;
+window.__poster = { n: rows.length, fs: +fs.toFixed(2), ncol, perCol, colW: Math.round(colW) };
+document.body.dataset.ready = '1';
+</script>
+</body>
+</html>
