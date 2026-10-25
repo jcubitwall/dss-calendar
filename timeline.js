@@ -4,8 +4,9 @@ import * as D from './engine/dss.js';
 
 export const TYPES = {
   biblical: { label: 'Bible', color: '#B7862C' },
-  secular: { label: 'History', color: '#1B6577' },
+  scrolls: { label: 'Scrolls & Essenes', color: '#5E7F3A' },
   church: { label: 'Church', color: '#7B4F8E' },
+  secular: { label: 'History', color: '#1B6577' },
   mine: { label: 'Yours', color: '#B4533A' },
   prophecy: { label: 'Prophecy', color: '#3B4FA0' },
 };

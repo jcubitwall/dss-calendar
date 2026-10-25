@@ -14,7 +14,7 @@ const store = {
   set(k, v) { try { localStorage.setItem('dss:' + k, JSON.stringify(v)); } catch { /* storage unavailable */ } },
 };
 const settings = Object.assign({ courses: true, moon: true, cycles: true, civil: 'historian' }, store.get('settings', {}));
-settings.show = Object.assign({ biblical: true, secular: true, church: true, mine: true, prophecy: false }, settings.show || {});
+settings.show = Object.assign({ biblical: true, scrolls: true, secular: true, church: true, mine: true, prophecy: false }, settings.show || {});
 const shown = e => settings.show[e.k] !== false;
 const allEvents = () => [...EVENTS, ...mine.map(e => ({ ...e, k: 'mine' }))].filter(shown).sort((a, b) => a.j - b.j);
 function catBar() {
@@ -162,17 +162,11 @@ function dayHtml(jdn, mode = 'page') {
     ? `<p class="note-borderline">This year's equinox falls within six hours of a week boundary, so ancient clock uncertainty (ΔT) means it could start one week later.</p>` : '';
   const mk = D.marks(x);
   const marks = mk.length ? `<div class="marks">${mk.map(m => `<span class="mark${m.major ? ' major' : ''}">${esc(m.label)}</span>`).join('')}</div>` : '';
-  const evs = eventsOn(jdn);
-  const evHtml = evs.length ? `<h3 class="sec">On this day</h3><ul class="evlist">${evs.map(e => evItem(e)).join('')}</ul>` : '';
-  let echo = '';
-  if (x.kind === 'month') {
-    const same = EVENTS.filter(e => { if (e.j === jdn || !shown(e) || e.p === 'm') return false; const y = D.fromJdn(e.j); return y && y.kind === 'month' && y.month === x.month && y.day === x.day; });
-    if (same.length) echo = `<h3 class="sec">${x.day} ${D.MONTHS[x.month - 1].name} in other years</h3><ul class="evlist">${same.slice(0, mode === 'page' ? 8 : 5).map(e => evItem(e, true)).join('')}</ul>`;
-  }
+  const hist = historySections(x, jdn, mode);
   let coming = '';
   if (mode === 'page') {
     const up = upcoming(jdn);
-    if (up.length) coming = `<h3 class="sec">Coming up</h3><div class="coming">${up.map(u => {
+    if (up.length) coming = `<h3 class="sec">Coming up</h3><div class="coming" role="list">${up.map(u => {
       const d = u.j - jdn, cv = civil(u.j);
       return `<button class="coming-item" data-wk="${u.j}"><span class="ci-when">${d === 1 ? 'Tomorrow' : `In ${d} days`}</span><span class="ci-t">${esc(u.label)}</span><span class="ci-d">${D.WEEKDAYS[u.y.weekday]}${u.y.kind === 'month' ? ' · ' + esc(dssShort(u.y).replace(/ \d+ AM$/, '')) : ''} · ${MON[cv.m - 1]} ${cv.d}</span></button>`;
     }).join('')}</div>`;
@@ -190,9 +184,8 @@ function dayHtml(jdn, mode = 'page') {
     ${creationLine}
     ${mode === 'page' ? weekStrip(jdn) : ''}
     ${marks}
-    ${evHtml}
     ${coming}
-    ${echo}
+    ${hist}
     <details class="more"${open ? ' open' : ''}><summary>Calendar details</summary><dl class="facts">${facts}</dl>${borderline}</details>
     <div class="day-actions">
       ${jdn !== today ? '<button class="pill" data-act="today">Today</button>' : ''}
@@ -211,9 +204,65 @@ function openDaySheet() {
   $('#daySheetBody').innerHTML = dayHtml(sel, 'panel');
   const d = $('#daySheet'); if (!d.open) d.showModal(); d.querySelector('.sheet').scrollTop = 0;
 }
+const KIND_LABEL = { biblical: 'Bible', scrolls: 'Dead Sea Scrolls & Essenes', church: 'Church history', secular: 'World history', mine: 'Your event', prophecy: 'Prophecy' };
+// ---------- History by date ----------
+// Every DSS date falls on the same weekday each year, so "this week" is the same seven dates every year.
+const SECTIONS = [
+  ['biblical', 'Bible history', 'What Scripture records on this date'],
+  ['scrolls', 'Dead Sea Scrolls & Essenes', 'The scrolls, Qumran and the Essenes'],
+  ['church', 'Church history', ''],
+  ['secular', 'World history', ''],
+  ['mine', 'Your events', ''],
+];
+const slotOf = e => (e._s ??= (D.fromJdn(e.j)?.dayOfYear ?? -1));
+function historySections(x, jdn, mode) {
+  if (!x.am) return '';
+  const here = x.dayOfYear;
+  const week = new Map();                              // slot -> offset in the week (0 = Sunday)
+  const sun = jdn - x.weekday;
+  for (let k = 0; k < 7; k++) { const y = D.fromJdn(sun + k); if (y?.am) week.set(y.dayOfYear, k); }
+  const all = [...EVENTS, ...mine.map(e => ({ ...e, k: 'mine' }))].filter(e => shown(e) && e.p !== 'm');
+  const cap = mode === 'page' ? 6 : 3;
+  let out = '';
+  for (const [k, title, sub] of SECTIONS) {
+    if (settings.show[k] === false) continue;
+    const list = all.filter(e => e.k === k);
+    if (!list.length) continue;
+    const today = [], wk = [];
+    for (const e of list) { const s = slotOf(e); if (s === here) today.push(e); else if (week.has(s)) wk.push(e); }
+    const byYear = (a, b) => a.j - b.j;
+    today.sort(byYear); wk.sort((a, b) => week.get(slotOf(a)) - week.get(slotOf(b)) || a.j - b.j);
+    let body = '', i = 0;
+    const item = (e, ex) => histItem(e, ex, i++ >= cap);
+    if (today.length) body += `<li class="sub-h">On ${esc(dssShort(x).replace(/ \d+ AM$/, ''))}</li>` + today.map(e => item(e, true)).join('');
+    if (wk.length) body += `<li class="sub-h${i >= cap ? ' x' : ''}">${today.length ? 'Also this week' : 'This week'}</li>` + wk.map(e => item(e, false)).join('');
+    if (!today.length && !wk.length) {
+      // nothing this week: show the next one coming up on this calendar
+      let best = null, bd = 1e9;
+      for (const e of list) { const s = slotOf(e); const d = (s - here + 364) % 364; if (s > 0 && s <= 364 && d > 0 && d < bd) { bd = d; best = e; } }
+      if (best) body = `<li class="sub-h">Next on this calendar, in ${bd} day${bd === 1 ? '' : 's'}</li>` + histItem(best, false);
+    }
+    if (!body) continue;
+    const n = today.length + wk.length;
+    const id = 'hs-' + k;
+    out += `<section class="hsec hsec-${k}" id="${id}">
+      <h2 class="hsec-h"><i style="background:${TL.TYPES[k]?.color}"></i>${title}${n ? `<span class="hsec-n">${n}</span>` : ''}</h2>
+      ${sub && mode === 'page' ? `<p class="hsec-sub">${sub}</p>` : ''}
+      <ul class="hlist${n > cap ? ' capped' : ''}">${body}</ul>
+      ${n > cap ? `<button class="linkbtn more-btn" data-more="${id}">Show all ${n}</button>` : ''}
+    </section>`;
+  }
+  return out;
+}
+function histItem(e, exact, extra) {
+  const x = D.fromJdn(e.j), c = D.jdnToCivil(e.j);
+  const when = `${exact ? '' : esc(D.WEEKDAYS[x.weekday].slice(0, 3)) + ' · '}${esc(dssShort(x))} · ${esc(D.yearLabel(c.y))}`;
+  const note = e.n ? (e.n.length > 140 ? e.n.slice(0, 132).replace(/\s+\S*$/, '') + '…' : e.n) : '';
+  return `<li${extra ? ' class="x"' : ''}><button class="hitem" data-ev="${esc(e.id)}"><span class="h-when">${when}${e.c === 'probable' ? ' · day probable' : ''}</span><span class="h-title">${esc(e.t)}</span>${note ? `<span class="h-note">${esc(note)}</span>` : ''}</button></li>`;
+}
 function evItem(e, withDate) {
   e = { ...e };
-  const kind = e.k === 'mine' ? 'Your event' : e.k === 'biblical' ? 'Bible' : e.k === 'church' ? 'Church history' : 'History';
+  const kind = KIND_LABEL[e.k] || 'History';
   const when = withDate ? `<div class="kind">${esc(TL.whenText(e))}</div>` : (e.p === 'm' ? `<div class="kind">Scripture gives the month only; shown on the 1st</div>` : '');
   const basis = e.b ? `<div class="basis">Year: ${esc(e.b)}${e.c === 'derived' ? ' (derived)' : ''}</div>` : '';
   const del = e.k === 'mine' ? ` <button class="linkbtn" data-del="${esc(e.id)}">Delete</button>` : '';
@@ -598,7 +647,7 @@ async function openEvent(id) {
   markSeen(id);
   const x = D.fromJdn(e.j), c = D.jdnToCivil(e.j);
   const other = c.cal === 'julian' ? { ...D.jdnToGreg(e.j), cal: 'gregorian' } : { ...D.jdnToJul(e.j), cal: 'julian' };
-  const kind = e.k === 'mine' ? 'Your event' : e.k === 'biblical' ? 'Bible' : e.k === 'church' ? 'Church history' : 'History';
+  const kind = KIND_LABEL[e.k] || 'History';
   const wt = wikiTitle(e.u), ref = bibleRef(e);
   const links = [];
   if (e.u) links.push(`<a href="${esc(e.u)}" target="_blank" rel="noopener">${esc(e.s && !/wikipedia/i.test(e.s) ? e.s : (wt ? 'Wikipedia' : 'Source'))}</a>`);
@@ -782,6 +831,7 @@ document.addEventListener('click', e => {
   if (t.id === 'backPlace') { const b = backPlace; backPlace = null; showBack(); if (b) { if (view !== b.view) setView(b.view); requestAnimationFrame(() => window.scrollTo({ top: b.y })); } return; }
   if (t.dataset.j) { const j = +t.dataset.j; if (wide()) select(j); else { select(j); openDaySheet(); } return; }
   if (t.dataset.wk) { select(+t.dataset.wk); return; }
+  if (t.dataset.more) { const sec = document.getElementById(t.dataset.more); sec?.querySelector('.hlist')?.classList.remove('capped'); t.remove(); return; }
   if (t.dataset.wkstep) { select(sel + +t.dataset.wkstep, true); return; }
   if (t.dataset.close) { $('#' + t.dataset.close).close(); return; }
   if (t.dataset.closelookup) $('#lookup').close();
