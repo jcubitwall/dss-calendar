@@ -1,14 +1,6 @@
-/sw.js
+/*
   Cache-Control: no-cache
-/index.html
-  Cache-Control: no-cache
-/
-  Cache-Control: no-cache
-/*.js
-  Cache-Control: public, max-age=300, must-revalidate
-/*.css
-  Cache-Control: public, max-age=300, must-revalidate
-/engine/*
-  Cache-Control: public, max-age=3600
-/data/*
-  Cache-Control: public, max-age=3600
+/vendor/*
+  Cache-Control: public, max-age=604800
+/*.png
+  Cache-Control: public, max-age=604800

@@ -91,7 +91,8 @@ export function renderLine(el, events, opts = {}) {
   for (const t of ticks) {
     const near = ticks.some(u => u.major && u !== t && Math.abs(u.y - t.y) < 34);
     if (!t.major && near) continue;
-    if (keep.length && t.y - keep[keep.length - 1].y < 34 && !t.major) continue;
+    const prev = keep[keep.length - 1];
+    if (prev && t.y - prev.y < 34) { if (t.major && !prev.major) keep[keep.length - 1] = t; continue; }
     keep.push(t);
   }
   for (const t of keep) {

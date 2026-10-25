@@ -2,6 +2,7 @@ import * as D from './engine/dss.js';
 import * as L from './lookup.js';
 import * as TL from './timeline.js';
 
+const DATA_V = '2026-10-24b';   // bump when data files change, so phones fetch the new copy
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -28,19 +29,20 @@ let PROPHECIES = [];
 const propOn = () => settings.show.prophecy === true;
 if (settings.propAll == null) settings.propAll = false;
 if (settings.propFuture == null) settings.propFuture = false;
-const propList = () => (!propOn() ? [] : PROPHECIES.filter(p => (settings.propAll || p.kj) && (settings.propFuture || p.f)));
+const isJ = p => p.kj || p.n || /^(apr|age)-/.test(p.id);
+const propList = () => (!propOn() ? [] : PROPHECIES.filter(p => (settings.propAll || isJ(p)) && (settings.propFuture || p.f)));
 function propBar() {
   if (!propOn()) return '';
-  const nJ = PROPHECIES.filter(p => p.kj && (settings.propFuture || p.f)).length;
+  const nJ = PROPHECIES.filter(p => isJ(p) && (settings.propFuture || p.f)).length;
   return `<div class="filters prop-bar" role="group" aria-label="Prophecy options">
-    <button class="chip" data-pset="j" aria-pressed="${!settings.propAll}">Johnson's list (${nJ})</button>
+    <button class="chip" data-pset="j" aria-pressed="${!settings.propAll}">Johnson's list${PROPHECIES.length ? ` (${nJ})` : ''}</button>
     <button class="chip" data-pset="all" aria-pressed="${settings.propAll}">Add other teachers &amp; scrolls</button>
     <button class="chip" data-pfut="1" aria-pressed="${settings.propFuture}">Include yet-future</button></div>`;
 }
 const propById = id => PROPHECIES.find(p => p.id === id);
 let propLoad = null;
 function ensureProphecies() {   // 600 KB, so only fetched when the Prophecy category or a search needs it
-  if (!propLoad) propLoad = fetch('data/prophecies.json').then(r => r.json()).then(j => { PROPHECIES = j; }).catch(() => {});
+  if (!propLoad) propLoad = fetch('data/prophecies.json?v=' + DATA_V).then(r => { if (!r.ok) throw 0; return r.json(); }).then(j => { PROPHECIES = j; }).catch(() => { propLoad = null; });
   return propLoad;
 }
 let byJdn = new Map();
@@ -553,20 +555,27 @@ function renderTimeline() {
   store.set('tl', tl);
   const evs = allEvents();
   const props = propList();
-  const range = `<label class="tl-range">From <input type="number" id="tlFrom" min="1" max="7000" value="${tl.from}"> to <input type="number" id="tlTo" min="1" max="7000" value="${tl.to}"> AM</label>`;
+  const range = `<label class="tl-range">From <input type="number" inputmode="numeric" id="tlFrom" min="1" max="7000" value="${tl.from}"> to <input type="number" inputmode="numeric" id="tlTo" min="1" max="7000" value="${tl.to}"> AM</label>`;
+  const zi = ZOOMS.findIndex(z => z[0] === tl.zoom);
   let h = `${catBar()}${propBar()}
     <div class="tl-bar">
       <div class="seg" role="group" aria-label="Timeline style">
         <button data-tlmode="line" aria-pressed="${tl.mode === 'line'}">Line</button>
         <button data-tlmode="wheel" aria-pressed="${tl.mode === 'wheel'}">Wheel</button>
       </div>
-      ${tl.mode === 'line' ? `<div class="seg" role="group" aria-label="Zoom">${ZOOMS.map(([z, l]) => `<button data-tlzoom="${z}" aria-pressed="${tl.zoom === z}">${l}</button>`).join('')}</div>` : ''}
-      <button class="btn" data-act="print">Print or save</button>
+      ${tl.mode === 'line' ? `<div class="seg zoom" role="group" aria-label="Zoom">
+        <button data-tlzoom="${ZOOMS[Math.max(0, zi - 1)][0]}" aria-label="Zoom out"${zi <= 0 ? ' disabled' : ''}>−</button>
+        <span class="zoom-l">${ZOOMS[zi][1]}</span>
+        <button data-tlzoom="${ZOOMS[Math.min(ZOOMS.length - 1, zi + 1)][0]}" aria-label="Zoom in"${zi >= ZOOMS.length - 1 ? ' disabled' : ''}>+</button></div>` : ''}
+      <button class="icon-btn print-btn" data-act="print" aria-label="Print or save"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V3h10v6M7 17H4v-6a2 2 0 012-2h12a2 2 0 012 2v6h-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><rect x="7" y="14" width="10" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
     </div>
-    <div class="tl-sub">${range}<span class="muted">${evs.length} events${props.length ? ` · ${props.length} prophecies` : ''} shown</span></div>
-    <div id="tlBody"></div>`;
+    <div class="tl-sub">${range}<span class="muted">${evs.length} events${props.length ? ` · ${props.length} prophecies` : ''}</span></div>
+    ${propOn() && !PROPHECIES.length ? '<p class="empty">Loading prophecies…</p>' : !evs.length && !props.length ? `<p class="empty">Nothing to show. Switch on Bible, History, Church or Prophecy above.</p>` : '<div id="tlBody"></div>'}`;
   $('#view-timeline').innerHTML = h;
   const body = $('#tlBody');
+  const upd = () => { tl.from = +$('#tlFrom').value || 1; tl.to = +$('#tlTo').value || 7000; renderTimeline(); };
+  $('#tlFrom').addEventListener('change', upd); $('#tlTo').addEventListener('change', upd);
+  if (!body) { lineApi?.detach(); lineApi = null; return; }
   const from = Math.max(1, Math.min(tl.from, tl.to)), to = Math.min(7000, Math.max(tl.from, tl.to));
   if (tl.mode === 'line') lineApi = TL.renderLine(body, evs, { ppy: tl.zoom, from, to, lastId: tl.last, prophecies: props });
   else {
@@ -576,8 +585,6 @@ function renderTimeline() {
     body.innerHTML = `<div class="wheel-wrap"><svg viewBox="0 0 ${size} ${size}" role="img" aria-label="Wheel of ${w.count} events from ${from} to ${to} AM">${w.svg}</svg></div>
       <p class="muted">Creation is at the top; time runs clockwise. Tap a label or a prophecy arrow to read it. Pinch to zoom, or print it large for full detail.</p>`;
   }
-  const upd = () => { tl.from = +$('#tlFrom').value || 1; tl.to = +$('#tlTo').value || 7000; renderTimeline(); };
-  $('#tlFrom').addEventListener('change', upd); $('#tlTo').addEventListener('change', upd);
 }
 
 // ---------- Event reader ----------
@@ -921,12 +928,13 @@ window.addEventListener('hashchange', () => { const m = location.hash.match(/d=(
 
 // ---------- Boot ----------
 const [table, events] = await Promise.all([
-  fetch('engine/tekufah-table.json').then(r => r.json()),
-  fetch('data/events.json').then(r => r.json()).catch(() => []),
+  fetch('engine/tekufah-table.json?v=' + DATA_V).then(r => r.json()),
+  fetch('data/events.json?v=' + DATA_V).then(r => r.json()).catch(() => []),
 ]);
 D.init(table);
 EVENTS = events;
 if (propOn()) ensureProphecies().then(render);
+addEventListener('online', () => { if (propOn() && !PROPHECIES.length) ensureProphecies().then(render); });
 for (const e of EVENTS) { if (!byJdn.has(e.j)) byJdn.set(e.j, []); byJdn.get(e.j).push(e); }
 const setHdr = () => document.documentElement.style.setProperty('--hdr', $('.top').offsetHeight + 'px');
 setHdr(); window.addEventListener('resize', setHdr);
