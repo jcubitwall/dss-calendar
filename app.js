@@ -3,7 +3,7 @@ import * as L from './lookup.js';
 import * as TL from './timeline.js';
 import * as R from './reader.js';
 
-const DATA_V = '2026-10-24b';   // bump when data files change, so phones fetch the new copy
+const DATA_V = '2026-10-25a';   // bump when data files change, so phones fetch the new copy
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
