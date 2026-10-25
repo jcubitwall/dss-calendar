@@ -70,7 +70,9 @@ export function renderLine(el, events, opts = {}) {
   const yEnd = y + Math.max(30, (to + 1 - am0) * ppy);
   anchors.push([to + 1, yEnd]);
   const yAt = am => {
-    let i = 1; while (i < anchors.length - 1 && anchors[i][0] < am) i++;
+    let lo = 1, hi = anchors.length - 1;
+    while (lo < hi) { const m = (lo + hi) >> 1; if (anchors[m][0] < am) lo = m + 1; else hi = m; }
+    const i = lo;
     const [a0, y0] = anchors[i - 1], [a1, y1] = anchors[i];
     return a1 === a0 ? y1 : y0 + (y1 - y0) * (am - a0) / (a1 - a0);
   };
@@ -96,10 +98,13 @@ export function renderLine(el, events, opts = {}) {
     svg += `<line x1="${axisX - (t.major ? 7 : 4)}" y1="${t.y}" x2="${axisX + (t.major ? 7 : 4)}" y2="${t.y}" stroke="var(--ink-2)"/>`;
     html += `<div class="tl-tick${t.major ? ' major' : ''}" style="top:${t.y - 8}px">${t.am}<small>${civilYear(t.am)}</small></div>`;
   }
-  // Prophecy arrows: one arc per prophecy in the gutter between the year labels and the line
+  // Everything above (axis, age bands, ticks) is static. Rows and arrows are only put in the
+  // page when they are near the screen, so thousands of entries scroll smoothly on a phone.
+  const rows = [], arcs = [], pos = {};
+  let last = opts.lastId || '';
   if (hasP) {
     const fade = prophecies.length > 150 ? 0.12 : prophecies.length > 50 ? 0.22 : 0.4;
-    const gutter = axisX - 54;                       // available width for arc bulge
+    const gutter = axisX - 54;
     const rowOf = {};
     for (const o of items) { if (o.pg) (rowOf[o.pg.id] ||= {}).g = o.y + 11; if (o.pf) (rowOf[o.pf.id] ||= {}).f = o.y + 11; if (o.px) (rowOf[o.px.id] ||= {}).f = o.y + 11; if (o.future) rowOf.__future = o.y + 14; }
     for (const p of prophecies) {
@@ -108,10 +113,8 @@ export function renderLine(el, events, opts = {}) {
       const endAm = p.f ? p.f.am : p.x ? p.x.am : null;
       const yf = endAm != null ? (r.f ?? yAt(Math.max(from, Math.min(to, endAm)))) : rowOf.__future;
       if (yf == null || (r.g == null && r.f == null)) continue;
-      const span = Math.abs(yf - yg);
-      const bulge = Math.min(gutter, 8 + Math.sqrt(span) * 0.9);
-      const hot = p.id === opts.lastId;
-      svg += `<path d="M${axisX - 2},${yg} C${axisX - bulge},${yg} ${axisX - bulge},${yf} ${axisX - 3},${yf}" fill="none" stroke="${PROPHECY_COLOR}" stroke-width="${hot ? 2.6 : 1.1}" stroke-opacity="${hot ? 0.95 : fade}"${p.f ? '' : ' stroke-dasharray="4 3"'} marker-end="url(#parr)"/>`;
+      const bulge = Math.min(gutter, 8 + Math.sqrt(Math.abs(yf - yg)) * 0.9);
+      arcs.push({ id: p.id, lo: Math.min(yg, yf), hi: Math.max(yg, yf), d: `M${axisX - 2},${yg} C${axisX - bulge},${yg} ${axisX - bulge},${yf} ${axisX - 3},${yf}`, dash: !p.f, fade });
     }
   }
   for (const o of items) {
@@ -120,22 +123,58 @@ export function renderLine(el, events, opts = {}) {
     const cy = o.y + 11;
     if (o.pg || o.pf || o.px) {
       const p = o.pg || o.pf || o.px;
-      svg += `<line x1="${axisX}" y1="${cy}" x2="${labelX - 2}" y2="${cy}" stroke="${PROPHECY_COLOR}" stroke-opacity=".6"/><circle cx="${axisX}" cy="${cy}" r="4.5" fill="${o.pf ? PROPHECY_COLOR : 'var(--bg)'}" stroke="${PROPHECY_COLOR}" stroke-width="2"${o.px ? ' stroke-dasharray="2 2"' : ''}/>`;
+      const key = `p${o.pg ? 'g' : 'f'}-${p.id}`; pos[key] = o.y;
       const line2 = o.pg
         ? `Foretold ${pYear(p.g)} · ${p.ref}${p.f ? ` → ${pYear(p.f)}` : p.x ? ` → expected ${pYear(p.x)}` : ' → yet future'}`
         : o.pf ? `Fulfilled ${pYear(p.f)}${p.fr ? ' · ' + p.fr : ''} ← ${pYear(p.g)}`
         : `Expected ${pYear(p.x)} (Ken Johnson's projection) ← ${pYear(p.g)}`;
       const lead = o.pg ? 'Foretold: ' : o.pf ? 'Fulfilled: ' : 'Expected: ';
-      html += `<button class="tl-ev tl-p${p.id === opts.lastId ? ' seen' : ''}" style="top:${o.y}px;left:${labelX}px" data-pr="${xmlEsc(p.id)}" id="tl-p${o.pg ? 'g' : 'f'}-${xmlEsc(p.id)}"><span class="tl-t">${lead}${p.n ? '#' + p.n + ' ' : ''}${xmlEsc(p.t)}</span><span class="tl-d">${xmlEsc(line2)}</span></button>`;
+      rows.push({ y: o.y, id: p.id,
+        svg: `<line x1="${axisX}" y1="${cy}" x2="${labelX - 2}" y2="${cy}" stroke="${PROPHECY_COLOR}" stroke-opacity=".6"/><circle cx="${axisX}" cy="${cy}" r="4.5" fill="${o.pf ? PROPHECY_COLOR : 'var(--bg)'}" stroke="${PROPHECY_COLOR}" stroke-width="2"${o.px ? ' stroke-dasharray="2 2"' : ''}/>`,
+        html: cls => `<button class="tl-ev tl-p${cls}" style="top:${o.y}px;left:${labelX}px" data-pr="${xmlEsc(p.id)}" id="tl-${key}"><span class="tl-t">${lead}${p.n ? '#' + p.n + ' ' : ''}${xmlEsc(p.t)}</span><span class="tl-d">${xmlEsc(line2)}</span></button>` });
       continue;
     }
-    const t = TYPES[o.e.k], c = t?.color || '#555';
-    svg += `<line x1="${axisX}" y1="${cy}" x2="${labelX - 2}" y2="${cy}" stroke="${c}" stroke-opacity=".6"/><circle cx="${axisX}" cy="${cy}" r="4" fill="${c}"/>`;
-    html += `<button class="tl-ev${o.e.id === opts.lastId ? ' seen' : ''}" style="top:${o.y}px;left:${labelX}px" data-ev="${xmlEsc(o.e.id)}" id="tl-${xmlEsc(o.e.id)}"><span class="tl-t">${xmlEsc(o.e.t)}</span><span class="tl-d">${xmlEsc(whenText(o.e))}</span></button>`;
+    const c = TYPES[o.e.k]?.color || '#555';
+    pos['ev-' + o.e.id] = o.y;
+    rows.push({ y: o.y, id: o.e.id,
+      svg: `<line x1="${axisX}" y1="${cy}" x2="${labelX - 2}" y2="${cy}" stroke="${c}" stroke-opacity=".6"/><circle cx="${axisX}" cy="${cy}" r="4" fill="${c}"/>`,
+      html: cls => `<button class="tl-ev${cls}" style="top:${o.y}px;left:${labelX}px" data-ev="${xmlEsc(o.e.id)}" id="tl-ev-${xmlEsc(o.e.id)}"><span class="tl-t">${xmlEsc(o.e.t)}</span><span class="tl-d">${xmlEsc(whenText(o.e))}</span></button>` });
   }
-  if (!items.some(o => o.age == null && !o.future)) html += `<p class="tl-empty" style="left:${labelX}px">No events are switched on for this span. Turn on a category above.</p>`;
-  el.innerHTML = `<div class="tl" style="height:${height}px"><svg class="tl-svg" width="100%" height="${height}" aria-hidden="true">${svg}</svg>${html}</div>`;
+  if (!rows.length) html += `<p class="tl-empty" style="left:${labelX}px">No events are switched on for this span. Turn on a category above.</p>`;
+  el.innerHTML = `<div class="tl" style="height:${height}px"><svg class="tl-svg" width="100%" height="${height}" aria-hidden="true">${svg}</svg><svg class="tl-svg tl-dyn" width="100%" height="${height}" aria-hidden="true"></svg>${html}<div class="tl-rows"></div></div>`;
+  const box = el.querySelector('.tl'), dyn = el.querySelector('.tl-dyn'), rowBox = el.querySelector('.tl-rows');
+  const BUF = 1200;
+  let w0 = -1, w1 = -1, queued = false;
+  function paint(force) {
+    queued = false;
+    if (!box.isConnected) return detach();
+    const top = -box.getBoundingClientRect().top, a = top - BUF, b = top + innerHeight + BUF;
+    if (!force && a >= w0 && b <= w1) return;            // still inside the painted window
+    w0 = a - BUF / 2; w1 = b + BUF / 2;
+    let lo = 0, hi = rows.length;                         // first row with y >= w0
+    while (lo < hi) { const m = (lo + hi) >> 1; if (rows[m].y < w0) lo = m + 1; else hi = m; }
+    let s = '', h = '';
+    for (const ar of arcs) if (ar.hi >= w0 && ar.lo <= w1) {
+      const hot = ar.id === last;
+      s += `<path d="${ar.d}" fill="none" stroke="${PROPHECY_COLOR}" stroke-width="${hot ? 2.6 : 1.1}" stroke-opacity="${hot ? 0.95 : ar.fade}"${ar.dash ? ' stroke-dasharray="4 3"' : ''} marker-end="url(#parr)"/>`;
+    }
+    for (let i = lo; i < rows.length && rows[i].y <= w1; i++) { s += rows[i].svg; h += rows[i].html(rows[i].id === last ? ' seen' : ''); }
+    dyn.innerHTML = s; rowBox.innerHTML = h;
+  }
+  const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(() => paint(false)); } };
+  function detach() { removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll); }
+  if (activeLine) activeLine.detach();
+  addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll, { passive: true });
+  paint(true);
+  activeLine = {
+    detach,
+    posOf: key => (pos[key] != null ? box.getBoundingClientRect().top + scrollY + pos[key] : null),
+    setLast(id) { last = id; paint(true); },
+    paint: () => paint(true),
+  };
+  return activeLine;
 }
+let activeLine = null;
 
 // ---------------------------------------------------------------------------
 // Wheel (screen and print): Creation at the top, clockwise to 7000 AM.

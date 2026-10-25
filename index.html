@@ -4,13 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>DSS Calendar</title>
-<meta name="description" content="The Dead Sea Scroll (Zadok) calendar from Creation to 7000 AM, with history matched to the day.">
-<meta name="theme-color" content="#0F4C5A">
+<meta name="description" content="The Dead Sea Scroll (Zadok) calendar from Creation to 7000 AM, with history and prophecy matched to the day.">
+<meta name="theme-color" content="#F6F8F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A1D22" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="DSS Calendar">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="preload" href="engine/tekufah-table.json" as="fetch" crossorigin>
+<link rel="preload" href="data/events.json" as="fetch" crossorigin>
+<link rel="modulepreload" href="engine/dss.js">
+<link rel="modulepreload" href="timeline.js">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500;700&family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="app.css">
 </head>
 <body>
@@ -20,32 +30,46 @@
     <span>DSS Calendar</span>
   </button>
   <div class="search">
-    <input id="q" type="search" autocomplete="off" placeholder="Search any name, place, date or event" aria-label="Search any name, place, date or event">
+    <svg class="search-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input id="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="Search a name, date or event" aria-label="Search a name, place, date or event">
     <div id="results" class="results" role="listbox" hidden></div>
   </div>
   <button class="icon-btn" id="openSettings" aria-label="Settings and about">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.8" fill="currentColor"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="19" cy="12" r="1.8" fill="currentColor"/></svg>
   </button>
 </header>
 
+<nav class="tabs" role="tablist" aria-label="Views">
+  <button role="tab" data-view="day" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Today</span></button>
+  <button role="tab" data-view="month" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Month</span></button>
+  <button role="tab" data-view="ring" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 2.3"/><circle cx="12" cy="3.5" r="1.8" fill="currentColor"/></svg><span>Year</span></button>
+  <button role="tab" data-view="timeline" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3v18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="6" cy="7" r="2" fill="currentColor"/><circle cx="6" cy="17" r="2" fill="currentColor"/><path d="M10 7h10M10 12h7M10 17h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Timeline</span></button>
+  <button role="tab" data-view="history" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 9h6M9 13h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>History</span></button>
+</nav>
+
 <main>
-  <section id="day" class="day" aria-live="polite"></section>
-
-  <nav class="tabs" role="tablist">
-    <button role="tab" data-view="month" aria-selected="true">Month</button>
-    <button role="tab" data-view="ring" aria-selected="false">Year</button>
-    <button role="tab" data-view="timeline" aria-selected="false">Timeline</button>
-    <button role="tab" data-view="history" aria-selected="false">History</button>
-  </nav>
-
-  <section id="view-month" class="view"></section>
-  <section id="view-ring" class="view" hidden></section>
+  <section id="view-day" class="view"></section>
+  <section id="view-month" class="view" hidden>
+    <div class="month-layout"><div id="monthMain"></div><aside id="monthSide" class="side-day" aria-live="polite"></aside></div>
+  </section>
+  <section id="view-ring" class="view" hidden>
+    <div class="month-layout"><div id="ringMain"></div><aside id="ringSide" class="side-day" aria-live="polite"></aside></div>
+  </section>
   <section id="view-timeline" class="view" hidden></section>
   <section id="view-history" class="view" hidden></section>
 </main>
 
+<dialog id="daySheet" aria-label="Day">
+  <div class="sheet">
+    <div class="grabber" aria-hidden="true"></div>
+    <div class="sheet-head"><span class="muted">Day</span><button class="icon-btn" data-close="daySheet" aria-label="Close">✕</button></div>
+    <div id="daySheetBody"></div>
+  </div>
+</dialog>
+
 <dialog id="settings">
   <form method="dialog" class="sheet">
+    <div class="grabber" aria-hidden="true"></div>
     <div class="sheet-head"><h2>Settings</h2><button class="icon-btn" value="close" aria-label="Close">✕</button></div>
     <label class="toggle"><input type="checkbox" data-set="courses"> <span>Priestly courses</span></label>
     <label class="toggle"><input type="checkbox" data-set="moon"> <span>Moon phases</span></label>
@@ -57,12 +81,14 @@
         <option value="julian">Always Julian</option>
       </select>
     </label>
+    <p class="muted small install-tip">Tip: in Safari tap Share, then <b>Add to Home Screen</b>. The calendar then opens full screen and works offline.</p>
     <div class="about" id="about"></div>
   </form>
 </dialog>
 
 <dialog id="addEvent">
   <form method="dialog" class="sheet" id="addForm">
+    <div class="grabber" aria-hidden="true"></div>
     <div class="sheet-head"><h2>Add your event</h2><button class="icon-btn" value="cancel" aria-label="Close">✕</button></div>
     <p class="muted" id="addWhen"></p>
     <label class="field"><span>Title</span><input name="title" required maxlength="80" placeholder="e.g. Cubit Home founded"></label>
@@ -73,6 +99,7 @@
 
 <dialog id="lookup">
   <form method="dialog" class="sheet">
+    <div class="grabber" aria-hidden="true"></div>
     <div class="sheet-head"><span class="muted">Lookup</span><button class="icon-btn" value="close" aria-label="Close">✕</button></div>
     <div id="lookupBody"></div>
   </form>
@@ -80,6 +107,7 @@
 
 <dialog id="printDlg">
   <form method="dialog" class="sheet">
+    <div class="grabber" aria-hidden="true"></div>
     <div class="sheet-head"><h2>Print or save</h2><button class="icon-btn" value="close" aria-label="Close">✕</button></div>
     <p class="muted">Uses the categories and span chosen on the Timeline. Posters are vector, so they stay sharp at any size.</p>
     <label class="field"><span>Layout</span><select id="prKind"><option value="line">Straight line (rows of up to 500 years)</option><option value="wheel">Wheel</option></select></label>
@@ -100,12 +128,12 @@
 
 <dialog id="eventDlg">
   <form method="dialog" class="sheet">
+    <div class="grabber" aria-hidden="true"></div>
     <div class="sheet-head"><span class="muted">Event</span><button class="icon-btn" value="close" aria-label="Close">✕</button></div>
     <div id="eventBody"></div>
   </form>
 </dialog>
 
-<script src="vendor/astronomy.browser.min.js" defer></script>
 <script type="module" src="app.js"></script>
 </body>
 </html>

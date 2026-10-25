@@ -38,10 +38,16 @@ function propBar() {
     <button class="chip" data-pfut="1" aria-pressed="${settings.propFuture}">Include yet-future</button></div>`;
 }
 const propById = id => PROPHECIES.find(p => p.id === id);
+let propLoad = null;
+function ensureProphecies() {   // 600 KB, so only fetched when the Prophecy category or a search needs it
+  if (!propLoad) propLoad = fetch('data/prophecies.json').then(r => r.json()).then(j => { PROPHECIES = j; }).catch(() => {});
+  return propLoad;
+}
 let byJdn = new Map();
 const today = (() => { const n = new Date(); return D.gregToJdn(n.getFullYear(), n.getMonth() + 1, n.getDate()); })();
 let sel = today;                // selected JDN
-let view = 'month';
+let view = 'day';
+const wide = () => matchMedia('(min-width: 900px)').matches;
 let histFilter = 'all';
 let histQuery = '';
 
@@ -85,27 +91,59 @@ function moonAt(jdn) {
   return { newMoon: crosses(0), fullMoon: crosses(180), illum, name };
 }
 
-// ---------- Day card ----------
-function renderDay() {
-  const x = D.fromJdn(sel);
-  const c = D.jdnToCivil(sel), g = D.jdnToGreg(sel), j = D.jdnToJul(sel);
-  const el = $('#day');
-  if (!x) { el.innerHTML = '<p>Outside the calendar range.</p>'; return; }
-  const wd = D.WEEKDAYS[x.weekday] + (x.weekday === 6 ? ' — Sabbath' : '');
-  let title;
-  if (x.kind === 'creation') title = esc(D.CREATION_DAYS[x.creationDay - 1]);
-  else if (x.kind === 'tekufah') title = `Tekufah ${esc(D.TEKUFOT[x.q])}<span class="yr">${x.am} AM</span>`;
-  else if (x.kind === 'leap') title = `Leap week, day ${x.day}<span class="yr">${x.am} AM</span>`;
-  else title = `${x.day} ${D.MONTHS[x.month - 1].name}<span class="yr">${x.am} AM</span>`;
+// ---------- Day ----------
+const SEASON_COL = ['#7FB89B', '#D9AE57', '#C9845A', '#7FA3C9'];
+function miniRing(x) {
+  // A small year ring: four seasons, a marker at this day. The app's signature, in miniature.
+  if (!x.am) return '';
+  const len = D.yearLength(x.am), i = x.dayOfYear - 1, R = 26, C = 32;
+  const P = (a, r = R) => `${(C + r * Math.cos(a)).toFixed(2)},${(C + r * Math.sin(a)).toFixed(2)}`;
+  const A = k => (k / len) * 2 * Math.PI - Math.PI / 2;
+  let arcs = '';
+  for (let q = 0; q < 4; q++) { const a0 = A(q * 91 + 0.6), a1 = A(q * 91 + 90.4); arcs += `<path d="M${P(a0)} A${R},${R} 0 0 1 ${P(a1)}" stroke="${SEASON_COL[q]}" stroke-width="6" fill="none" stroke-linecap="round"/>`; }
+  const a = A(i + 0.5);
+  return `<svg class="mini-ring" viewBox="0 0 64 64" aria-hidden="true">${arcs}<circle cx="${P(a).split(',')[0]}" cy="${P(a).split(',')[1]}" r="5.5" fill="var(--brine)" stroke="var(--card)" stroke-width="2"/></svg>`;
+}
+function upcoming(from, n = 4) {
+  const out = [], seen = new Set();
+  for (let j = from + 1; j <= from + 200 && out.length < n; j++) {
+    const y = D.fromJdn(j); if (!y) break;
+    for (const m of D.marks(y)) {
+      if (!m.major && !/^(Hanukkah 1|Purim)$/.test(m.label)) continue;
+      const base = m.label.replace(/ \d+$/, '').replace(/ \(.*\)$/, '');
+      if (seen.has(base)) continue; seen.add(base);
+      out.push({ j, label: m.label, y }); break;
+    }
+  }
+  return out;
+}
+function weekStrip(jdn) {
+  const start = jdn - D.weekdayOf(jdn);
+  let h = '';
+  for (let k = 0; k < 7; k++) {
+    const j = start + k, y = D.fromJdn(j); if (!y) { h += '<span class="wk-day"></span>'; continue; }
+    const cv = civil(j), feast = D.marks(y).some(m => m.major);
+    const num = y.kind === 'tekufah' ? '☉' : y.kind === 'leap' ? 'L' + y.day : y.kind === 'creation' ? 'C' + y.creationDay : y.day;
+    h += `<button class="wk-day${j === jdn ? ' on' : ''}${j === today ? ' today' : ''}${k === 6 ? ' sab' : ''}${feast ? ' feast' : ''}" data-wk="${j}" aria-label="${esc(dssShort(y))}, ${esc(fmtCivil(cv, true))}">
+      <span class="wk-w">${D.WEEKDAYS[k].slice(0, k === 6 ? 3 : 1)}</span><span class="wk-n">${num}</span><span class="wk-g">${cv.d}</span></button>`;
+  }
+  return `<div class="week"><button class="wk-nav" data-wkstep="-7" aria-label="Previous week">‹</button><div class="wk-days">${h}</div><button class="wk-nav" data-wkstep="7" aria-label="Next week">›</button></div>`;
+}
+/** Day details. mode: 'page' (the Today tab) or 'panel' (sheet / side panel). */
+function dayHtml(jdn, mode = 'page') {
+  const x = D.fromJdn(jdn);
+  if (!x) return '<p>Outside the calendar range.</p>';
+  const c = D.jdnToCivil(jdn), g = D.jdnToGreg(jdn), j = D.jdnToJul(jdn);
+  const wd = D.WEEKDAYS[x.weekday] + (x.weekday === 6 ? ' · Sabbath' : '');
+  let title, yr = x.am ? `${x.am} AM` : '';
+  if (x.kind === 'creation') { title = esc(D.CREATION_DAYS[x.creationDay - 1]); yr = ''; }
+  else if (x.kind === 'tekufah') title = `Tekufah ${esc(D.TEKUFOT[x.q].split(' ')[0])}`;
+  else if (x.kind === 'leap') title = `Leap week, day ${x.day}`;
+  else title = `${x.day} ${D.MONTHS[x.month - 1].name}`;
   const creationLine = x.creationDay && x.kind !== 'creation' ? `<p class="muted">${esc(D.CREATION_DAYS[x.creationDay - 1])}</p>` : '';
-
-  const other = c.cal === 'julian' ? g : j;
-  const otherCal = c.cal === 'julian' ? 'Gregorian' : 'Julian';
-  let facts = '';
-  const am = x.am || 1;
-  const cy = D.cycles(am);
-  const yearTxt = cy.jubileeYear ? 'Jubilee year' : `Year ${cy.year} of Shemitah ${cy.shemitah}`;
-  facts += `<dt>Cycle</dt><dd>${yearTxt}, Jubilee ${cy.jubilee}, Onah ${cy.onah} · ${D.AGES[cy.age - 1]}</dd>`;
+  const other = c.cal === 'julian' ? g : j, otherCal = c.cal === 'julian' ? 'Gregorian' : 'Julian';
+  const am = x.am || 1, cy = D.cycles(am);
+  let facts = `<dt>Year</dt><dd>${cy.jubileeYear ? 'Jubilee year' : `Year ${cy.year} of Shemitah ${cy.shemitah}`} · Jubilee ${cy.jubilee} · Onah ${cy.onah}</dd><dt>Age</dt><dd>${D.AGES[cy.age - 1]}</dd>`;
   if (settings.cycles) {
     const b = [];
     if (cy.sabbathYear) b.push('<span class="badge">Sabbath year</span>');
@@ -113,47 +151,72 @@ function renderDay() {
     if (D.isLeapYear(am)) b.push('<span class="badge teal">Leap-week year</span>');
     if (b.length) facts += `<dt></dt><dd>${b.join('')}</dd>`;
   }
-  facts += `<dt>Enoch</dt><dd>Week ${cy.enochWeek} of 10, century ${cy.century}</dd>`;
-  if (settings.courses) facts += `<dt>Priests</dt><dd>Course of ${D.priestlyCourse(sel)} on duty</dd>`;
-  if (settings.moon) { const m = moonAt(sel); if (m) facts += `<dt>Moon</dt><dd>${m.newMoon ? 'New moon' : m.fullMoon ? 'Full moon' : m.name}, ${m.illum}% lit</dd>`; }
+  facts += `<dt>Enoch</dt><dd>Week ${cy.enochWeek} of 10 · century ${cy.century}</dd>`;
+  if (settings.courses) facts += `<dt>Priests</dt><dd>Course of ${D.priestlyCourse(jdn)}</dd>`;
+  if (settings.moon) { const m = moonAt(jdn); if (m) facts += `<dt>Moon</dt><dd>${m.newMoon ? 'New moon' : m.fullMoon ? 'Full moon' : m.name}, ${m.illum}% lit</dd>`; }
   const eq = x.am ? D.equinoxOf(x.am) : null;
-  if (eq) { const e = civil(eq.jdn); facts += `<dt>Equinox</dt><dd>${fmtCivil(e)} (${D.WEEKDAYS[D.weekdayOf(eq.jdn)]}), ${Math.floor(eq.hour)}:${String(Math.round((eq.hour % 1) * 60)).padStart(2, '0')} Jerusalem</dd>`; }
-
+  if (eq) { const e = civil(eq.jdn); facts += `<dt>Equinox</dt><dd>${fmtCivil(e)}, ${Math.floor(eq.hour)}:${String(Math.round((eq.hour % 1) * 60)).padStart(2, '0')} Jerusalem</dd>`; }
+  const borderline = x.am && D.isBorderline(x.am) && x.am < 5000
+    ? `<p class="note-borderline">This year's equinox falls within six hours of a week boundary, so ancient clock uncertainty (ΔT) means it could start one week later.</p>` : '';
   const mk = D.marks(x);
   const marks = mk.length ? `<div class="marks">${mk.map(m => `<span class="mark${m.major ? ' major' : ''}">${esc(m.label)}</span>`).join('')}</div>` : '';
-  const evs = eventsOn(sel);
-  const evHtml = evs.length ? `<ul class="evlist">${evs.map(evItem).join('')}</ul>` : '';
-  // Same DSS date in other years
+  const evs = eventsOn(jdn);
+  const evHtml = evs.length ? `<h3 class="sec">On this day</h3><ul class="evlist">${evs.map(e => evItem(e)).join('')}</ul>` : '';
   let echo = '';
   if (x.kind === 'month') {
-    const same = EVENTS.filter(e => { if (e.j === sel || !shown(e) || e.p === 'm') return false; const y = D.fromJdn(e.j); return y && y.kind === 'month' && y.month === x.month && y.day === x.day; });
-    if (same.length) echo = `<h3>On ${x.day} ${D.MONTHS[x.month - 1].name} in other years</h3><ul class="evlist">${same.slice(0, 12).map(e => evItem(e, true)).join('')}</ul>`;
+    const same = EVENTS.filter(e => { if (e.j === jdn || !shown(e) || e.p === 'm') return false; const y = D.fromJdn(e.j); return y && y.kind === 'month' && y.month === x.month && y.day === x.day; });
+    if (same.length) echo = `<h3 class="sec">${x.day} ${D.MONTHS[x.month - 1].name} in other years</h3><ul class="evlist">${same.slice(0, mode === 'page' ? 8 : 5).map(e => evItem(e, true)).join('')}</ul>`;
   }
-  const borderline = x.am && D.isBorderline(x.am) && x.am < 5000
-    ? `<p class="note-borderline">This year's equinox falls within six hours of a week boundary. Uncertainty in ancient clock time (ΔT) means this year could start one week later.</p>` : '';
-
-  el.innerHTML = `
-    <div class="weekday">${wd}${sel === today ? ' · Today' : ''}</div>
-    <h1>${title}</h1>
+  let coming = '';
+  if (mode === 'page') {
+    const up = upcoming(jdn);
+    if (up.length) coming = `<h3 class="sec">Coming up</h3><div class="coming">${up.map(u => {
+      const d = u.j - jdn, cv = civil(u.j);
+      return `<button class="coming-item" data-wk="${u.j}"><span class="ci-when">${d === 1 ? 'Tomorrow' : `In ${d} days`}</span><span class="ci-t">${esc(u.label)}</span><span class="ci-d">${D.WEEKDAYS[u.y.weekday]}${u.y.kind === 'month' ? ' · ' + esc(dssShort(u.y).replace(/ \d+ AM$/, '')) : ''} · ${MON[cv.m - 1]} ${cv.d}</span></button>`;
+    }).join('')}</div>`;
+  }
+  const open = store.get('detailsOpen', false);
+  return `
+    <div class="hero" data-swipe="day">
+      <div class="hero-text">
+        <div class="weekday">${wd}${jdn === today ? ' · <b>Today</b>' : ''}</div>
+        <h1>${title}${yr ? `<span class="yr">${yr}</span>` : ''}</h1>
+        <div class="civil">${fmtCivil(c, true)}${c.y < 1700 ? ` <em>${calName(c.cal)}</em> · ${fmtCivil(other)} <em>${otherCal}</em>` : ''}</div>
+      </div>
+      ${miniRing(x)}
+    </div>
     ${creationLine}
-    <div class="civil">${fmtCivil(c, true)} <em>${calName(c.cal)}</em>${c.y < 1700 ? ` · ${fmtCivil(other)} <em>${otherCal}</em>` : ''}</div>
+    ${mode === 'page' ? weekStrip(jdn) : ''}
     ${marks}
-    <dl class="facts">${facts}</dl>
-    ${borderline}
     ${evHtml}
+    ${coming}
     ${echo}
+    <details class="more"${open ? ' open' : ''}><summary>Calendar details</summary><dl class="facts">${facts}</dl>${borderline}</details>
     <div class="day-actions">
-      ${sel !== today ? '<button class="linkbtn" data-act="today">Back to today</button>' : ''}
-      <button class="linkbtn" data-act="add">Add your event on this day</button>
-      <button class="linkbtn" data-act="share">Copy link to this day</button>
+      ${jdn !== today ? '<button class="pill" data-act="today">Today</button>' : ''}
+      <button class="pill" data-act="add">Add event</button>
+      <button class="pill" data-act="share">Share day</button>
     </div>`;
 }
+function renderDay() { $('#view-day').innerHTML = dayHtml(sel, 'page'); }
+function renderSide() {
+  if (!wide()) return;
+  const html = dayHtml(sel, 'panel');
+  if (view === 'month') $('#monthSide').innerHTML = html;
+  if (view === 'ring') $('#ringSide').innerHTML = html;
+}
+function openDaySheet() {
+  $('#daySheetBody').innerHTML = dayHtml(sel, 'panel');
+  const d = $('#daySheet'); if (!d.open) d.showModal(); d.querySelector('.sheet').scrollTop = 0;
+}
 function evItem(e, withDate) {
+  e = { ...e };
   const kind = e.k === 'mine' ? 'Your event' : e.k === 'biblical' ? 'Bible' : e.k === 'church' ? 'Church history' : 'History';
   const when = withDate ? `<div class="kind">${esc(TL.whenText(e))}</div>` : (e.p === 'm' ? `<div class="kind">Scripture gives the month only; shown on the 1st</div>` : '');
   const basis = e.b ? `<div class="basis">Year: ${esc(e.b)}${e.c === 'derived' ? ' (derived)' : ''}</div>` : '';
   const del = e.k === 'mine' ? ` <button class="linkbtn" data-del="${esc(e.id)}">Delete</button>` : '';
   const go = (withDate ? ` <button class="linkbtn" data-go="${e.j}">Go to day</button>` : '') + ` <button class="linkbtn" data-ev="${esc(e.id)}">Read more</button>`;
+  if (!withDate && e.n && e.n.length > 160) e = { ...e, n: e.n.slice(0, 150).replace(/\s+\S*$/, '') + '…' };
   const src = e.u ? ` <a href="${esc(e.u)}" target="_blank" rel="noopener">${esc(e.s || 'Source')}</a>` : e.s ? ` <span class="kind">${esc(e.s)}</span>` : '';
   const cert = e.c === 'probable' ? ' · day probable' : '';
   return `<li><div class="kind ${e.k}">${kind}${cert}</div><div class="t">${esc(e.t)}</div>${when}${e.n ? `<div class="n">${esc(e.n)}</div>` : ''}${basis}<div>${src}${go}${del}</div></li>`;
@@ -178,7 +241,7 @@ function renderMonth() {
     <button class="nav" data-mnav="-1" aria-label="Previous month">‹</button>
     <h2>${mo.name}${mo.alt ? ' / ' + mo.alt : ''} ${am} AM<small>${sub}</small></h2>
     <button class="nav" data-mnav="1" aria-label="Next month">›</button></div>
-    <div class="grid" role="grid">${D.WEEKDAYS.map((w, i) => `<div class="wd${i === 6 ? ' sab' : ''}">${w.slice(0, 3)}</div>`).join('')}`;
+    <div class="grid" role="grid" data-swipe="month">${D.WEEKDAYS.map((w, i) => `<div class="wd${i === 6 ? ' sab' : ''}">${w.slice(0, 3)}</div>`).join('')}`;
   for (let i = 0; i < lead; i++) h += '<div class="blank"></div>';
   for (const j of cells) {
     const y = D.fromJdn(j); if (!y) { h += '<div class="blank"></div>'; continue; }
@@ -203,7 +266,7 @@ function renderMonth() {
       <span class="n">${num}</span><span class="g">${short(cv)}</span>${lab ? `<span class="lab">${esc(lab)}</span>` : ''}${dots ? `<span class="dots">${dots}</span>` : ''}</button>`;
   }
   h += `</div><div class="legend"><span><i style="background:var(--sun-soft);border:1px solid var(--sun)"></i>Tekufah</span><span><i style="background:var(--sabbath);border:1px solid var(--line)"></i>Sabbath</span><span><span class="dot" style="display:inline-block;margin-right:5px"></span>History</span>${settings.moon ? '<span>● New moon ○ Full moon</span>' : ''}</div>`;
-  $('#view-month').innerHTML = h;
+  $('#monthMain').innerHTML = h;
 }
 function stepMonth(dir) {
   viewMonth += dir;
@@ -261,7 +324,7 @@ function renderRing() {
     <text x="${C}" y="${C + 8}" text-anchor="middle" font-size="17" fill="var(--ink-2)">${fmtCivil(g0)} – ${fmtCivil(g1)}</text>
     <text x="${C}" y="${C + 34}" text-anchor="middle" font-size="16" fill="var(--ink)">${len} days${len === 371 ? ' · leap week' : ''}</text>
     <text x="${C}" y="${C + 58}" text-anchor="middle" font-size="15" fill="var(--ink-2)">${cy.jubileeYear ? 'Jubilee year' : `Year ${cy.year} · Shemitah ${cy.shemitah}`}${cy.sabbathYear ? ' · Sabbath year' : ''}</text>`;
-  $('#view-ring').innerHTML = `<div class="ring-wrap">
+  $('#ringMain').innerHTML = `<div class="ring-wrap">
     <div class="ring-head"><button class="nav" data-ynav="-1" aria-label="Previous year">‹</button><h2>${am} AM</h2><button class="nav" data-ynav="1" aria-label="Next year">›</button></div>
     <svg viewBox="0 0 ${S} ${S}" role="img" aria-label="Year ${am} AM as a ring of ${len} days; tap a day to open it">${segs}${labels}${todayMark}${selMark}${centre}</svg>
     <div class="ring-cycles"><table>
@@ -275,20 +338,38 @@ function renderRing() {
 }
 
 // ---------- History ----------
+// The list can hold 1,300+ rows, so it is built in chunks as you scroll.
+let histRows = [], histShown = 0, histObs = null;
 function renderHistory() {
-  const q = histQuery.trim().toLowerCase();
   const all = allEvents();
+  $('#view-history').innerHTML = `${catBar()}${propBar()}
+    <div class="field"><input id="hq" type="search" enterkeyhint="search" placeholder="Filter ${all.length} events" value="${esc(histQuery)}" aria-label="Filter events"></div>
+    <ul class="hist" id="histList"></ul><div id="histMore" class="hist-more"></div>`;
+  let tmr = 0;
+  $('#hq').addEventListener('input', e => { clearTimeout(tmr); tmr = setTimeout(() => { histQuery = e.target.value; fillHistory(); }, 120); });
+  fillHistory();
+}
+function fillHistory() {
+  const q = histQuery.trim().toLowerCase();
   const props = propList().map(p => ({ pr: p, am: p.g.am }));
-  const list = [...all.map(e => ({ e, am: TL.amPos(e.j) })), ...props]
+  histRows = [...allEvents().map(e => ({ e, am: TL.amPos(e.j) })), ...props]
     .filter(o => !q || (o.e ? o.e.t + ' ' + o.e.n + ' ' + o.e.r : o.pr.t + ' ' + o.pr.ref + ' ' + o.pr.fr + ' ' + o.pr.s).toLowerCase().includes(q))
     .sort((a, b) => a.am - b.am);
-  let h = `${catBar()}${propBar()}
-    <div class="field"><input id="hq" type="search" placeholder="Filter ${all.length} events" value="${esc(histQuery)}" aria-label="Filter events"></div><ul class="hist">`;
-  let lastEra = '';
-  for (const o of list) {
-    const am = Math.floor(o.am);
+  histShown = 0; histLastEra = '';
+  $('#histList').innerHTML = histRows.length ? '' : `<li class="muted" style="padding:12px 0">No events match. Try a shorter word, or switch on more categories above.</li>`;
+  moreHistory();
+  histObs?.disconnect();
+  histObs = new IntersectionObserver(es => { if (es[0].isIntersecting) moreHistory(); }, { rootMargin: '800px' });
+  histObs.observe($('#histMore'));
+}
+let histLastEra = '';
+function moreHistory() {
+  const end = Math.min(histRows.length, histShown + 150);
+  let h = '';
+  for (let i = histShown; i < end; i++) {
+    const o = histRows[i], am = Math.floor(o.am);
     const era = am >= 1 ? `Onah ${D.cycles(am).onah} · ${D.AGES[D.cycles(am).age - 1]}` : 'Creation';
-    if (era !== lastEra) { h += `<li class="era">${era}</li>`; lastEra = era; }
+    if (era !== histLastEra) { h += `<li class="era">${era}</li>`; histLastEra = era; }
     if (o.pr) {
       const p = o.pr;
       h += `<li><button data-pr="${esc(p.id)}" class="hist-p${p.id === tl.last ? ' seen' : ''}"><span class="d1">Foretold ${esc(p.g.label)} · ${esc(p.ref)}</span><span class="t">${p.n ? '#' + p.n + ' ' : ''}${esc(p.t)}</span><span class="d2">${p.f ? 'Fulfilled ' + esc(p.f.label) + (p.fr ? ' · ' + esc(p.fr) : '') : 'Yet to be fulfilled'}</span></button></li>`;
@@ -297,11 +378,9 @@ function renderHistory() {
     const e = o.e, c = D.jdnToCivil(e.j);
     h += `<li><button data-ev="${esc(e.id)}"${e.id === tl.last ? ' class="seen"' : ''}><span class="d1">${esc(TL.whenText(e).split(' · ')[0])}</span><span class="t">${esc(e.t)}</span><span class="d2">${D.WEEKDAYS[D.weekdayOf(e.j)]}, ${fmtCivil(c, true)} ${calName(c.cal)}</span></button></li>`;
   }
-  if (!list.length) h += `<li class="muted" style="padding:12px 0">No events match. Try a shorter word, or switch on more categories above.</li>`;
-  h += '</ul>';
-  $('#view-history').innerHTML = h;
-  const hq = $('#hq');
-  hq.addEventListener('input', () => { histQuery = hq.value; const pos = hq.selectionStart; renderHistory(); const n = $('#hq'); n.focus(); n.setSelectionRange(pos, pos); });
+  histShown = end;
+  $('#histList').insertAdjacentHTML('beforeend', h);
+  $('#histMore').textContent = histShown < histRows.length ? `Showing ${histShown} of ${histRows.length}` : '';
 }
 
 // ---------- Search ----------
@@ -407,8 +486,8 @@ function pick(r) {
   $('#results').hidden = true; $('#q').value = ''; $('#q').blur();
   if (r.wd) { openLookup(r.wd); return; }
   if (r.pr) { openProphecy(r.pr); return; }
-  if (r.am && view === 'ring') ringAm = r.am;
-  select(r.j, true);
+  if (r.am && view === 'ring') { ringAm = r.am; select(r.j, true); return; }
+  select(r.j, true); if (view !== 'month' && view !== 'ring') { scrollMemo.day = 0; setView('day'); } else if (!wide()) openDaySheet();
 }
 
 // ---------- Selection, routing ----------
@@ -420,11 +499,12 @@ function select(j, jumpViews) {
   render();
 }
 function render() {
-  renderDay();
-  if (view === 'month') renderMonth();
-  if (view === 'ring') renderRing();
+  if (view === 'day') renderDay();
+  if (view === 'month') { renderMonth(); renderSide(); }
+  if (view === 'ring') { renderRing(); renderSide(); }
   if (view === 'history') renderHistory();
   if (view === 'timeline') renderTimeline();
+  if ($('#daySheet').open) $('#daySheetBody').innerHTML = dayHtml(sel, 'panel');
 }
 const scrollMemo = {};
 let backPlace = null;
@@ -436,11 +516,12 @@ function showBack() {
 }
 function setView(v) {
   scrollMemo[view] = window.scrollY;
+  if (v !== 'timeline') { lineApi?.detach(); }
   view = v;
   document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.view === v));
-  ['month', 'ring', 'timeline', 'history'].forEach(k => { $('#view-' + k).hidden = k !== v; });
+  ['day', 'month', 'ring', 'timeline', 'history'].forEach(k => { $('#view-' + k).hidden = k !== v; });
   render();
-  if ((v === 'timeline' || v === 'history') && scrollMemo[v]) requestAnimationFrame(() => window.scrollTo({ top: scrollMemo[v] }));
+  requestAnimationFrame(() => window.scrollTo({ top: scrollMemo[v] || 0 }));
 }
 
 // ---------- About ----------
@@ -467,6 +548,7 @@ function renderAbout() {
 const ZOOMS = [[0, 'Compact'], [0.3, 'Normal'], [2, 'Wide'], [10, 'Detail']];
 const tl = Object.assign({ mode: 'line', zoom: 0.3, from: 1, to: 7000 }, store.get('tl', {}));
 if (![0, 0.3, 2, 10].includes(tl.zoom)) tl.zoom = 0.3;
+let lineApi = null;
 function renderTimeline() {
   store.set('tl', tl);
   const evs = allEvents();
@@ -486,8 +568,9 @@ function renderTimeline() {
   $('#view-timeline').innerHTML = h;
   const body = $('#tlBody');
   const from = Math.max(1, Math.min(tl.from, tl.to)), to = Math.min(7000, Math.max(tl.from, tl.to));
-  if (tl.mode === 'line') TL.renderLine(body, evs, { ppy: tl.zoom, from, to, lastId: tl.last, prophecies: props });
+  if (tl.mode === 'line') lineApi = TL.renderLine(body, evs, { ppy: tl.zoom, from, to, lastId: tl.last, prophecies: props });
   else {
+    lineApi?.detach(); lineApi = null;
     const size = 1000;
     const w = TL.wheelSVG(evs, size, { from, to, prophecies: props, lastId: tl.last });
     body.innerHTML = `<div class="wheel-wrap"><svg viewBox="0 0 ${size} ${size}" role="img" aria-label="Wheel of ${w.count} events from ${from} to ${to} AM">${w.svg}</svg></div>
@@ -505,8 +588,7 @@ const bibleRef = e => (e.k === 'biblical' && /^[1-3]?\s?[A-Za-z]+ \d+:\d+/.test(
 async function openEvent(id) {
   const e = evById(id); if (!e) return;
   tl.last = id; store.set('tl', tl);
-  document.querySelectorAll('.seen').forEach(n => n.classList.remove('seen'));
-  document.querySelectorAll(`[data-ev="${CSS.escape(id)}"]`).forEach(n => { if (n.closest('#view-timeline, #view-history')) n.classList.add('seen'); });
+  markSeen(id);
   const x = D.fromJdn(e.j), c = D.jdnToCivil(e.j);
   const other = c.cal === 'julian' ? { ...D.jdnToGreg(e.j), cal: 'gregorian' } : { ...D.jdnToJul(e.j), cal: 'julian' };
   const kind = e.k === 'mine' ? 'Your event' : e.k === 'biblical' ? 'Bible' : e.k === 'church' ? 'Church history' : 'History';
@@ -564,9 +646,14 @@ async function verse(ref, el) {
     el.innerHTML = `<blockquote class="verse">${esc((j.text || '').trim())}<cite>${esc(j.reference || ref)}, KJV</cite></blockquote>`;
   } catch { el.innerHTML = `<p class="muted small"><a href="https://www.biblegateway.com/passage/?search=${encodeURIComponent(ref)}&version=KJV" target="_blank" rel="noopener">Read ${esc(ref)}</a></p>`; }
 }
+function markSeen(id) {
+  document.querySelectorAll('.seen').forEach(n => n.classList.remove('seen'));
+  document.querySelectorAll(`#view-history [data-ev="${CSS.escape(id)}"], #view-history [data-pr="${CSS.escape(id)}"]`).forEach(n => n.classList.add('seen'));
+  if (view === 'timeline') lineApi?.setLast(id);
+}
 function openProphecy(id) {
   const p = propById(id); if (!p) return;
-  tl.last = id; store.set('tl', tl);
+  tl.last = id; store.set('tl', tl); markSeen(id);
   const amTxt = t => `${Math.floor(t.am)} AM`;
   const by = { johnson: "Ken Johnson's date", evangelical: 'standard evangelical dating', secular: 'secular dating' };
   const basis = [...new Set(p.ys)].map(k => by[k] || k).join(' / ');
@@ -599,12 +686,11 @@ function jumpToProphecy(id, end) {
   $('#eventDlg').close();
   backPlace = { view, y: window.scrollY }; scrollMemo[view] = window.scrollY;
   if (view !== 'timeline' || tl.mode !== 'line') { tl.mode = 'line'; if (view !== 'timeline') setView('timeline'); else renderTimeline(); }
-  let el = document.getElementById(`tl-p${end}-${id}`);
-  if (!el) { tl.from = 1; tl.to = 7000; renderTimeline(); el = document.getElementById(`tl-p${end}-${id}`); }
-  if (el) {
-    const y = el.getBoundingClientRect().top + window.scrollY - window.innerHeight / 3;
-    window.scrollTo({ top: y, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-    el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1600);
+  let y = lineApi?.posOf(`p${end}-${id}`);
+  if (y == null) { tl.from = 1; tl.to = 7000; renderTimeline(); y = lineApi?.posOf(`p${end}-${id}`); }
+  if (y != null) {
+    window.scrollTo({ top: y - window.innerHeight / 3 });
+    requestAnimationFrame(() => { lineApi.paint(); const el = document.getElementById(`tl-p${end}-${id}`); if (el) { el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1600); } });
   }
   showBack();
 }
@@ -676,7 +762,7 @@ async function doPdf(btn) {
 
 // ---------- Events wiring ----------
 document.addEventListener('click', e => {
-  const t = e.target.closest('button, path, [data-go], [data-ev], [data-pr]'); if (!t) return;
+  const t = e.target.closest('button, [data-j], [data-go], [data-ev], [data-pr]'); if (!t) return;
   if (t.dataset.ev && t.dataset.ev.startsWith('p:')) { openProphecy(t.dataset.ev.slice(2)); return; }
   if (t.dataset.ev) { openEvent(t.dataset.ev); return; }
   if (t.dataset.pr) { openProphecy(t.dataset.pr); return; }
@@ -684,29 +770,37 @@ document.addEventListener('click', e => {
   if (t.dataset.openday) {
     const j = +t.dataset.openday; $('#eventDlg').close();
     backPlace = { view, y: window.scrollY }; scrollMemo[view] = window.scrollY;
-    select(j, true); window.scrollTo({ top: 0 }); showBack(); return;
+    select(j, true); scrollMemo.day = 0; setView('day'); showBack(); return;
   }
   if (t.id === 'backPlace') { const b = backPlace; backPlace = null; showBack(); if (b) { if (view !== b.view) setView(b.view); requestAnimationFrame(() => window.scrollTo({ top: b.y })); } return; }
-  if (t.dataset.j) { select(+t.dataset.j); window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); return; }
+  if (t.dataset.j) { const j = +t.dataset.j; if (wide()) select(j); else { select(j); openDaySheet(); } return; }
+  if (t.dataset.wk) { select(+t.dataset.wk); return; }
+  if (t.dataset.wkstep) { select(sel + +t.dataset.wkstep, true); return; }
+  if (t.dataset.close) { $('#' + t.dataset.close).close(); return; }
   if (t.dataset.closelookup) $('#lookup').close();
   if (t.dataset.savelookup && lookupCurrent) {
     const d = lookupCurrent.dates[+t.dataset.savelookup];
     mine.push({ id: 'm' + Date.now(), t: `${lookupCurrent.label}: ${d.label.toLowerCase()}`, n: lookupCurrent.description || '', j: d.jdn, r: '', u: lookupCurrent.wikiUrl, s: 'Wikipedia' });
     store.set('mine', mine); t.textContent = 'Saved'; t.disabled = true; render(); return;
   }
-  if (t.dataset.go) { select(+t.dataset.go, true); window.scrollTo({ top: 0 }); return; }
+  if (t.dataset.go) { $('#daySheet').close(); $('#lookup').close(); select(+t.dataset.go, true); scrollMemo.day = 0; setView('day'); return; }
   if (t.dataset.mnav) { stepMonth(+t.dataset.mnav); return; }
   if (t.dataset.ynav) { ringAm = Math.max(1, Math.min(D.lastAM(), ringAm + +t.dataset.ynav)); renderRing(); return; }
   if (t.dataset.view) { setView(t.dataset.view); return; }
   if (t.dataset.pset) { settings.propAll = t.dataset.pset === 'all'; store.set('settings', settings); render(); return; }
   if (t.dataset.pfut) { settings.propFuture = !settings.propFuture; store.set('settings', settings); render(); return; }
-  if (t.dataset.cat) { settings.show[t.dataset.cat] = !(settings.show[t.dataset.cat] !== false); store.set('settings', settings); render(); return; }
+  if (t.dataset.cat) {
+    settings.show[t.dataset.cat] = !(settings.show[t.dataset.cat] !== false); store.set('settings', settings);
+    if (t.dataset.cat === 'prophecy' && propOn() && !PROPHECIES.length) { t.classList.add('loading'); ensureProphecies().then(render); return; }
+    render(); return;
+  }
   if (t.dataset.tlmode) { tl.mode = t.dataset.tlmode; renderTimeline(); return; }
   if (t.dataset.tlzoom) { tl.zoom = +t.dataset.tlzoom; renderTimeline(); return; }
   if (t.dataset.act === 'print') { openPrint(); return; }
   if (t.dataset.ri) { pick(results[+t.dataset.ri]); return; }
   if (t.dataset.del) { mine = mine.filter(m => m.id !== t.dataset.del); store.set('mine', mine); render(); return; }
   if (t.dataset.act === 'today') { select(today, true); return; }
+
   if (t.dataset.act === 'add') { $('#addWhen').textContent = `${dssShort(D.fromJdn(sel))} · ${fmtCivil(D.jdnToCivil(sel), true)}`; $('#addForm').reset(); $('#addEvent').showModal(); return; }
   if (t.dataset.act === 'share') {
     const url = `${location.origin}${location.pathname}#d=${sel}`;
@@ -714,7 +808,7 @@ document.addEventListener('click', e => {
     return;
   }
 });
-$('#goToday').addEventListener('click', () => select(today, true));
+$('#goToday').addEventListener('click', () => { $('#daySheet').close(); select(today, true); scrollMemo.day = 0; setView('day'); });
 $('#prPrint').addEventListener('click', e => { e.preventDefault(); doPrint(); });
 $('#prPdf').addEventListener('click', e => { e.preventDefault(); doPdf(e.currentTarget); });
 $('#prSvg').addEventListener('click', e => { e.preventDefault(); download(fileBase() + '.svg', new Blob([posterNow().svg], { type: 'image/svg+xml' })); });
@@ -731,11 +825,28 @@ document.querySelectorAll('[data-set]').forEach(inp => {
   if (inp.type === 'checkbox') inp.checked = !!settings[k]; else inp.value = settings[k];
   inp.addEventListener('change', () => { settings[k] = inp.type === 'checkbox' ? inp.checked : inp.value; store.set('settings', settings); render(); });
 });
+document.addEventListener('toggle', e => { if (e.target.matches?.('details.more')) store.set('detailsOpen', e.target.open); }, true);
+// Tap outside a sheet closes it
+document.querySelectorAll('dialog').forEach(d => d.addEventListener('click', e => { if (e.target === d) d.close(); }));
+// Swipes: day hero = previous/next day, month grid = previous/next month
+let sx = 0, sy = 0, sEl = null;
+document.addEventListener('touchstart', e => { const el = e.target.closest('[data-swipe]'); sEl = el; if (el) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; } }, { passive: true });
+document.addEventListener('touchend', e => {
+  if (!sEl) return;
+  const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+    const dir = dx < 0 ? 1 : -1;
+    if (sEl.dataset.swipe === 'day') select(sel + dir, true);
+    if (sEl.dataset.swipe === 'month') stepMonth(dir);
+  }
+  sEl = null;
+}, { passive: true });
 const q = $('#q');
 let wikiTimer = 0, wikiCtl = null;
 q.addEventListener('input', () => {
   const text = q.value.trim();
   results = parseQuery(q.value); active = results.length ? 0 : -1;
+  if (text.length >= 3 && !PROPHECIES.length) ensureProphecies().then(() => { if (q.value.trim() === text) { const keep = results.filter(r => r.wd); results = parseQuery(q.value).concat(keep); showResults(); } });
   clearTimeout(wikiTimer); wikiCtl?.abort();
   // Names and events (not bare numbers or dates) also go to Wikipedia
   if (text.length >= 3 && /[a-z]/i.test(text) && !/^\d/.test(text)) {
@@ -815,12 +926,15 @@ const [table, events] = await Promise.all([
 ]);
 D.init(table);
 EVENTS = events;
-PROPHECIES = await fetch('data/prophecies.json').then(r => r.json()).catch(() => []);
+if (propOn()) ensureProphecies().then(render);
 for (const e of EVENTS) { if (!byJdn.has(e.j)) byJdn.set(e.j, []); byJdn.get(e.j).push(e); }
 const setHdr = () => document.documentElement.style.setProperty('--hdr', $('.top').offsetHeight + 'px');
 setHdr(); window.addEventListener('resize', setHdr);
 const hm = location.hash.match(/d=(-?\d+)/);
 renderAbout();
 select(hm ? +hm[1] : today, true);
-// Moon data arrives with the deferred script
-if (!window.Astronomy) window.addEventListener('load', () => render(), { once: true });
+// Moon phases need Astronomy Engine (114 KB); load it after the first paint.
+const idle = window.requestIdleCallback || (f => setTimeout(f, 600));
+idle(() => loadScript('vendor/astronomy.browser.min.js').then(() => { if (view === 'day' || view === 'month' || view === 'ring') render(); }).catch(() => {}));
+// Offline + instant start from the Home Screen
+if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
