@@ -26,6 +26,17 @@ let mine = store.get('mine', []);
 let EVENTS = [];
 let PROPHECIES = [];
 const propOn = () => settings.show.prophecy === true;
+if (settings.propAll == null) settings.propAll = false;
+if (settings.propFuture == null) settings.propFuture = false;
+const propList = () => (!propOn() ? [] : PROPHECIES.filter(p => (settings.propAll || p.n) && (settings.propFuture || p.f)));
+function propBar() {
+  if (!propOn()) return '';
+  const nJ = PROPHECIES.filter(p => p.n && (settings.propFuture || p.f)).length;
+  return `<div class="filters prop-bar" role="group" aria-label="Prophecy options">
+    <button class="chip" data-pset="j" aria-pressed="${!settings.propAll}">Johnson's list (${nJ})</button>
+    <button class="chip" data-pset="all" aria-pressed="${settings.propAll}">Add other teachers &amp; scrolls</button>
+    <button class="chip" data-pfut="1" aria-pressed="${settings.propFuture}">Include yet-future</button></div>`;
+}
 const propById = id => PROPHECIES.find(p => p.id === id);
 let byJdn = new Map();
 const today = (() => { const n = new Date(); return D.gregToJdn(n.getFullYear(), n.getMonth() + 1, n.getDate()); })();
@@ -57,7 +68,7 @@ function monthOf(x) {               // which month page a day belongs to
   return 1;
 }
 function eventsOn(jdn) {
-  const pf = propOn() ? PROPHECIES.filter(p => p.f && p.f.j === jdn).map(p => ({ id: 'p:' + p.id, t: 'Prophecy fulfilled: ' + p.t, k: 'prophecy', n: p.s, j: jdn, s: p.ref, u: '' })) : [];
+  const pf = propOn() ? propList().filter(p => p.f && p.f.j === jdn).map(p => ({ id: 'p:' + p.id, t: 'Prophecy fulfilled: ' + p.t, k: 'prophecy', n: p.s, j: jdn, s: p.ref, u: '' })) : [];
   return [...pf, ...(byJdn.get(jdn) || []), ...mine.filter(e => e.j === jdn).map(e => ({ ...e, k: 'mine' }))].filter(shown);
 }
 
@@ -267,11 +278,11 @@ function renderRing() {
 function renderHistory() {
   const q = histQuery.trim().toLowerCase();
   const all = allEvents();
-  const props = propOn() ? PROPHECIES.map(p => ({ pr: p, am: p.g.am })) : [];
+  const props = propList().map(p => ({ pr: p, am: p.g.am }));
   const list = [...all.map(e => ({ e, am: TL.amPos(e.j) })), ...props]
     .filter(o => !q || (o.e ? o.e.t + ' ' + o.e.n + ' ' + o.e.r : o.pr.t + ' ' + o.pr.ref + ' ' + o.pr.fr + ' ' + o.pr.s).toLowerCase().includes(q))
     .sort((a, b) => a.am - b.am);
-  let h = `${catBar()}
+  let h = `${catBar()}${propBar()}
     <div class="field"><input id="hq" type="search" placeholder="Filter ${all.length} events" value="${esc(histQuery)}" aria-label="Filter events"></div><ul class="hist">`;
   let lastEra = '';
   for (const o of list) {
@@ -280,7 +291,7 @@ function renderHistory() {
     if (era !== lastEra) { h += `<li class="era">${era}</li>`; lastEra = era; }
     if (o.pr) {
       const p = o.pr;
-      h += `<li><button data-pr="${esc(p.id)}" class="hist-p${p.id === tl.last ? ' seen' : ''}"><span class="d1">Foretold ${esc(p.g.label)} · ${esc(p.ref)}</span><span class="t">${esc(p.t)}</span><span class="d2">${p.f ? 'Fulfilled ' + esc(p.f.label) + (p.fr ? ' · ' + esc(p.fr) : '') : 'Yet to be fulfilled'}</span></button></li>`;
+      h += `<li><button data-pr="${esc(p.id)}" class="hist-p${p.id === tl.last ? ' seen' : ''}"><span class="d1">Foretold ${esc(p.g.label)} · ${esc(p.ref)}</span><span class="t">${p.n ? '#' + p.n + ' ' : ''}${esc(p.t)}</span><span class="d2">${p.f ? 'Fulfilled ' + esc(p.f.label) + (p.fr ? ' · ' + esc(p.fr) : '') : 'Yet to be fulfilled'}</span></button></li>`;
       continue;
     }
     const e = o.e, c = D.jdnToCivil(e.j);
@@ -356,7 +367,7 @@ function parseQuery(raw) {
       .sort((a, b) => (a.t.toLowerCase().includes(s) ? 0 : 1) - (b.t.toLowerCase().includes(s) ? 0 : 1));
     for (const e of hits.slice(0, 12)) out.push({ label: e.t, sub: TL.whenText(e), j: e.j });
     const ph = PROPHECIES.filter(p => { const hay = (p.t + ' ' + p.ref + ' ' + p.fr + ' ' + p.who).toLowerCase(); return words.every(w => hay.includes(w)); });
-    for (const p of ph.slice(0, 8)) out.push({ label: 'Prophecy: ' + p.t, sub: `${p.ref} · foretold ${p.g.label} → ${p.f ? p.f.label : 'yet future'}`, pr: p.id });
+    for (const p of ph.slice(0, 8)) out.push({ label: (p.n ? `Prophecy #${p.n}: ` : 'Prophecy: ') + p.t, sub: `${p.ref} · foretold ${p.g.label} → ${p.f ? p.f.label : 'yet future'}`, pr: p.id });
   }
   return out;
 }
@@ -459,9 +470,9 @@ if (![0, 0.3, 2, 10].includes(tl.zoom)) tl.zoom = 0.3;
 function renderTimeline() {
   store.set('tl', tl);
   const evs = allEvents();
-  const props = propOn() ? PROPHECIES : [];
+  const props = propList();
   const range = `<label class="tl-range">From <input type="number" id="tlFrom" min="1" max="7000" value="${tl.from}"> to <input type="number" id="tlTo" min="1" max="7000" value="${tl.to}"> AM</label>`;
-  let h = `${catBar()}
+  let h = `${catBar()}${propBar()}
     <div class="tl-bar">
       <div class="seg" role="group" aria-label="Timeline style">
         <button data-tlmode="line" aria-pressed="${tl.mode === 'line'}">Line</button>
@@ -560,7 +571,7 @@ function openProphecy(id) {
   const by = { johnson: "Ken Johnson's date", evangelical: 'standard evangelical dating', secular: 'secular dating' };
   const basis = [...new Set(p.ys)].map(k => by[k] || k).join(' / ');
   $('#eventBody').innerHTML = `
-    <div class="kind prophecy">Prophecy${p.st === 'future' ? ' · yet to be fulfilled' : p.st === 'partial' ? ' · partly fulfilled' : ''}</div>
+    <div class="kind prophecy">${p.n ? `Ancient Prophecies Revealed #${p.n}${p.sec ? ' · ' + esc(p.sec) : ''} · ` : p.nj ? "Not in Johnson's list · " : ''}Prophecy${p.st === 'future' ? ' · yet to be fulfilled' : p.st === 'partial' ? ' · partly fulfilled' : ''}</div>
     <h2 class="lk-title">${esc(p.t)}</h2>
     <div class="p-span">
       <div><span class="muted small">Foretold</span><b>${esc(p.g.label)}</b><span class="muted small">${amTxt(p.g)} · ${esc(p.who ? p.who + ', ' : '')}${esc(p.ref)}</span></div>
@@ -610,7 +621,7 @@ function posterNow() {
   const W = wi * 72, H = hi * 72;
   const cats = Object.keys(TL.TYPES).filter(k => settings.show[k] !== false);
   const from = Math.max(1, Math.min(tl.from, tl.to)), to = Math.min(7000, Math.max(tl.from, tl.to));
-  const doc = TL.posterDoc(pr.kind === 'wheel' ? 'wheel' : 'line', allEvents(), W, H, { from, to, cats, prophecies: propOn() ? PROPHECIES : [] });
+  const doc = TL.posterDoc(pr.kind === 'wheel' ? 'wheel' : 'line', allEvents(), W, H, { from, to, cats, prophecies: propList() });
   return { ...doc, W, H, wi, hi };
 }
 function openPrint() {
@@ -687,6 +698,8 @@ document.addEventListener('click', e => {
   if (t.dataset.mnav) { stepMonth(+t.dataset.mnav); return; }
   if (t.dataset.ynav) { ringAm = Math.max(1, Math.min(D.lastAM(), ringAm + +t.dataset.ynav)); renderRing(); return; }
   if (t.dataset.view) { setView(t.dataset.view); return; }
+  if (t.dataset.pset) { settings.propAll = t.dataset.pset === 'all'; store.set('settings', settings); render(); return; }
+  if (t.dataset.pfut) { settings.propFuture = !settings.propFuture; store.set('settings', settings); render(); return; }
   if (t.dataset.cat) { settings.show[t.dataset.cat] = !(settings.show[t.dataset.cat] !== false); store.set('settings', settings); render(); return; }
   if (t.dataset.tlmode) { tl.mode = t.dataset.tlmode; renderTimeline(); return; }
   if (t.dataset.tlzoom) { tl.zoom = +t.dataset.tlzoom; renderTimeline(); return; }

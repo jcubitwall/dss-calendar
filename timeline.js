@@ -98,6 +98,7 @@ export function renderLine(el, events, opts = {}) {
   }
   // Prophecy arrows: one arc per prophecy in the gutter between the year labels and the line
   if (hasP) {
+    const fade = prophecies.length > 150 ? 0.12 : prophecies.length > 50 ? 0.22 : 0.4;
     const gutter = axisX - 54;                       // available width for arc bulge
     const rowOf = {};
     for (const o of items) { if (o.pg) (rowOf[o.pg.id] ||= {}).g = o.y + 11; if (o.pf) (rowOf[o.pf.id] ||= {}).f = o.y + 11; if (o.px) (rowOf[o.px.id] ||= {}).f = o.y + 11; if (o.future) rowOf.__future = o.y + 14; }
@@ -110,7 +111,7 @@ export function renderLine(el, events, opts = {}) {
       const span = Math.abs(yf - yg);
       const bulge = Math.min(gutter, 8 + Math.sqrt(span) * 0.9);
       const hot = p.id === opts.lastId;
-      svg += `<path d="M${axisX - 2},${yg} C${axisX - bulge},${yg} ${axisX - bulge},${yf} ${axisX - 3},${yf}" fill="none" stroke="${PROPHECY_COLOR}" stroke-width="${hot ? 2.6 : 1.2}" stroke-opacity="${hot ? 0.95 : 0.4}"${p.f ? '' : ' stroke-dasharray="4 3"'} marker-end="url(#parr)"/>`;
+      svg += `<path d="M${axisX - 2},${yg} C${axisX - bulge},${yg} ${axisX - bulge},${yf} ${axisX - 3},${yf}" fill="none" stroke="${PROPHECY_COLOR}" stroke-width="${hot ? 2.6 : 1.1}" stroke-opacity="${hot ? 0.95 : fade}"${p.f ? '' : ' stroke-dasharray="4 3"'} marker-end="url(#parr)"/>`;
     }
   }
   for (const o of items) {
@@ -125,7 +126,7 @@ export function renderLine(el, events, opts = {}) {
         : o.pf ? `Fulfilled ${pYear(p.f)}${p.fr ? ' · ' + p.fr : ''} ← ${pYear(p.g)}`
         : `Expected ${pYear(p.x)} (Ken Johnson's projection) ← ${pYear(p.g)}`;
       const lead = o.pg ? 'Foretold: ' : o.pf ? 'Fulfilled: ' : 'Expected: ';
-      html += `<button class="tl-ev tl-p${p.id === opts.lastId ? ' seen' : ''}" style="top:${o.y}px;left:${labelX}px" data-pr="${xmlEsc(p.id)}" id="tl-p${o.pg ? 'g' : 'f'}-${xmlEsc(p.id)}"><span class="tl-t">${lead}${xmlEsc(p.t)}</span><span class="tl-d">${xmlEsc(line2)}</span></button>`;
+      html += `<button class="tl-ev tl-p${p.id === opts.lastId ? ' seen' : ''}" style="top:${o.y}px;left:${labelX}px" data-pr="${xmlEsc(p.id)}" id="tl-p${o.pg ? 'g' : 'f'}-${xmlEsc(p.id)}"><span class="tl-t">${lead}${p.n ? '#' + p.n + ' ' : ''}${xmlEsc(p.t)}</span><span class="tl-d">${xmlEsc(line2)}</span></button>`;
       continue;
     }
     const t = TYPES[o.e.k], c = t?.color || '#555';
@@ -216,7 +217,7 @@ export function wheelSVG(events, size, { from = 1, to = 7000, print = false, tit
       const k = Math.max(0.05, 1 - d / Math.PI) * 0.85;      // short spans hug the rim, long spans cross the middle
       const [x0, y0] = P(rc, a0), [x1, y1] = P(rc, a1), [cx, cy] = P(rc * k, mid);
       const hot = p.id === lastId;
-      g += `<path ${print ? '' : `data-pr="${xmlEsc(p.id)}" class="wh-ev" `}d="M${f(x0)},${f(y0)} Q${f(cx)},${f(cy)} ${f(x1)},${f(y1)}" fill="none" stroke="${PROPHECY_COLOR}" stroke-width="${f(S * (hot ? 0.003 : 0.0011))}" stroke-opacity="${hot ? 0.95 : 0.4}"${p.f ? '' : ` stroke-dasharray="${f(S * 0.004)} ${f(S * 0.003)}"`} marker-end="url(#wparr)"><title>${xmlEsc(p.t)} (${xmlEsc(p.ref)})</title></path>`;
+      g += `<path ${print ? '' : `data-pr="${xmlEsc(p.id)}" class="wh-ev" `}d="M${f(x0)},${f(y0)} Q${f(cx)},${f(cy)} ${f(x1)},${f(y1)}" fill="none" stroke="${PROPHECY_COLOR}" stroke-width="${f(S * (hot ? 0.003 : 0.0011))}" stroke-opacity="${hot ? 0.95 : (prophecies.length > 150 ? 0.18 : 0.4)}"${p.f ? '' : ` stroke-dasharray="${f(S * 0.004)} ${f(S * 0.003)}"`} marker-end="url(#wparr)"><title>${xmlEsc(p.t)} (${xmlEsc(p.ref)})</title></path>`;
     }
   }
   // centre

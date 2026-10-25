@@ -1,0 +1,839 @@
+[
+{
+ "id": "dss-11q13-messiah-dies-one-shemitah-after-ninth-jubilee",
+ "title": "11Q13: Anointed one comes in the 10th jubilee (Messiah's death AD 32)",
+ "prophecy": "11Q13 col. 2:6-9, 18 (on Daniel 9:25; Leviticus 25)",
+ "prophet": "Qumran Melchizedek text",
+ "given": {"year": -100, "approx": true, "label": "c. 100 BC (composition)", "yearSource": "secular"},
+ "fulfilled": {"year": 32, "approx": false, "label": "AD 32 (3957 AM, Nisan 14)", "yearSource": "johnson", "m": 4, "d": 10, "cal": "julian"},
+ "fulfilment": "Luke 23; Hebrews 7:1-17",
+ "status": "fulfilled",
+ "summary": "11Q13 counts history in jubilees and expects the 'anointed of the spirit' of Daniel 9:25 to appear, and the release of captives to happen, in the first week after the ninth jubilee of its age. Johnson reads this as the Messiah dying one shemitah (7 years) after the ninth jubilee ended in AD 25, which gives AD 32 (3957 AM).",
+ "agreement": ["Ken Johnson"],
+ "dss": "11Q13 (11QMelch)",
+ "sources": [
+  {"name": "Ken Johnson, Ancient Order of Melchizedek (Goodreads quotes: ninth jubilee ends AD 25, plus one shemitah = AD 32)", "url": "https://www.goodreads.com/work/quotes/86823703"},
+  {"name": "dsscalendar.org Onah intro (11Q13; 3957 AM = AD 32, Nisan 14)", "url": "https://dsscalendar.org/o/index.html"},
+  {"name": "11Q13 (Wikipedia)", "url": "https://en.wikipedia.org/wiki/11Q13"}
+ ]
+},
+{
+ "id": "dss-11q13-end-of-tenth-jubilee-day-of-atonement",
+ "title": "11Q13: Atonement at the end of the 10th jubilee (end of the age, AD 75)",
+ "prophecy": "11Q13 col. 2:7-8",
+ "prophet": "Qumran Melchizedek text",
+ "given": {"year": -100, "approx": true, "label": "c. 100 BC (composition)", "yearSource": "secular"},
+ "fulfilled": {"year": 75, "approx": true, "label": "AD 75 (end of the 8th Onah, Johnson)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Hebrews 9:11-12, 26",
+ "status": "partial",
+ "summary": "The scroll places a final Day of Atonement for the 'lot of Melchizedek' at the end of the tenth jubilee. On Johnson's calendar that jubilee, and the 2,000-year age, closed in AD 75. It took in the atonement of AD 32 and the Temple's fall in AD 70.",
+ "agreement": ["Ken Johnson"],
+ "dss": "11Q13 (11QMelch)",
+ "sources": [
+  {"name": "Ken Johnson, Ancient Order of Melchizedek (Goodreads quote: the end of the age was AD 75 on their calendar)", "url": "https://www.goodreads.com/work/quotes/86823703"},
+  {"name": "dsscalendar.org Onah intro (Onah 12 = AD 75–2075)", "url": "https://dsscalendar.org/o/index.html"},
+  {"name": "11Q13 (Wikipedia)", "url": "https://en.wikipedia.org/wiki/11Q13"}
+ ]
+},
+{
+ "id": "dss-11q13-psalm-110-priest-after-melchizedek",
+ "title": "Priest forever after the order of Melchizedek (Psalm 110:4)",
+ "prophecy": "Psalm 110:4",
+ "prophet": "David",
+ "given": {"year": -1000, "approx": true, "label": "c. 1000 BC", "yearSource": "evangelical"},
+ "fulfilled": {"year": 32, "approx": false, "label": "AD 32 (death, resurrection, ascension)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Hebrews 5:6-10; 6:20; 7:1-28",
+ "status": "fulfilled",
+ "summary": "The Psalm promises a king who is also a priest forever like Melchizedek. 11Q13 shows that Melchizedek was already seen before Christ as a heavenly, end-time redeemer and judge. Hebrews applies the office to Jesus after his sacrifice and ascension.",
+ "agreement": ["Ken Johnson", "evangelical consensus"],
+ "dss": "11Q13 (11QMelch)",
+ "sources": [
+  {"name": "Ancient Mysteries of the Essenes / Ancient Order of Melchizedek (publisher description)", "url": "https://www.audible.de/pd/B0H765X78Q"},
+  {"name": "11Q13 (Wikipedia)", "url": "https://en.wikipedia.org/wiki/11Q13"}
+ ]
+},
+{
+ "id": "dss-11q13-isaiah-52-7-herald-anointed",
+ "title": "Herald of good news is the 'anointed of the spirit' (Isaiah 52:7)",
+ "prophecy": "Isaiah 52:7",
+ "prophet": "Isaiah",
+ "given": {"year": -700, "approx": true, "label": "c. 700 BC", "yearSource": "evangelical"},
+ "fulfilled": {"year": 28, "approx": true, "label": "AD 28 (ministry begins)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Mark 1:14-15; Romans 10:15",
+ "status": "fulfilled",
+ "summary": "11Q13 reads the messenger of Isaiah 52:7 as the anointed one of Daniel 9:25, who proclaims Zion's reign of God. Christians see this fulfilled in Jesus preaching the kingdom, which Johnson dates from AD 28.",
+ "agreement": ["evangelical consensus"],
+ "dss": "11Q13 (11QMelch) col. 2:15-20",
+ "sources": [
+  {"name": "11Q13 (Wikipedia)", "url": "https://en.wikipedia.org/wiki/11Q13"},
+  {"name": "11Q13 passage links (intertextual.bible)", "url": "https://intertextual.bible/book/11q13"}
+ ]
+},
+{
+ "id": "dss-4q521-isaiah-61-good-news-to-the-poor",
+ "title": "Anointed one brings good news, frees captives (Isaiah 61:1-2)",
+ "prophecy": "Isaiah 61:1-2",
+ "prophet": "Isaiah",
+ "given": {"year": -700, "approx": true, "label": "c. 700 BC", "yearSource": "evangelical"},
+ "fulfilled": {"year": 28, "approx": true, "label": "AD 28 (Nazareth synagogue)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Luke 4:16-21",
+ "status": "fulfilled",
+ "summary": "Both 4Q521 and 11Q13 read Isaiah 61 as the work of the coming anointed one, who frees captives and brings good news to the poor. Jesus read this passage in Nazareth and said it was fulfilled that day. He stopped before 'the day of vengeance', which Christians leave for the Second Coming.",
+ "agreement": ["evangelical consensus"],
+ "dss": "4Q521; 11Q13; 1QIsa-a",
+ "sources": [
+  {"name": "Blue Letter Bible blog, 'The First Coming of Jesus Foretold in the Dead Sea Scrolls' (J. Alfred, 2013)", "url": "https://blogs.blueletterbible.org/blb/2013/02/20/the-first-coming-of-jesus-foretold-in-the-dead-sea-scrolls/"},
+  {"name": "4Q521 (Wikipedia)", "url": "https://en.wikipedia.org/wiki/4Q521"}
+ ]
+},
+{
+ "id": "dss-4q521-messiah-will-raise-the-dead",
+ "title": "4Q521: Under his Messiah, the Lord will heal and raise the dead",
+ "prophecy": "4Q521 frag. 2 ii 1-13",
+ "prophet": "Qumran Messianic Apocalypse",
+ "given": {"year": -100, "approx": true, "label": "c. 100 BC (composition)", "yearSource": "secular"},
+ "fulfilled": {"year": 30, "approx": true, "label": "c. AD 28–32 (ministry)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Luke 7:18-23; Matthew 11:2-6; John 11",
+ "status": "fulfilled",
+ "summary": "Heaven and earth will obey God's Messiah, and the Lord will heal the wounded, give sight to the blind, raise the dead and bring good news to the poor. Raising the dead is not in Isaiah 61. Jesus gives almost the same list in his answer to John the Baptist (Luke 7:22).",
+ "agreement": ["evangelical consensus"],
+ "dss": "4Q521",
+ "sources": [
+  {"name": "Blue Letter Bible blog on 4Q521", "url": "https://blogs.blueletterbible.org/blb/2013/02/20/the-first-coming-of-jesus-foretold-in-the-dead-sea-scrolls/"},
+  {"name": "4Q521 (Wikipedia)", "url": "https://en.wikipedia.org/wiki/4Q521"}
+ ]
+},
+{
+ "id": "dss-4q521-isaiah-35-blind-see-lame-walk",
+ "title": "Blind will see, lame will leap (Isaiah 35:5-6; Psalm 146:7-8)",
+ "prophecy": "Isaiah 35:5-6; Psalm 146:7-8",
+ "prophet": "Isaiah",
+ "given": {"year": -700, "approx": true, "label": "c. 700 BC", "yearSource": "evangelical"},
+ "fulfilled": {"year": 30, "approx": true, "label": "c. AD 28–32", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Matthew 11:4-5; John 9",
+ "status": "fulfilled",
+ "summary": "4Q521 combines Psalm 146 and Isaiah 35 into the signs of the messianic age: captives freed, blind eyes opened, the bowed-down raised. The Gospels report Jesus healing the blind and lame as proof of who he was.",
+ "agreement": ["evangelical consensus"],
+ "dss": "4Q521",
+ "sources": [
+  {"name": "Blue Letter Bible blog on 4Q521", "url": "https://blogs.blueletterbible.org/blb/2013/02/20/the-first-coming-of-jesus-foretold-in-the-dead-sea-scrolls/"}
+ ]
+},
+{
+ "id": "dss-4q246-son-of-god-son-of-most-high",
+ "title": "4Q246: One will be called 'Son of God' and 'Son of the Most High'",
+ "prophecy": "4Q246 col. 2:1 (cf. Daniel 7)",
+ "prophet": "Qumran Aramaic Apocalypse",
+ "given": {"year": -25, "approx": true, "label": "late 1st c. BC (copy)", "yearSource": "secular"},
+ "fulfilled": {"year": -2, "approx": true, "label": "2 BC (announcement and birth)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Luke 1:32-35",
+ "status": "fulfilled",
+ "summary": "This Aramaic fragment uses the titles 'Son of God' and 'Son of the Most High' and is followed by an everlasting kingdom. The wording closely matches Gabriel's words to Mary in Luke 1. Scholars disagree whether the figure is the Messiah or a usurper such as Antiochus IV.",
+ "agreement": ["evangelical consensus"],
+ "dss": "4Q246",
+ "sources": [
+  {"name": "4Q246 (Wikipedia)", "url": "https://en.wikipedia.org/wiki/4Q246"},
+  {"name": "Biblical Archaeology Review, 'An Unpublished Dead Sea Scroll Text Parallels Luke's Infancy Narrative'", "url": "https://library.biblicalarchaeology.org/sidebar/an-unpublished-dead-sea-scroll-text-parallels-lukes-infancy-narrative/"},
+  {"name": "Ken Johnson chronology: Messiah's birth 2 BC (Ancient Prophecies Revealed headings)", "url": "https://pdfcoffee.com/ancient-prophecies-revealed-johnson-ken-3-pdf-free.html"}
+ ]
+},
+{
+ "id": "dss-4q246-daniel-7-everlasting-kingdom",
+ "title": "Son of Man's everlasting kingdom given to the saints (Daniel 7)",
+ "prophecy": "Daniel 7:13-14, 27",
+ "prophet": "Daniel",
+ "given": {"year": -553, "approx": true, "label": "c. 553 BC (1st year of Belshazzar)", "yearSource": "evangelical"},
+ "fulfilled": null,
+ "fulfilment": "Revelation 11:15; 20:4",
+ "status": "future",
+ "summary": "Daniel sees one like a son of man given everlasting dominion, and the kingdom given to the saints. 4Q246 echoes this: after the 'Son of God' figure, God's people arise and their kingdom is eternal. Johnson expects the Kingdom from 6001 AM (AD 2076).",
+ "agreement": ["Ken Johnson", "evangelical consensus"],
+ "dss": "4Q246; 4Q112 (4QDan-a); 4Q113 (4QDan-b)",
+ "sources": [
+  {"name": "4Q246 (Wikipedia)", "url": "https://en.wikipedia.org/wiki/4Q246"},
+  {"name": "dsscalendar.org Onah intro (first Kingdom year 6001 AM = AD 2076)", "url": "https://dsscalendar.org/o/index.html"}
+ ]
+},
+{
+ "id": "dss-4q285-branch-from-stump-of-jesse",
+ "title": "Shoot from the stump of Jesse, the Branch of David (Isaiah 11:1)",
+ "prophecy": "Isaiah 11:1-5",
+ "prophet": "Isaiah",
+ "given": {"year": -700, "approx": true, "label": "c. 700 BC", "yearSource": "evangelical"},
+ "fulfilled": {"year": -2, "approx": false, "label": "2 BC (birth of Jesus)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Matthew 1:1-16; Romans 15:12; Revelation 5:5",
+ "status": "fulfilled",
+ "summary": "Isaiah foretells a ruler from David's family line after it has been cut down to a stump. 4Q285 (with 11Q14) names him the 'Branch of David', who judges and leads the end-time war. Jesus was born in David's line.",
+ "agreement": ["evangelical consensus"],
+ "dss": "4Q285; 11Q14; 4Q161 (pesher Isaiah)",
+ "sources": [
+  {"name": "The War of the Messiah, 4Q285 (Wikipedia)", "url": "https://en.wikipedia.org/wiki/The_War_of_the_Messiah"}
+ ]
+},
+{
+ "id": "dss-4q285-pierced-or-killed-prince",
+ "title": "4Q285: 'Pierced Messiah' line about the Prince of the Congregation",
+ "prophecy": "4Q285 frag. 5 (7):4 (on Isaiah 10:34–11:1; cf. Isaiah 53:5, Zechariah 12:10)",
+ "prophet": "Qumran War Rule fragment",
+ "given": {"year": -50, "approx": true, "label": "1st c. BC (composition; copy early 1st c. AD)", "yearSource": "secular"},
+ "fulfilled": {"year": 32, "approx": false, "label": "AD 32 (crucifixion)", "yearSource": "johnson", "m": 4, "d": 10, "cal": "julian"},
+ "fulfilment": "John 19:34-37",
+ "status": "fulfilled",
+ "summary": "Read one way (Eisenman/Wise in 1992), the Hebrew has the Prince of the Congregation, the Branch of David, being put to death. That would be a dying Messiah before Christ. Vermes and most scholars read the same consonants as the Branch killing the enemy king, so this link to the crucifixion is disputed.",
+ "agreement": [],
+ "dss": "4Q285",
+ "sources": [
+  {"name": "The War of the Messiah (Wikipedia)", "url": "https://en.wikipedia.org/wiki/The_War_of_the_Messiah"},
+  {"name": "Biblical Archaeology Review, 'The Conflicting Translations'", "url": "https://library.biblicalarchaeology.org/sidebar/the-conflicting-translations/"}
+ ]
+},
+{
+ "id": "dss-4q285-branch-defeats-kittim",
+ "title": "Branch of David judges the Kittim in the final war (Isaiah 10:34)",
+ "prophecy": "Isaiah 10:33-34; 11:4",
+ "prophet": "Isaiah",
+ "given": {"year": -700, "approx": true, "label": "c. 700 BC", "yearSource": "evangelical"},
+ "fulfilled": null,
+ "fulfilment": "2 Thessalonians 2:8; Revelation 19:11-21",
+ "status": "future",
+ "summary": "4Q285 reads 'Lebanon will fall' as the defeat of the Kittim, the scrolls' code name for the Romans. The Branch of David strikes the wicked with the breath of his lips. Evangelicals place this at the Second Coming.",
+ "agreement": ["evangelical consensus"],
+ "dss": "4Q285; 11Q14",
+ "sources": [
+  {"name": "The War of the Messiah (Wikipedia)", "url": "https://en.wikipedia.org/wiki/The_War_of_the_Messiah"}
+ ]
+},
+{
+ "id": "dss-4q174-2-samuel-7-son-of-david",
+ "title": "David's Seed: God's Son on an everlasting throne (2 Samuel 7)",
+ "prophecy": "2 Samuel 7:11-16",
+ "prophet": "Nathan",
+ "given": {"year": -1000, "approx": true, "label": "c. 1000 BC (David's reign)", "yearSource": "evangelical"},
+ "fulfilled": {"year": -2, "approx": false, "label": "2 BC (birth of the Son of David)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Luke 1:32-33; Acts 13:22-23; Hebrews 1:5",
+ "status": "fulfilled",
+ "summary": "God promises David a son whose throne lasts forever and who will be God's son. 4Q174 says this is the 'Branch of David' who will arise in the last days together with the Interpreter of the Law. Johnson (#38) lists the near fulfilment as Solomon building the Temple (989 BC). The full fulfilment is in Jesus.",
+ "agreement": ["Ken Johnson", "evangelical consensus"],
+ "dss": "4Q174 (4QFlorilegium)",
+ "sources": [
+  {"name": "Ancient Prophecies Revealed, #38 (2 Samuel 7; 989 BC)", "url": "https://pdfcoffee.com/ancient-prophecies-revealed-johnson-ken-3-pdf-free.html"},
+  {"name": "Florilegium 4Q174 (virtualreligion.net)", "url": "https://virtualreligion.net/iho/4Qflor.html"}
+ ]
+},
+{
+ "id": "dss-4q174-psalm-2-nations-rage-against-anointed",
+ "title": "Rulers rage against the Lord's Anointed (Psalm 2:1-2)",
+ "prophecy": "Psalm 2:1-2, 7",
+ "prophet": "David",
+ "given": {"year": -1000, "approx": true, "label": "c. 1000 BC", "yearSource": "evangelical"},
+ "fulfilled": {"year": 32, "approx": false, "label": "AD 32 (Herod and Pilate)", "yearSource": "johnson", "m": 4, "d": 10, "cal": "julian"},
+ "fulfilment": "Acts 4:25-27; Acts 13:33",
+ "status": "fulfilled",
+ "summary": "4Q174 applies Psalm 2 to the last days, when the nations rise against God's Anointed and his chosen ones. The apostles said it was fulfilled when Herod, Pilate, the Gentiles and Israel joined against Jesus.",
+ "agreement": ["evangelical consensus"],
+ "dss": "4Q174 (4QFlorilegium)",
+ "sources": [
+  {"name": "Florilegium 4Q174 (virtualreligion.net)", "url": "https://virtualreligion.net/iho/4Qflor.html"}
+ ]
+},
+{
+ "id": "dss-4q174-amos-9-11-booth-of-david",
+ "title": "Fallen booth of David raised up (Amos 9:11)",
+ "prophecy": "Amos 9:11-12",
+ "prophet": "Amos",
+ "given": {"year": -760, "approx": true, "label": "c. 760 BC", "yearSource": "evangelical"},
+ "fulfilled": {"year": 49, "approx": true, "label": "c. AD 49 (Jerusalem Council)", "yearSource": "evangelical", "m": null, "d": null, "cal": null},
+ "fulfilment": "Acts 15:13-18",
+ "status": "partial",
+ "summary": "4Q174 (and CD 7:16) say the fallen 'booth of David' is the Branch of David, who will rise to save Israel. James quoted Amos 9:11 to show that Gentiles coming in under Jesus fulfilled it. The national restoration is still awaited.",
+ "agreement": ["evangelical consensus"],
+ "dss": "4Q174; CD 7:15-16",
+ "sources": [
+  {"name": "Florilegium 4Q174 (virtualreligion.net)", "url": "https://virtualreligion.net/iho/4Qflor.html"}
+ ]
+},
+{
+ "id": "dss-4q175-prophet-like-moses",
+ "title": "A prophet like Moses (Deuteronomy 18:15-19)",
+ "prophecy": "Deuteronomy 18:15-19",
+ "prophet": "Moses",
+ "given": {"year": -1436, "approx": true, "label": "c. 1436 BC (end of the wilderness years)", "yearSource": "johnson"},
+ "fulfilled": {"year": 28, "approx": true, "label": "AD 28 (ministry)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "John 6:14; Acts 3:22-26; Acts 7:37",
+ "status": "fulfilled",
+ "summary": "4Q175 opens its list of messianic proof-texts with God's promise to raise up a prophet like Moses, and 1QS 9:11 also expects 'the Prophet'. Peter and Stephen identify that prophet as Jesus.",
+ "agreement": ["evangelical consensus"],
+ "dss": "4Q175 (4QTestimonia); 1QS 9:11",
+ "sources": [
+  {"name": "4Q175 (Wikipedia)", "url": "https://en.wikipedia.org/wiki/4Q175"},
+  {"name": "Ancient Prophecies Revealed: 1436 BC heading (end of the 40-year wandering)", "url": "https://pdfcoffee.com/ancient-prophecies-revealed-johnson-ken-3-pdf-free.html"}
+ ]
+},
+{
+ "id": "dss-4q175-star-of-jacob-sceptre-of-israel",
+ "title": "A Star out of Jacob, a Sceptre out of Israel (Numbers 24:17)",
+ "prophecy": "Numbers 24:17",
+ "prophet": "Balaam",
+ "given": {"year": -1436, "approx": true, "label": "c. 1436 BC (plains of Moab)", "yearSource": "johnson"},
+ "fulfilled": {"year": -2, "approx": false, "label": "2 BC (birth; the Magi's star)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Matthew 2:1-2; Revelation 22:16",
+ "status": "fulfilled",
+ "summary": "4Q175, the Damascus Document (CD 7:18-21) and the War Scroll (1QM 11:6) all read the Star and Sceptre as end-time leaders. Christians see the fulfilment in Jesus, whose birth the Magi tied to a star. Johnson separately dates the Moab and Edom part (24:17-19) to Assyria's conquests (c. 732 BC). In AD 132 Bar Kokhba ('son of the star') claimed the title and was defeated.",
+ "agreement": ["evangelical consensus"],
+ "dss": "4Q175; CD 7:18-21; 1QM 11:6-7",
+ "sources": [
+  {"name": "4Q175 (Wikipedia)", "url": "https://en.wikipedia.org/wiki/4Q175"},
+  {"name": "Ancient Prophecies Revealed (Numbers 24:17-19 applied to Moab, c. 732 BC)", "url": "https://pdfcoffee.com/ancient-prophecies-revealed-johnson-ken-3-pdf-free.html"}
+ ]
+},
+{
+ "id": "dss-4q175-jericho-rebuilder-cursed",
+ "title": "Rebuilder of Jericho will lose his firstborn and youngest (Joshua 6:26)",
+ "prophecy": "Joshua 6:26",
+ "prophet": "Joshua",
+ "given": {"year": -1436, "approx": true, "label": "c. 1436 BC (fall of Jericho)", "yearSource": "johnson"},
+ "fulfilled": {"year": -883, "approx": true, "label": "c. 883 BC (Hiel of Bethel)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "1 Kings 16:34",
+ "status": "fulfilled",
+ "summary": "Joshua cursed anyone who rebuilt Jericho. Hiel lost his eldest and youngest sons when he rebuilt it under Ahab. 4Q175 ends with this curse and, quoting the Psalms of Joshua (4Q379), applies it again to a wicked man of its own day who rebuilt the city.",
+ "agreement": ["Ken Johnson"],
+ "dss": "4Q175; 4Q379",
+ "sources": [
+  {"name": "Ancient Prophecies Revealed, #47 ('Ruins of Jericho Rebuilt', 883 BC)", "url": "https://pdfcoffee.com/ancient-prophecies-revealed-johnson-ken-3-pdf-free.html"},
+  {"name": "4Q175 (Wikipedia)", "url": "https://en.wikipedia.org/wiki/4Q175"}
+ ]
+},
+{
+ "id": "dss-4q252-sceptre-until-shiloh",
+ "title": "Sceptre will not depart from Judah until Shiloh comes (Genesis 49:10)",
+ "prophecy": "Genesis 49:10",
+ "prophet": "Jacob",
+ "given": {"year": -1670, "approx": true, "label": "c. 1670 BC (Jacob's death, 2255 AM)", "yearSource": "johnson"},
+ "fulfilled": {"year": -2, "approx": false, "label": "2 BC (Messiah born while Judah still ruled)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Matthew 2:1-6; Luke 2:1-7",
+ "status": "fulfilled",
+ "summary": "Jacob promised that rule would stay with Judah until Shiloh came. 4Q252 explains that the ruler's staff will not depart until the 'Messiah of Righteousness, the Branch of David' comes, so it read Shiloh as the Messiah. Johnson's book lists it under the Messiah's first coming: Jewish rulers lasted until the Messiah came.",
+ "agreement": ["Ken Johnson", "evangelical consensus"],
+ "dss": "4Q252 col. V (4QCommGen A)",
+ "sources": [
+  {"name": "Ancient Prophecies Revealed (Genesis 49:10 referenced under Messiah's First Coming)", "url": "https://pdfcoffee.com/ancient-prophecies-revealed-johnson-ken-3-pdf-free.html"},
+  {"name": "Pesher on Genesis / 4Q252 (Wikipedia; manuscript early Herodian)", "url": "https://en.wikipedia.org/wiki/Pesher_on_Genesis"},
+  {"name": "Wise, Abegg & Cook, The Dead Sea Scrolls: A New Translation, 4Q252 col. 5"}
+ ]
+},
+{
+ "id": "dss-1qisa-isaiah-53-suffering-servant",
+ "title": "Suffering Servant pierced for our transgressions (Isaiah 53)",
+ "prophecy": "Isaiah 52:13–53:12",
+ "prophet": "Isaiah",
+ "given": {"year": -700, "approx": true, "label": "c. 700 BC", "yearSource": "evangelical"},
+ "fulfilled": {"year": 32, "approx": false, "label": "AD 32 (crucifixion)", "yearSource": "johnson", "m": 4, "d": 10, "cal": "julian"},
+ "fulfilment": "Acts 8:32-35; 1 Peter 2:22-25",
+ "status": "fulfilled",
+ "summary": "Isaiah describes a righteous servant who is pierced, bears others' sins, dies with the wicked and is buried with the rich. The Great Isaiah Scroll has the whole chapter in a copy made c. 125 BC (script 150–100 BC; radiocarbon 356–103 BC). That shows the text predates Jesus and was not edited to fit him.",
+ "agreement": ["evangelical consensus"],
+ "dss": "1QIsa-a (Great Isaiah Scroll); 1QIsa-b",
+ "sources": [
+  {"name": "Isaiah Scroll (Wikipedia: dating, Isaiah 53 reading)", "url": "https://en.wikipedia.org/wiki/Isaiah_Scroll"},
+  {"name": "Josh McDowell, Evidence That Demands a Verdict (Isaiah 53 among messianic prophecies)"}
+ ]
+},
+{
+ "id": "dss-1qisa-isaiah-53-11-he-shall-see-light",
+ "title": "After his suffering the Servant will 'see light' (Isaiah 53:10-11)",
+ "prophecy": "Isaiah 53:10-11",
+ "prophet": "Isaiah",
+ "given": {"year": -700, "approx": true, "label": "c. 700 BC", "yearSource": "evangelical"},
+ "fulfilled": {"year": 32, "approx": false, "label": "AD 32 (resurrection, Sunday)", "yearSource": "johnson", "m": 4, "d": 13, "cal": "julian"},
+ "fulfilment": "Luke 24:1-7; 1 Corinthians 15:3-4",
+ "status": "fulfilled",
+ "summary": "In 1QIsa-a (also 1QIsa-b and 4QIsa-d) and the Septuagint, verse 11 says that after his ordeal the Servant 'will see light'. The Masoretic text lacks this word. Evangelicals read it as the Servant living again after death, fulfilled in the resurrection.",
+ "agreement": ["evangelical consensus"],
+ "dss": "1QIsa-a; 1QIsa-b; 4Q58 (4QIsa-d)",
+ "sources": [
+  {"name": "Isaiah Scroll (Wikipedia: 53:11 reading agrees with Septuagint)", "url": "https://en.wikipedia.org/wiki/Isaiah_Scroll"}
+ ]
+},
+{
+ "id": "dss-1qisa-isaiah-7-14-virgin-immanuel",
+ "title": "A virgin will conceive: Immanuel (Isaiah 7:14)",
+ "prophecy": "Isaiah 7:14",
+ "prophet": "Isaiah",
+ "given": {"year": -735, "approx": true, "label": "c. 735 BC (reign of Ahaz)", "yearSource": "evangelical"},
+ "fulfilled": {"year": -2, "approx": false, "label": "2 BC", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Matthew 1:22-23",
+ "status": "fulfilled",
+ "summary": "A sign for the house of David: a virgin will bear a son called Immanuel, 'God with us'. The verse stands in the pre-Christian Great Isaiah Scroll. Johnson lists it among his 'inscription' prophecies, fulfilled in Jesus' birth in 2 BC. Ken Johnson's New Covenant of Damascus says the Essenes expected a virgin-born Messiah.",
+ "agreement": ["Ken Johnson", "evangelical consensus"],
+ "dss": "1QIsa-a",
+ "sources": [
+  {"name": "Ancient Prophecies Revealed, Introduction (Immanuel)", "url": "https://pdfcoffee.com/ancient-prophecies-revealed-johnson-ken-3-pdf-free.html"},
+  {"name": "Ken Johnson, The New Covenant of Damascus (description)", "url": "https://www.walmart.com/ip/The-New-Covenant-of-Damascus-Paperback-by-Ken-Johnson-Th-D-9798351937656/1106099116"}
+ ]
+},
+{
+ "id": "dss-isaiah-29-speech-from-the-dust",
+ "title": "Jerusalem's voice will speak from the dust (Isaiah 29:4)",
+ "prophecy": "Isaiah 29:1-7",
+ "prophet": "Isaiah",
+ "given": {"year": -715, "approx": true, "label": "c. 715 BC", "yearSource": "evangelical"},
+ "fulfilled": {"year": 1947, "approx": true, "label": "1947–1956 (scrolls found at Qumran)", "yearSource": "secular", "m": null, "d": null, "cal": null},
+ "fulfilment": "Discovery of the Dead Sea Scrolls",
+ "status": "partial",
+ "summary": "Ken Johnson, as cited by Calvary Chapel Hanford, says the 'speech from the dust' prophesied the scrolls being found in the ground. The first Isaiah scroll reached Israeli hands as the state was born; Sukenik's first purchase was on 29 Nov 1947, the day of the UN partition vote. Isaiah 29:5-7, God defending Jerusalem in war, is still read as future.",
+ "agreement": ["Ken Johnson", "Calvary Chapel Hanford"],
+ "dss": "1QIsa-a; 1QIsa-b",
+ "sources": [
+  {"name": "Calvary Chapel Hanford, Prophecy Update #823 'Dust Men Tell Their Tales' (quotes Ken Johnson)", "url": "https://transcript.calvaryhanford.com/bible-studies/prophecy-update-823-dust-men-tell-their-tales"},
+  {"name": "Isaiah Scroll (Wikipedia: acquisition history)", "url": "https://en.wikipedia.org/wiki/Isaiah_Scroll"}
+ ]
+},
+{
+ "id": "dss-daniel-12-4-sealed-until-time-of-end",
+ "title": "Words sealed until the time of the end (Daniel 12:4)",
+ "prophecy": "Daniel 12:4, 9",
+ "prophet": "Daniel",
+ "given": {"year": -534, "approx": true, "label": "c. 534 BC (3rd year of Cyrus)", "yearSource": "evangelical"},
+ "fulfilled": {"year": 1967, "approx": true, "label": "1947–1967 (scrolls found; Temple Scroll taken 1967)", "yearSource": "secular", "m": null, "d": null, "cal": null},
+ "fulfilment": "Discovery and publication of the scrolls",
+ "status": "partial",
+ "summary": "Daniel is told to seal the book until the end, when knowledge will increase. Johnson and Calvary Chapel teachers link this to the scrolls being found from 1947, and to the Temple Scroll and Damascus Document fragments coming into Israeli hands in the 1967 war, when the Temple Mount was taken. Johnson notes the Zadokite texts were mostly published only in the late 1990s.",
+ "agreement": ["Ken Johnson", "Calvary Chapel Hanford"],
+ "dss": "11Q19 (Temple Scroll); 4QD (Damascus Document)",
+ "sources": [
+  {"name": "Calvary Chapel Hanford, Prophecy Update #823 (PDF)", "url": "https://media.calvaryhanford.com/prophecy/2025/823Update-Dust-Men.pdf"},
+  {"name": "dsscalendar.org Enoch 7 page (scrolls found from 1948, published late 1990s)", "url": "https://dsscalendar.org/e/Enoch7.html"}
+ ]
+},
+{
+ "id": "dss-1qm-war-of-sons-of-light-end-time",
+ "title": "War Scroll: final 40-year war of the Sons of Light against the Kittim",
+ "prophecy": "1QM cols. 1-2, 15-19 (on Daniel 11:40–12:1)",
+ "prophet": "Qumran War Scroll",
+ "given": {"year": -75, "approx": true, "label": "late 2nd–1st c. BC (composition)", "yearSource": "secular"},
+ "fulfilled": null,
+ "fulfilment": "Revelation 16:14-16; 19:11-21",
+ "status": "future",
+ "summary": "The War Scroll lays out a final war of the Sons of Light against Belial's army and the 'Kittim'. Michael is raised up, and God wins after seven rounds of battle. Evangelicals compare it to Armageddon. Johnson expects the Tribulation to start about 2067–2068 and the Kingdom to begin by AD 2075–2076.",
+ "agreement": ["Ken Johnson"],
+ "dss": "1QM; 4Q491-496",
+ "sources": [
+  {"name": "dsscalendar.org Enoch 9 (Tribulation c. 2067–2068; Millennium 6000 AM = AD 2075)", "url": "https://dsscalendar.org/e/Enoch9.html"},
+  {"name": "Ancient Prophecies from the Dead Sea Scrolls (publisher description: end-time signs)", "url": "https://origin-www.audible.fr/pd/Ancient-Prophecies-from-the-Dead-Sea-Scrolls-Audiobook/B0DHSQ3Z7B"}
+ ]
+},
+{
+ "id": "dss-1qphab-chaldeans-raised-up",
+ "title": "God raises up the Chaldeans (Habakkuk 1:6)",
+ "prophecy": "Habakkuk 1:5-11",
+ "prophet": "Habakkuk",
+ "given": {"year": -610, "approx": true, "label": "c. 610 BC", "yearSource": "evangelical"},
+ "fulfilled": {"year": -607, "approx": true, "label": "607 BC (Babylonian Empire)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "2 Kings 24:1-2",
+ "status": "fulfilled",
+ "summary": "Habakkuk foretold that a fierce Chaldean nation would sweep over Judah, which happened when Babylon rose to rule. The Qumran Habakkuk commentary keeps the prophecy but re-reads its 'Chaldeans' as the Kittim of its own day.",
+ "agreement": ["evangelical consensus"],
+ "dss": "1QpHab",
+ "sources": [
+  {"name": "Ancient Prophecies Revealed: '607 BC Babylonian Empire' heading", "url": "https://pdfcoffee.com/ancient-prophecies-revealed-johnson-ken-3-pdf-free.html"},
+  {"name": "Pesher Habakkuk (Posen Library)", "url": "https://www.posenlibrary.com/entry/pesher-habakkuk"}
+ ]
+},
+{
+ "id": "dss-1qphab-kittim-romans-conquer",
+ "title": "Pesher Habakkuk: the Kittim (Romans) will overrun the land",
+ "prophecy": "1QpHab cols. 2-6 (on Habakkuk 1:6-17)",
+ "prophet": "Qumran Habakkuk commentary",
+ "given": {"year": -610, "approx": true, "label": "c. 610 BC (Habakkuk); pesher c. 63–30 BC", "yearSource": "evangelical"},
+ "fulfilled": {"year": -64, "approx": true, "label": "64 BC (Rome takes Judea)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Pompey's capture of Jerusalem (Josephus, Antiquities 14.4)",
+ "status": "fulfilled",
+ "summary": "The commentary says Habakkuk's invaders are the Kittim, a code name for the Romans. They come from the coastlands, sacrifice to their standards and plunder the nations. Scholars date the commentary to 63–30 BC, so it mostly describes Rome's arrival rather than predicting it. Johnson's chronology dates Rome's rule from 64 BC.",
+ "agreement": [],
+ "dss": "1QpHab",
+ "sources": [
+  {"name": "Pesher Habakkuk (Posen Library: date 63–30 BCE; Kittim = Romans)", "url": "https://www.posenlibrary.com/entry/pesher-habakkuk"},
+  {"name": "Ancient Prophecies Revealed: '64 BC Rome' heading", "url": "https://pdfcoffee.com/ancient-prophecies-revealed-johnson-ken-3-pdf-free.html"}
+ ]
+},
+{
+ "id": "dss-1qphab-last-priests-plundered-by-kittim",
+ "title": "Wealth of Jerusalem's last priests given to the Kittim's army",
+ "prophecy": "1QpHab 9:4-7 (on Habakkuk 2:8)",
+ "prophet": "Qumran Habakkuk commentary",
+ "given": {"year": -50, "approx": true, "label": "c. 63–30 BC (composition)", "yearSource": "secular"},
+ "fulfilled": {"year": 70, "approx": false, "label": "AD 70 (3995 AM, Temple burned)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Luke 21:20-24; Josephus, Jewish War 6",
+ "status": "fulfilled",
+ "summary": "The commentary predicts that the 'last priests of Jerusalem', who grew rich by plunder, will in the end have their wealth handed to the Kittim's army. This happened when Rome sacked the Temple in AD 70.",
+ "agreement": [],
+ "dss": "1QpHab",
+ "sources": [
+  {"name": "Pesher Habakkuk (Posen Library)", "url": "https://www.posenlibrary.com/entry/pesher-habakkuk"},
+  {"name": "dsscalendar.org Enoch 6 (Temple burnt 3995 AM = AD 70)", "url": "https://dsscalendar.org/e/Enoch6.html"}
+ ]
+},
+{
+ "id": "dss-1qphab-habakkuk-2-3-vision-tarries",
+ "title": "Though the vision tarries, wait for it (Habakkuk 2:3)",
+ "prophecy": "Habakkuk 2:2-3",
+ "prophet": "Habakkuk",
+ "given": {"year": -610, "approx": true, "label": "c. 610 BC", "yearSource": "evangelical"},
+ "fulfilled": null,
+ "fulfilment": "Hebrews 10:37",
+ "status": "future",
+ "summary": "1QpHab col. 7 says the final age will last longer than the prophets said, and that God revealed the hidden timing to the Teacher of Righteousness. It tells the faithful not to slacken. Hebrews 10:37 applies the verse to Christ's return.",
+ "agreement": ["evangelical consensus"],
+ "dss": "1QpHab col. 7",
+ "sources": [
+  {"name": "Pesher Habakkuk (Posen Library)", "url": "https://www.posenlibrary.com/entry/pesher-habakkuk"}
+ ]
+},
+{
+ "id": "dss-cd-390-years-after-nebuchadnezzar",
+ "title": "Damascus Document: root of planting 390 years after Nebuchadnezzar",
+ "prophecy": "CD 1:5-11 (on Ezekiel 4:5)",
+ "prophet": "Ezekiel / Damascus Document",
+ "given": {"year": -593, "approx": true, "label": "c. 593 BC (Ezekiel 4)", "yearSource": "evangelical"},
+ "fulfilled": {"year": -196, "approx": true, "label": "c. 196 BC (+20 yrs: Teacher c. 176 BC)", "yearSource": "secular", "m": null, "d": null, "cal": null},
+ "fulfilment": "Rise of the Qumran/Zadokite movement",
+ "status": "fulfilled",
+ "summary": "Ezekiel lay on his side 390 days for 390 years of Israel's sin. The Damascus Document says that 390 years after God gave Israel to Nebuchadnezzar, he caused a 'root' to sprout. They groped like the blind for 20 years, then God raised up the Teacher of Righteousness. Counting from 587/6 BC gives c. 196 BC; on Johnson's 3338 AM anchor it is 3728 AM (c. 198 BC), shortly before the c. 170 BC calendar change he describes. Johnson translated this text, but no statement of his on the 390 years was found.",
+ "agreement": [],
+ "dss": "CD 1:5-11 (Damascus Document); 4Q266",
+ "sources": [
+  {"name": "Damascus Document, CD 1 translation (Penn CCAT)", "url": "https://ccat.sas.upenn.edu/rak/courses/225/CD1910.html"},
+  {"name": "Ken Johnson, The New Covenant of Damascus (translation of CD)", "url": "https://www.walmart.com/ip/The-New-Covenant-of-Damascus-Paperback-by-Ken-Johnson-Th-D-9798351937656/1106099116"},
+  {"name": "dsscalendar.org Onah intro (Temple destroyed 3338 AM)", "url": "https://dsscalendar.org/o/index.html"}
+ ]
+},
+{
+ "id": "dss-cd-essenes-predicted-messiah-ad-32",
+ "title": "Essene texts fix the Messiah's first coming to AD 32",
+ "prophecy": "Damascus Document; 11Q13; Daniel 9:24-26",
+ "prophet": "Zadokite priests (Essenes)",
+ "given": {"year": -100, "approx": true, "label": "c. 100 BC (Qumran texts)", "yearSource": "secular"},
+ "fulfilled": {"year": 32, "approx": false, "label": "AD 32", "yearSource": "johnson", "m": 4, "d": 10, "cal": "julian"},
+ "fulfilment": "Matthew 27; Luke 23",
+ "status": "fulfilled",
+ "summary": "In his books on the Essenes, Johnson argues that the Zadokite priests expected a God-incarnate, virgin-born Messiah with a first and a second coming. He says they expected him to die for sin at his first coming, and that their calendar placed it in AD 32.",
+ "agreement": ["Ken Johnson"],
+ "dss": "CD; 11Q13",
+ "sources": [
+  {"name": "Ken Johnson, The New Covenant of Damascus (description: Essenes predicted AD 32)", "url": "https://www.walmart.com/ip/The-New-Covenant-of-Damascus-Paperback-by-Ken-Johnson-Th-D-9798351937656/1106099116"},
+  {"name": "Ken Johnson, Ancient Prophecies from the Dead Sea Scrolls (2024, publisher description)", "url": "https://origin-www.audible.fr/pd/Ancient-Prophecies-from-the-Dead-Sea-Scrolls-Audiobook/B0DHSQ3Z7B"}
+ ]
+},
+{
+ "id": "dss-4q541-eschatological-priest-atones",
+ "title": "4Q541: A priest atones for his generation yet is slandered",
+ "prophecy": "4Q541 frag. 9 i (cf. Isaiah 53)",
+ "prophet": "Qumran Aramaic Levi / Aaron text",
+ "given": {"year": -100, "approx": true, "label": "c. 100 BC (manuscript)", "yearSource": "secular"},
+ "fulfilled": {"year": 32, "approx": false, "label": "AD 32", "yearSource": "johnson", "m": 4, "d": 10, "cal": "julian"},
+ "fulfilment": "Hebrews 2:17; 9:11-14",
+ "status": "fulfilled",
+ "summary": "A coming priest-figure, whose word is like heaven's, atones for all the children of his generation and drives away darkness, yet people speak lies and slander against him. Puech and others compare it with Isaiah's Suffering Servant. Johnson's Ancient Testaments of the Patriarchs presents an 'Aaron' text warning about the Messiah's first coming, which may be this scroll; this was not confirmed.",
+ "agreement": [],
+ "dss": "4Q541 (4QapocrLevi-b? / Aaronic text)",
+ "sources": [
+  {"name": "John J. Collins, 'The Suffering Servant at Qumran', Bible Review (Dec 1993)", "url": "https://library.biblicalarchaeology.org/article/the-suffering-servant-at-qumran"},
+  {"name": "Ancient Mysteries of the Essenes (Aaron's warning of the First Coming)", "url": "https://www.audible.de/pd/B0H765X78Q"}
+ ]
+},
+{
+ "id": "dss-4qmmt-blessings-curses-end-of-days",
+ "title": "4QMMT: Moses' blessings and curses are coming true in the 'end of days'",
+ "prophecy": "Deuteronomy 30:1-3; 31:29 (in 4QMMT C 12-22)",
+ "prophet": "Moses",
+ "given": {"year": -1436, "approx": true, "label": "c. 1436 BC", "yearSource": "johnson"},
+ "fulfilled": {"year": -587, "approx": true, "label": "curses to 587 BC (3338 AM); return still awaited", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "2 Kings 25; Ezekiel 37",
+ "status": "partial",
+ "summary": "The halakhic letter (c. 150 BC) says some of the blessings (under David and Solomon) and the curses (from Jeroboam to the exile under Zedekiah) have already come. It says the writers are living in the 'end of days', when Israel will return to the Torah. Evangelicals see the end-time return beginning in 1948.",
+ "agreement": [],
+ "dss": "4Q394-399 (4QMMT)",
+ "sources": [
+  {"name": "4QMMT (Wikipedia: c. 150 BCE; blessings and curses in section C)", "url": "https://en.wikipedia.org/wiki/4QMMT"},
+  {"name": "dsscalendar.org Onah intro (Temple destroyed 3338 AM, 588/7 BC)", "url": "https://dsscalendar.org/o/index.html"}
+ ]
+},
+{
+ "id": "dss-1qs-voice-prepare-way-in-wilderness",
+ "title": "Prepare the way of the Lord in the wilderness (Isaiah 40:3)",
+ "prophecy": "Isaiah 40:3",
+ "prophet": "Isaiah",
+ "given": {"year": -700, "approx": true, "label": "c. 700 BC", "yearSource": "evangelical"},
+ "fulfilled": {"year": 28, "approx": true, "label": "c. AD 28 (John the Baptist)", "yearSource": "evangelical", "m": null, "d": null, "cal": null},
+ "fulfilment": "Matthew 3:1-3; John 1:23",
+ "status": "fulfilled",
+ "summary": "The Community Rule (1QS 8:12-16) cites this verse as its reason for going out into the Judean wilderness to study the Law. The Gospels apply it to John the Baptist, who preached in the same desert near the Jordan.",
+ "agreement": ["evangelical consensus"],
+ "dss": "1QS 8:12-16; 1QIsa-a",
+ "sources": [
+  {"name": "Ken Johnson, The New Covenant of Damascus (includes the Community Rule)", "url": "https://www.walmart.com/ip/The-New-Covenant-of-Damascus-Paperback-by-Ken-Johnson-Th-D-9798351937656/1106099116"}
+ ]
+},
+{
+ "id": "dss-1qs-prophet-and-messiahs-of-aaron-and-israel",
+ "title": "Community Rule: the Prophet and the Messiahs of Aaron and Israel",
+ "prophecy": "1QS 9:11",
+ "prophet": "Qumran Community Rule",
+ "given": {"year": -100, "approx": true, "label": "c. 100 BC (composition)", "yearSource": "secular"},
+ "fulfilled": {"year": 32, "approx": true, "label": "AD 28–32 (prophet, priest and king in Jesus)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Hebrews 1:1-3; 7:14-17",
+ "status": "fulfilled",
+ "summary": "The sect expected a prophet, a priestly Messiah from Aaron and a royal Messiah from Israel. The New Testament combines all three roles in Jesus: prophet like Moses, priest after Melchizedek, and Son of David.",
+ "agreement": ["evangelical consensus"],
+ "dss": "1QS 9:11; 4Q175",
+ "sources": [
+  {"name": "4Q175 (Wikipedia: prophet, royal and priestly figures)", "url": "https://en.wikipedia.org/wiki/4Q175"}
+ ]
+},
+{
+ "id": "dss-psalm-22-16-they-pierced",
+ "title": "They pierced my hands and my feet (Psalm 22:16)",
+ "prophecy": "Psalm 22:16",
+ "prophet": "David",
+ "given": {"year": -1000, "approx": true, "label": "c. 1000 BC", "yearSource": "evangelical"},
+ "fulfilled": {"year": 32, "approx": false, "label": "AD 32 (crucifixion)", "yearSource": "johnson", "m": 4, "d": 10, "cal": "julian"},
+ "fulfilment": "John 20:25-27; Luke 24:39-40",
+ "status": "fulfilled",
+ "summary": "The Masoretic text reads 'like a lion' at Psalm 22:16 (Hebrew 17). The Psalms scroll from Nahal Hever, one of the wider Dead Sea finds, has a verb read as 'they pierced/dug', which agrees with the Septuagint. Evangelicals cite this as early evidence for the reading fulfilled at the crucifixion.",
+ "agreement": ["evangelical consensus"],
+ "dss": "5/6HevPs (Nahal Hever)",
+ "sources": [
+  {"name": "Josh McDowell, Evidence That Demands a Verdict (Psalm 22 among messianic prophecies)"}
+ ]
+},
+{
+ "id": "dss-micah-5-2-ruler-from-bethlehem",
+ "title": "Ruler from Bethlehem whose origins are from of old (Micah 5:2)",
+ "prophecy": "Micah 5:2",
+ "prophet": "Micah",
+ "given": {"year": -710, "approx": true, "label": "c. 710 BC", "yearSource": "evangelical"},
+ "fulfilled": {"year": -2, "approx": false, "label": "2 BC", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Matthew 2:1-6; Luke 2:4-7",
+ "status": "fulfilled",
+ "summary": "Micah names Bethlehem as the birthplace of Israel's eternal ruler. Johnson lists it as a 'literal' prophecy fulfilled when Jesus was born there. The Minor Prophets scroll from Wadi Murabba'at preserves Micah in a text close to the Masoretic.",
+ "agreement": ["Ken Johnson", "evangelical consensus"],
+ "dss": "Mur88 (MurXII)",
+ "sources": [
+  {"name": "Ancient Prophecies Revealed, Introduction (Micah 5:2, literal prophecy)", "url": "https://pdfcoffee.com/ancient-prophecies-revealed-johnson-ken-3-pdf-free.html"}
+ ]
+},
+{
+ "id": "dss-4qdan-daniel-9-seventy-weeks",
+ "title": "69 weeks from the decree to Messiah the Prince (Daniel 9:25-26)",
+ "prophecy": "Daniel 9:24-26",
+ "prophet": "Daniel",
+ "given": {"year": -536, "approx": true, "label": "c. 536 BC (1st year of Darius the Mede)", "yearSource": "johnson"},
+ "fulfilled": {"year": 32, "approx": false, "label": "6 April AD 32 (Nisan 10, entry to Jerusalem)", "yearSource": "johnson", "m": 4, "d": 6, "cal": "julian"},
+ "fulfilment": "Luke 19:37-44",
+ "status": "fulfilled",
+ "summary": "Johnson counts 483 prophetic years of 360 days from Artaxerxes' decree in March 444 BC, which lands on 6 April AD 32, with Messiah 'cut off' days later. 11Q13 cites Daniel 9:25's 'anointed one'. Daniel 9 is preserved at Qumran in 4Q116 (9:12-17), but verses 24-27 do not survive there.",
+ "agreement": ["Ken Johnson", "evangelical consensus"],
+ "dss": "11Q13; 4Q116 (4QDan-e)",
+ "sources": [
+  {"name": "Ken Johnson, The Rapture (Daniel's 70 weeks; April 6, AD 32)", "url": "https://pdfcoffee.com/the-rapture-ken-johnson-pdf-free.html"},
+  {"name": "Ancient Prophecies Revealed (April 6, AD 32)", "url": "https://pdfcoffee.com/ancient-prophecies-revealed-johnson-ken-3-pdf-free.html"},
+  {"name": "Daniel 11 Time Map (biblefacts.org: Darius the Mede 536–530 BC)", "url": "https://biblefacts.org/study/Daniel_11_Time_Map.pdf"}
+ ]
+},
+{
+ "id": "dss-4qdan-daniel-2-four-kingdoms",
+ "title": "Statue of four kingdoms, ending with Rome (Daniel 2)",
+ "prophecy": "Daniel 2:31-45",
+ "prophet": "Daniel",
+ "given": {"year": -603, "approx": true, "label": "c. 603 BC (2nd year of Nebuchadnezzar)", "yearSource": "evangelical"},
+ "fulfilled": {"year": -64, "approx": true, "label": "64 BC (Rome, the iron kingdom); stone kingdom future", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "History of Babylon, Persia (537 BC), Greece (326 BC), Rome (64 BC)",
+ "status": "partial",
+ "summary": "Nebuchadnezzar's dream statue stands for Babylon, Medo-Persia, Greece and Rome. A stone not cut by hands then crushes it. Johnson's dates for the empires are 607, 537, 326 and 64 BC. The kingdom of God is still to come. Daniel 2 survives at Qumran in 4QDan-a.",
+ "agreement": ["Ken Johnson", "evangelical consensus"],
+ "dss": "4Q112 (4QDan-a); 1Q71",
+ "sources": [
+  {"name": "Ancient Prophecies Revealed: headings 607 BC Babylon, 537 BC Cyrus, 326 BC Alexander, 64 BC Rome", "url": "https://pdfcoffee.com/ancient-prophecies-revealed-johnson-ken-3-pdf-free.html"}
+ ]
+},
+{
+ "id": "dss-4qdan-daniel-8-goat-alexander",
+ "title": "Goat with a great horn conquers the ram (Daniel 8:5-8, 21)",
+ "prophecy": "Daniel 8:5-8, 20-22",
+ "prophet": "Daniel",
+ "given": {"year": -551, "approx": true, "label": "c. 551 BC (3rd year of Belshazzar)", "yearSource": "evangelical"},
+ "fulfilled": {"year": -326, "approx": true, "label": "326 BC (Alexander's conquest of Persia)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Alexander the Great's conquest of Persia",
+ "status": "fulfilled",
+ "summary": "The goat from the west, named as Greece, shatters the Medo-Persian ram. Its great horn is broken and four horns arise. This matches Alexander and the four kingdoms that followed him. Qumran copies of Daniel 8 (4QDan-a, -b) show the text was already circulating in the 2nd century BC.",
+ "agreement": ["Ken Johnson", "evangelical consensus"],
+ "dss": "4Q112 (4QDan-a); 4Q113 (4QDan-b)",
+ "sources": [
+  {"name": "Daniel 11 Time Map (biblefacts.org: Alexander 326–323 BC)", "url": "https://biblefacts.org/study/Daniel_11_Time_Map.pdf"}
+ ]
+},
+{
+ "id": "dss-4qdan-daniel-11-antiochus-abomination",
+ "title": "King of the North profanes the sanctuary (Daniel 11:31)",
+ "prophecy": "Daniel 11:21-35; 8:9-14",
+ "prophet": "Daniel",
+ "given": {"year": -534, "approx": true, "label": "c. 534 BC (3rd year of Cyrus)", "yearSource": "evangelical"},
+ "fulfilled": {"year": -165, "approx": true, "label": "165 BC (Johnson's map; desecration Dec 167 BC secular)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "1 Maccabees 1:54-61",
+ "status": "fulfilled",
+ "summary": "Daniel describes a northern king who stops the daily sacrifice and sets up the abomination of desolation, which matches Antiochus IV Epiphanes. A 2025 radiocarbon and AI script study dated 4Q114 (4QDan-c, which has Daniel 10-11) to c. 230–160 BC. That challenges the theory that Daniel was written after 164 BC. Jesus said this foreshadows the future Antichrist.",
+ "agreement": ["Ken Johnson", "evangelical consensus"],
+ "dss": "4Q114 (4QDan-c)",
+ "sources": [
+  {"name": "Daniel 11 Time Map (biblefacts.org: Antiochus IV 175–164 BC; typifies Antichrist 165 BC)", "url": "https://biblefacts.org/study/Daniel_11_Time_Map.pdf"},
+  {"name": "Associates for Biblical Research, 'Dead Sea Scroll 4Q114 and the Date of Daniel' (Popović et al. 2025)", "url": "https://biblearchaeology.org/?p=72955"},
+  {"name": "Ancient Prophecies Revealed, Introduction (Daniel 11 typological prophecy)", "url": "https://pdfcoffee.com/ancient-prophecies-revealed-johnson-ken-3-pdf-free.html"}
+ ]
+},
+{
+ "id": "dss-4qen-week-5-house-of-glory",
+ "title": "Enoch's 5th week: the house of glory built (1 Enoch 93:7)",
+ "prophecy": "1 Enoch 93:7",
+ "prophet": "Enoch",
+ "given": {"year": -2939, "approx": true, "label": "before 987 AM (c. 2939 BC)", "yearSource": "johnson"},
+ "fulfilled": {"year": -991, "approx": false, "label": "991 BC (2935 AM, Temple dedicated)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "1 Kings 8",
+ "status": "fulfilled",
+ "summary": "In the Apocalypse of Weeks, Enoch sees a house of glory built at the end of the fifth week. Johnson identifies it as Solomon's Temple, dedicated in 2935 AM, within week 5 (2801–3500 AM). Aramaic copies of the Apocalypse of Weeks survive in 4QEn-g.",
+ "agreement": ["Ken Johnson"],
+ "dss": "4Q212 (4QEn-g)",
+ "sources": [
+  {"name": "dsscalendar.org Enoch 5", "url": "https://dsscalendar.org/e/Enoch5.html"},
+  {"name": "dsscalendar.org Enoch weeks index", "url": "https://dsscalendar.org/e/index.html"}
+ ]
+},
+{
+ "id": "dss-4qen-week-6-man-ascends",
+ "title": "Enoch's 6th week: a man ascends (1 Enoch 93:8)",
+ "prophecy": "1 Enoch 93:8",
+ "prophet": "Enoch",
+ "given": {"year": -2939, "approx": true, "label": "before 987 AM (c. 2939 BC)", "yearSource": "johnson"},
+ "fulfilled": {"year": 32, "approx": false, "label": "AD 32 (3957 AM, ascension)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Acts 1:9-11",
+ "status": "fulfilled",
+ "summary": "In the sixth week everyone is blinded, a man ascends, and the house of dominion is burned. Johnson places the week in 3501–4200 AM (425 BC–AD 275). He takes the man who ascends to be Jesus, whose ascension he dates to 3957 AM (AD 32).",
+ "agreement": ["Ken Johnson"],
+ "dss": "4Q212 (4QEn-g)",
+ "sources": [
+  {"name": "dsscalendar.org Enoch 6", "url": "https://dsscalendar.org/e/Enoch6.html"}
+ ]
+},
+{
+ "id": "dss-4qen-week-6-house-burned",
+ "title": "Enoch's 6th week: the house of dominion burned with fire",
+ "prophecy": "1 Enoch 93:8",
+ "prophet": "Enoch",
+ "given": {"year": -2939, "approx": true, "label": "before 987 AM (c. 2939 BC)", "yearSource": "johnson"},
+ "fulfilled": {"year": 70, "approx": false, "label": "AD 70 (3995 AM)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Luke 21:5-6, 20-24",
+ "status": "fulfilled",
+ "summary": "The same week sees the house burned and the chosen root scattered. Johnson dates the burning of Herod's Temple by Rome to 3995 AM (AD 70) and the Roman dispersion after Bar Kokhba to 4057 AM (AD 132).",
+ "agreement": ["Ken Johnson"],
+ "dss": "4Q212 (4QEn-g)",
+ "sources": [
+  {"name": "dsscalendar.org Enoch 6", "url": "https://dsscalendar.org/e/Enoch6.html"}
+ ]
+},
+{
+ "id": "dss-4qen-week-6-root-dispersed",
+ "title": "Enoch's 6th week: the chosen root dispersed (AD 132)",
+ "prophecy": "1 Enoch 93:8",
+ "prophet": "Enoch",
+ "given": {"year": -2939, "approx": true, "label": "before 987 AM (c. 2939 BC)", "yearSource": "johnson"},
+ "fulfilled": {"year": 132, "approx": false, "label": "AD 132 (4057 AM)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Bar Kokhba revolt and Roman expulsion",
+ "status": "fulfilled",
+ "summary": "Johnson identifies the scattering of the 'chosen root' with Rome driving Israel out after the Bar Kokhba revolt. He dates it to 4057 AM (AD 132), the start of a dispersion that lasted until 1948.",
+ "agreement": ["Ken Johnson"],
+ "dss": "4Q212 (4QEn-g)",
+ "sources": [
+  {"name": "dsscalendar.org Enoch 6", "url": "https://dsscalendar.org/e/Enoch6.html"}
+ ]
+},
+{
+ "id": "dss-4qen-week-7-apostate-generation",
+ "title": "Enoch's 7th week: an apostate generation, then sevenfold wisdom",
+ "prophecy": "1 Enoch 93:9-10",
+ "prophet": "Enoch",
+ "given": {"year": -2939, "approx": true, "label": "before 987 AM (c. 2939 BC)", "yearSource": "johnson"},
+ "fulfilled": {"year": 975, "approx": true, "label": "AD 276–975 (4201–4900 AM)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Hillel II calendar (AD 359); Karaite movement (c. AD 900)",
+ "status": "fulfilled",
+ "summary": "Enoch foresees an apostate generation in week 7, at whose end the elect receive sevenfold instruction. Johnson points to the AD 359 Hillel II calendar replacing the Zadokite one. He sees a partial recovery of lost teaching around AD 900, when the Karaites were said to have found scrolls in the Judean hills.",
+ "agreement": ["Ken Johnson"],
+ "dss": "4Q212 (4QEn-g)",
+ "sources": [
+  {"name": "dsscalendar.org Enoch 7", "url": "https://dsscalendar.org/e/Enoch7.html"}
+ ]
+},
+{
+ "id": "dss-4qen-week-8-house-for-great-king",
+ "title": "Enoch's 8th week: righteousness, and a house built for the Great King",
+ "prophecy": "1 Enoch 91:12-13",
+ "prophet": "Enoch",
+ "given": {"year": -2939, "approx": true, "label": "before 987 AM (c. 2939 BC)", "yearSource": "johnson"},
+ "fulfilled": {"year": 1611, "approx": true, "label": "AD 976–1675 (Reformation; e.g. KJV 1611)", "yearSource": "johnson", "m": null, "d": null, "cal": null},
+ "fulfilment": "Protestant Reformation",
+ "status": "fulfilled",
+ "summary": "The eighth week, one of righteousness, is given a sword against oppressors, and a house is built for the Great King. Johnson applies this to the Reformation: churches cleared of idols, and the Geneva and King James Bibles spreading Scripture, with completion in 5501–5600 AM (AD 1576–1675).",
+ "agreement": ["Ken Johnson"],
+ "dss": "4Q212 (4QEn-g)",
+ "sources": [
+  {"name": "dsscalendar.org Enoch 8", "url": "https://dsscalendar.org/e/Enoch8.html"}
+ ]
+},
+{
+ "id": "dss-4qen-week-9-israel-reestablished",
+ "title": "Enoch's 9th week: righteous judgment revealed (Israel 1948)",
+ "prophecy": "1 Enoch 91:14",
+ "prophet": "Enoch",
+ "given": {"year": -2939, "approx": true, "label": "before 987 AM (c. 2939 BC)", "yearSource": "johnson"},
+ "fulfilled": {"year": 1948, "approx": false, "label": "14 May 1948 (5873 AM)", "yearSource": "johnson", "m": 5, "d": 14, "cal": "gregorian"},
+ "fulfilment": "Ezekiel 37:21-22",
+ "status": "partial",
+ "summary": "In week 9 (AD 1676–2375 on Johnson's count) righteous judgment is revealed to the whole world and the world is marked for destruction. Johnson takes the rebirth of Israel in 5873 AM (1948) as the opening sign, 120 years before his proposed Tribulation start (c. 2068).",
+ "agreement": ["Ken Johnson"],
+ "dss": "4Q212 (4QEn-g)",
+ "sources": [
+  {"name": "dsscalendar.org Enoch 9", "url": "https://dsscalendar.org/e/Enoch9.html"}
+ ]
+},
+{
+ "id": "dss-4qen-week-9-tribulation-and-millennium",
+ "title": "Enoch's 9th week: world written down for destruction, then Millennium",
+ "prophecy": "1 Enoch 91:14",
+ "prophet": "Enoch",
+ "given": {"year": -2939, "approx": true, "label": "before 987 AM (c. 2939 BC)", "yearSource": "johnson"},
+ "fulfilled": null,
+ "fulfilment": "Revelation 6–20",
+ "status": "future",
+ "summary": "Johnson reads the rest of week 9 as the seven-year Tribulation, possibly starting about March 2067–2068, followed by the Messiah's thousand-year reign from 6000/6001 AM (AD 2075–2076), which the Zadok priests are said to have expected.",
+ "agreement": ["Ken Johnson"],
+ "dss": "4Q212 (4QEn-g)",
+ "sources": [
+  {"name": "dsscalendar.org Enoch 9", "url": "https://dsscalendar.org/e/Enoch9.html"},
+  {"name": "dsscalendar.org Enoch 10 (Second Coming window 5901–6000 AM)", "url": "https://dsscalendar.org/e/Enoch10.html"}
+ ]
+},
+{
+ "id": "dss-4qen-week-10-great-judgment-new-heaven",
+ "title": "Enoch's 10th week: eternal judgment and a new heaven",
+ "prophecy": "1 Enoch 91:15-16",
+ "prophet": "Enoch",
+ "given": {"year": -2939, "approx": true, "label": "before 987 AM (c. 2939 BC)", "yearSource": "johnson"},
+ "fulfilled": null,
+ "fulfilment": "Revelation 20:11–21:1",
+ "status": "future",
+ "summary": "In the seventh part of the tenth week, God judges the Watchers, and the first heaven passes away for a new one. Johnson equates this with the Great White Throne judgment in the last century of the Millennium, 6901–7000 AM (AD 2975–3075).",
+ "agreement": ["Ken Johnson"],
+ "dss": "4Q212 (4QEn-g)",
+ "sources": [
+  {"name": "dsscalendar.org Enoch 10", "url": "https://dsscalendar.org/e/Enoch10.html"}
+ ]
+}
+]

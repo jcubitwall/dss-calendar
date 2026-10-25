@@ -20,16 +20,18 @@ const dir = new URL('../data/prophecy/', import.meta.url);
 const out = [], seen = new Set(), seenPair = new Set(), problems = [];
 for (const f of readdirSync(dir).filter(f => f.endsWith('.json')).sort()) {
   for (const p of JSON.parse(readFileSync(new URL(f, dir)))) {
-    const pair = `${(p.prophecy || '').toLowerCase()}|${(p.fulfilment || '').toLowerCase()}|${(p.title || '').toLowerCase().slice(0, 20)}`;
+    const pair = p.num ? `#${p.num}` : `${(p.prophecy || '').toLowerCase()}|${(p.fulfilment || '').toLowerCase()}|${(p.title || '').toLowerCase().slice(0, 20)}`;
     if (seen.has(p.id) || seenPair.has(pair)) { problems.push(`${f}: duplicate ${p.id}`); continue; }
     const g = pos(p.given), fl = p.status === 'future' ? null : pos(p.fulfilled);
     if (!g) { problems.push(`${f}: ${p.id} has no given year`); continue; }
     if (p.status !== 'future' && !fl) { problems.push(`${f}: ${p.id} has no fulfilment year`); continue; }
+    if (fl && g.am > fl.am && g.am - fl.am < 1) g.am = fl.am - 0.01; // same year: foretold just before
     if (fl && fl.am < g.am - 1) { problems.push(`${f}: ${p.id} fulfilled before given`); continue; }
     seen.add(p.id); seenPair.add(pair);
     out.push({
       id: p.id, t: p.title, ref: p.prophecy || '', who: p.prophet || '', g, f: fl, fr: p.fulfilment || '',
       ...(p.status !== 'fulfilled' && p.expected ? { x: pos(p.expected) } : {}),
+      ...(p.num ? { n: p.num } : {}), ...(p.section ? { sec: p.section } : {}), ...(p.notJohnson ? { nj: 1 } : {}),
       st: p.status || 'fulfilled', s: p.summary || '', a: p.agreement || [], dss: p.dss || '',
       src: (p.sources || []).map(s => ({ n: s.name, u: s.url || '' })), ys: [p.given?.yearSource, p.fulfilled?.yearSource].filter(Boolean),
     });

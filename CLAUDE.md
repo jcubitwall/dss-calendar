@@ -25,6 +25,9 @@ Owner: Johnny Wall. Static web app, deployed on Cloudflare Pages from GitHub (`m
 
 17. Passion week (owner, Oct 2026): use Ken Johnson's dates — Thursday Nisan 14 crucifixion, Sunday Nisan 17 resurrection, Sunday Sivan 6 Pentecost (lunar reckoning), civil dates counted from his April 6, AD 32 (Nisan 10): anointing Fri 4 Apr, entry Sun 6 Apr, crucifixion Thu 10 Apr, resurrection Sun 13 Apr (= DSS 26 Nisan, First Fruits), Pentecost Sun 1 Jun (= DSS 15 Sivan). Replaces dsscalendar.org's "Nisan 14" on the DSS calendar (a Tuesday).
 
+18. Prophecy category (owner, Oct 2026): arrows from when foretold to when fulfilled (arcs on the line, chords on the wheel). Backbone = Ken Johnson's "Ancient Prophecies Revealed" #1–485, transcribed from the owner's copy into data/prophecy/johnson-table.tsv (fulfilled, with his years) and johnson-future.tsv (future, by section), plus johnson-tisha-bav.tsv. The book's BC years are shifted 1–2 years to Johnson's AM chronology (label shows "book: …"). "Foretold" dates are approximate prophet dates unless a researcher matched a better one. Other teachers / Dead Sea Scrolls items (research/*.json) appear when "Add other teachers & scrolls" is on. Future prophecies hidden unless "Include yet-future".
+   Rebuild: node scripts/build-johnson.mjs && node scripts/build-prophecies.mjs
+
 ## Where things are
 - Engine: `engine/dss.js` (pure). Table: `scripts/build-table.mjs`. Tests: `scripts/test-engine.mjs` (must pass).
 - Events: edit `data/sources/*.json`, then `node scripts/build-events.mjs`. Bible: `data/bible/` + `scripts/build-bible.mjs`.

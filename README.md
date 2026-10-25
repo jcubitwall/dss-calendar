@@ -40,6 +40,14 @@ python3 -m http.server          # preview at http://localhost:8000
 - **Print or save**: posters from Letter to 72 × 24 in, exported as vector PDF or SVG, or sent to the printer. The dialog shows the smallest text size so you can pick a paper that keeps it readable.
 - **Live lookup**: search any person, place or event; Wikipedia/Wikidata dates are converted to the DSS calendar (labelled as secular dating).
 
+## Prophecy
+
+Turn on **Prophecy** to see an arrow from each prediction to its fulfilment. The list follows Ken Johnson's *Ancient Prophecies Revealed* (#1–485, his numbers, references and years), with other evangelical and Dead Sea Scroll items available as an option.
+
+- `data/prophecy/johnson-table.tsv`, `johnson-future.tsv`: the book's tables
+- `data/prophecy/research/*.json`: researched items (summaries, cross-references, scroll links)
+- `node scripts/build-johnson.mjs && node scripts/build-prophecies.mjs` → `data/prophecies.json`
+
 ## Bible events
 
 `data/bible/dated-verses.json` lists every event Scripture dates by month (and usually day). `scripts/build-bible.mjs` places each in an AM year and records the basis:
