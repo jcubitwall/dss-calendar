@@ -28,10 +28,10 @@ let PROPHECIES = [];
 const propOn = () => settings.show.prophecy === true;
 if (settings.propAll == null) settings.propAll = false;
 if (settings.propFuture == null) settings.propFuture = false;
-const propList = () => (!propOn() ? [] : PROPHECIES.filter(p => (settings.propAll || p.n) && (settings.propFuture || p.f)));
+const propList = () => (!propOn() ? [] : PROPHECIES.filter(p => (settings.propAll || p.kj) && (settings.propFuture || p.f)));
 function propBar() {
   if (!propOn()) return '';
-  const nJ = PROPHECIES.filter(p => p.n && (settings.propFuture || p.f)).length;
+  const nJ = PROPHECIES.filter(p => p.kj && (settings.propFuture || p.f)).length;
   return `<div class="filters prop-bar" role="group" aria-label="Prophecy options">
     <button class="chip" data-pset="j" aria-pressed="${!settings.propAll}">Johnson's list (${nJ})</button>
     <button class="chip" data-pset="all" aria-pressed="${settings.propAll}">Add other teachers &amp; scrolls</button>
