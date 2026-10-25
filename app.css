@@ -341,3 +341,32 @@ dialog::backdrop { background: rgba(5, 25, 30, .4); }
 .coming::-webkit-scrollbar { display: none; }
 .coming-item { flex: 0 0 auto; width: 158px; scroll-snap-align: start; }
 @media (min-width: 900px) { .coming { margin: 0; padding: 2px 0 6px; flex-wrap: wrap; } }
+
+/* In-app reader */
+dialog.reader { max-width: 760px; width: calc(100% - 32px); height: 92vh; max-height: 92vh; }
+.reader-sheet { display: flex; flex-direction: column; height: 92vh; padding: 0; }
+.reader-bar { display: flex; align-items: center; gap: 6px; padding: 8px 8px 8px 6px; border-bottom: 1px solid var(--line); background: var(--card); position: sticky; top: 0; z-index: 1; }
+.reader-bar .r-back { font-size: 30px; line-height: 1; color: var(--brine); }
+.r-title { flex: 1; min-width: 0; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; }
+.r-done { border: 0; background: none; color: var(--brine); font-weight: 700; font-size: 17px; padding: 8px 10px; }
+.reader-body { flex: 1; overflow: auto; padding: 6px 20px 24px; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; font: 400 18px/1.6 var(--serif); }
+.reader-ext { display: flex; gap: 18px; justify-content: center; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); font-size: 15px; }
+.r-h1 { font: 500 30px/1.15 var(--serif); color: var(--brine); margin: 14px 0 10px; }
+.r-wiki h2 { font: 500 24px/1.2 var(--serif); margin: 26px 0 6px; color: var(--ink); }
+.r-wiki h3 { font: 700 17px var(--sans); margin: 20px 0 4px; }
+.r-wiki p { margin: 10px 0; }
+.r-wiki a[data-wiki] { color: var(--brine-2); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--brine-2) 35%, transparent); }
+.r-wiki img { max-width: 100%; height: auto; border-radius: 8px; }
+.r-wiki figure { margin: 14px 0; }
+.r-wiki figcaption { font: 400 14px/1.4 var(--sans); color: var(--ink-2); margin-top: 4px; }
+.r-wiki table { display: block; overflow-x: auto; border-collapse: collapse; font: 400 14px/1.4 var(--sans); max-width: 100%; }
+.r-wiki td, .r-wiki th { border: 1px solid var(--line); padding: 4px 8px; vertical-align: top; }
+.r-wiki .infobox { background: var(--salt-2); border-radius: 10px; margin: 8px 0 14px; }
+.r-wiki ul, .r-wiki ol { padding-left: 22px; }
+.r-bible .r-v { margin: 0 0 8px; }
+.r-bible sup { font: 700 11px var(--sans); color: var(--ink-2); margin-right: 5px; }
+.r-bible .r-v.hi { background: var(--sun-soft); border-radius: 6px; padding: 2px 6px; margin-left: -6px; margin-right: -6px; }
+.r-note { margin-top: 26px; }
+.r-loading { text-align: center; padding: 40px 0; }
+.hitem.nolink::after { display: none; }
+@media (max-width: 599px) { dialog.reader { width: 100%; height: 96vh; max-height: 96vh; } .reader-sheet { height: 96vh; border-radius: 16px 16px 0 0; } }

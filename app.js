@@ -1,6 +1,7 @@
 import * as D from './engine/dss.js';
 import * as L from './lookup.js';
 import * as TL from './timeline.js';
+import * as R from './reader.js';
 
 const DATA_V = '2026-10-24b';   // bump when data files change, so phones fetch the new copy
 const $ = s => document.querySelector(s);
@@ -193,7 +194,7 @@ function dayHtml(jdn, mode = 'page') {
       <button class="pill" data-act="share">Share day</button>
     </div>`;
 }
-function renderDay() { $('#view-day').innerHTML = dayHtml(sel, 'page'); }
+function renderDay() { $('#view-day').innerHTML = dayHtml(sel, 'page'); loadOtd(); }
 function renderSide() {
   if (!wide()) return;
   const html = dayHtml(sel, 'panel');
@@ -252,7 +253,53 @@ function historySections(x, jdn, mode) {
       ${n > cap ? `<button class="linkbtn more-btn" data-more="${id}">Show all ${n}</button>` : ''}
     </section>`;
   }
+  if (mode === 'page' && settings.show.secular !== false) {
+    const g = D.jdnToGreg(jdn);
+    out += `<section class="hsec hsec-otd" id="otd" data-m="${g.m}" data-d="${g.d}">
+      <h2 class="hsec-h"><i style="background:${TL.TYPES.secular.color}"></i>More on ${g.d} ${MONTH_FULL[g.m - 1]}<span class="hsec-n" id="otdN"></span></h2>
+      <p class="hsec-sub">From Wikipedia's On this day, with each event's date on this calendar</p>
+      <ul class="hlist" id="otdList"><li class="sub-h">Loading…</li></ul>
+    </section>`;
+  }
   return out;
+}
+// Live "On this day" from Wikipedia (Gregorian month/day), each converted to its DSS date
+const otdCache = new Map();
+async function loadOtd() {
+  const sec = $('#otd'); if (!sec) return;
+  const key = `${sec.dataset.m}/${sec.dataset.d}`;
+  const go = async () => {
+    try {
+      if (!otdCache.has(key)) {
+        const mm = String(sec.dataset.m).padStart(2, '0'), dd = String(sec.dataset.d).padStart(2, '0');
+        const r = await fetch(`https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/${mm}/${dd}`);
+        if (!r.ok) throw new Error(r.status);
+        otdCache.set(key, (await r.json()).events || []);
+      }
+      if (!document.body.contains(sec)) return;
+      const evs = otdCache.get(key).slice().sort((a, b) => a.year - b.year);
+      const cap = 8;
+      const items = evs.map((e, i) => {
+        const y = e.year <= 0 ? e.year + 1 : e.year;     // feed gives 44 BC as -44
+        const jul = y < 1582;
+        const j = jul ? D.julToJdn(y, +sec.dataset.m, +sec.dataset.d) : D.gregToJdn(y, +sec.dataset.m, +sec.dataset.d);
+        const x = D.fromJdn(j);
+        const pg = (e.pages || [])[0];
+        const when = x ? `${esc(D.WEEKDAYS[x.weekday].slice(0, 3))} · ${esc(dssShort(x))} · ${esc(D.yearLabel(y))}` : esc(D.yearLabel(y));
+        const title = pg ? `data-wiki="${esc(pg.title)}"` : '';
+        return `<li${i >= cap ? ' class="x"' : ''}><button class="hitem${pg ? '' : ' nolink'}" ${title}><span class="h-when">${when}${jul ? ' · Julian' : ''}</span><span class="h-title">${esc(e.text)}</span>${pg?.description ? `<span class="h-note">${esc(pg.normalizedtitle || pg.title.replace(/_/g, ' '))} — ${esc(pg.description)}</span>` : ''}</button></li>`;
+      });
+      $('#otdList').innerHTML = items.join('') || '<li class="sub-h">No events listed for this date.</li>';
+      $('#otdList').classList.toggle('capped', items.length > cap);
+      $('#otdN').textContent = items.length || '';
+      if (items.length > cap) sec.insertAdjacentHTML('beforeend', `<button class="linkbtn more-btn" data-more="otd">Show all ${items.length}</button>`);
+    } catch {
+      if (document.body.contains(sec)) $('#otdList').innerHTML = '<li class="sub-h">Couldn\'t reach Wikipedia. Check your connection and try again.</li>';
+    }
+  };
+  // fetch only when the section scrolls near the screen
+  const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); go(); } }, { rootMargin: '600px' });
+  io.observe(sec);
 }
 function histItem(e, exact, extra) {
   const x = D.fromJdn(e.j), c = D.jdnToCivil(e.j);
@@ -666,8 +713,8 @@ async function openEvent(id) {
     <div id="evRead" class="ev-read"></div>
     <p class="lk-links">${links.join(' ')}</p>
     <div class="pr-actions">
-      <button type="button" class="btn" data-openday="${e.j}">Open this day</button>
-      <button type="button" class="btn ghost" value="close" onclick="this.closest('dialog').close()">Back to where I was</button>
+      ${ref ? `<button type="button" class="btn" data-bible="${esc(ref)}">Read the chapter</button>` : wt ? `<button type="button" class="btn" data-wiki="${esc(wt)}">Read the full article</button>` : ''}
+      <button type="button" class="btn ghost" data-openday="${e.j}">Open this day</button>
     </div>`;
   $('#eventDlg').showModal();
   $('#eventDlg').scrollTop = 0;
@@ -726,13 +773,12 @@ function openProphecy(id) {
     ${p.dss ? `<p class="basis">Dead Sea Scrolls: ${esc(p.dss)}</p>` : ''}
     ${p.a.length ? `<p class="small">Taught by: ${p.a.map(a => `<span class="badge teal">${esc(a)}</span>`).join(' ')}</p>` : ''}
     ${basis ? `<p class="basis">Years: ${esc(basis)}</p>` : ''}
-    <h3 class="lk-h">The prophecy</h3><div id="pv1"></div>
-    ${p.fr && /\d+:\d+/.test(p.fr) ? '<h3 class="lk-h">The fulfilment</h3><div id="pv2"></div>' : ''}
+    <h3 class="lk-h">The prophecy <button type="button" class="linkbtn" data-bible="${esc(p.ref.split(';')[0])}">Read the chapter</button></h3><div id="pv1"></div>
+    ${p.fr && /\d+:\d+/.test(p.fr) ? `<h3 class="lk-h">The fulfilment <button type="button" class="linkbtn" data-bible="${esc(p.fr.split(';')[0])}">Read the chapter</button></h3><div id="pv2"></div>` : ''}
     ${p.src.length ? `<p class="lk-links">${p.src.map(x => x.u ? `<a href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.n)}</a>` : `<span class="muted small">${esc(x.n)}</span>`).join(' ')}</p>` : ''}
     <div class="pr-actions">
       <button type="button" class="btn" data-pjump="${esc(p.id)}" data-end="g">Show where it was foretold</button>
       ${p.f || p.x ? `<button type="button" class="btn" data-pjump="${esc(p.id)}" data-end="f">${p.f ? 'Show its fulfilment' : 'Show the expected time'}</button>` : ''}
-      <button type="button" class="btn ghost" onclick="this.closest('dialog').close()">Back to where I was</button>
     </div>`;
   $('#eventDlg').showModal(); $('#eventDlg').scrollTop = 0;
   verse(p.ref, $('#pv1'));
@@ -819,6 +865,8 @@ async function doPdf(btn) {
 // ---------- Events wiring ----------
 document.addEventListener('click', e => {
   const t = e.target.closest('button, [data-j], [data-go], [data-ev], [data-pr]'); if (!t) return;
+  if (t.dataset.wiki) { R.openWiki(t.dataset.wiki); return; }
+  if (t.dataset.bible) { R.openBible(t.dataset.bible); return; }
   if (t.dataset.ev && t.dataset.ev.startsWith('p:')) { openProphecy(t.dataset.ev.slice(2)); return; }
   if (t.dataset.ev) { openEvent(t.dataset.ev); return; }
   if (t.dataset.pr) { openProphecy(t.dataset.pr); return; }
@@ -942,6 +990,7 @@ async function openLookup(id) {
       <h3 class="lk-h">Dates on the DSS calendar</h3>
       <ul class="lk-dates">${rows}</ul>
       <p class="lk-note">Dates come from Wikidata and follow standard (secular) dating. For people and events in Scripture, the app's biblical timeline follows the Bible's own dates and Ken Johnson's chronology.</p>
+      ${x.wikiUrl ? `<div class="pr-actions"><button type="button" class="btn" data-wiki="${esc(wikiTitle(x.wikiUrl))}">Read the full article</button></div>` : ''}
       <p class="lk-links">${x.wikiUrl ? `<a href="${esc(x.wikiUrl)}" target="_blank" rel="noopener">Wikipedia</a> <a href="https://grokipedia.com/page/${encodeURIComponent(wikiTitle(x.wikiUrl).replace(/ /g, '_'))}" target="_blank" rel="noopener">Grokipedia</a>` : ''} <a href="${esc(x.wikidataUrl)}" target="_blank" rel="noopener">Wikidata</a></p>`;
     lookupCurrent = x;
   } catch (e) {

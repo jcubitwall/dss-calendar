@@ -30,6 +30,8 @@ Owner: Johnny Wall. Static web app, deployed on Cloudflare Pages from GitHub (`m
 
 19. UI (owner, Oct 2026, "speed up, minimal, great on iPhone/iPad"): Today tab is the home page (hero date + mini year ring, swipeable week strip, events on this day, Coming up feasts, same date in other years, calendar details collapsed). iPhone: bottom tab bar, bottom sheets, tapping a day in Month/Year opens a day sheet. iPad/desktop ≥900px: top pill tabs, Month/Year show the day in a side panel. Timeline line view is virtualized (only rows near the screen are in the DOM); History builds in chunks of 150. prophecies.json (600 KB) and Astronomy Engine load lazily. sw.js caches the app for offline / Home Screen use (bump CACHE name when core files change).
 
+20. Today history + reader (owner, Oct 2026): scrolling Today shows Bible history → Dead Sea Scrolls & Essenes (type `scrolls`, data/sources/scrolls.json) → Church → World → Yours, each "On this date", then "Also this week" (same DSS-week slots), else "Next on this calendar". Below World, a live "More on <date>" feed from Wikipedia's On this day (each item converted to its DSS date). Every title is a link: reader.js opens the full Wikipedia article or whole KJV chapter in-app; links inside open in the same reader with ‹ Back; Done returns to the exact scroll position. Not hand-adding "everything" — the live feed + reader cover breadth; curated sources stay for DSS-relevant items.
+
 ## Where things are
 - Engine: `engine/dss.js` (pure). Table: `scripts/build-table.mjs`. Tests: `scripts/test-engine.mjs` (must pass).
 - Events: edit `data/sources/*.json`, then `node scripts/build-events.mjs`. Bible: `data/bible/` + `scripts/build-bible.mjs`.
