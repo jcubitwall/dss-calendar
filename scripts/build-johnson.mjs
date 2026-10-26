@@ -56,7 +56,8 @@ const MOSES = { exo: -1478, lev: -1477, num: -1477, deu: -1438, jos: -1438 };
 function givenFor(pred, fulfilled) {
   const k = refKey(pred); const label = y => (y <= 0 ? `c. ${-y} BC` : `c. AD ${y}`);
   let y = null;
-  if (!k) {
+  if (/esdras/i.test(pred || '')) y = -458;               // Johnson places 2 Esdras in Ezra's day
+  else if (!k) {
     if (/josephus/i.test(pred)) y = -3200;                   // Adam's prediction (Josephus, Ant. 1.2.3)
     else if (/esdras/i.test(pred)) y = -458;                 // Johnson places 2 Esdras in Ezra's day
     else if (/jonah/i.test(pred)) y = -760;
@@ -120,12 +121,15 @@ function match(num, pred, fy) {
 const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48);
 const SRC = n => ({ name: `Ancient Prophecies Revealed, #${n}`, url: 'https://biblefacts.org' });
 const out = [];
-for (const [n, yr, title, pred, ful] of tsv('johnson-table.tsv')) {
+for (let [n, yr, title, pred, ful] of tsv('johnson-table.tsv')) {
   const num = +n, bookY = +yr, fy = adjust(bookY);
   const m = match(num, pred, fy); if (m) used.add(m);
   const fl = { year: fy, approx: false, label: fy <= 0 ? `${-fy} BC` : `AD ${fy}`, yearSource: 'johnson' };
   if (DAY[num]) { const [y, mo, d, cal] = DAY[num]; Object.assign(fl, { year: y, m: mo, d, cal }); }
   if (bookY !== fy) fl.label += ` (book: ${-bookY} BC)`;
+  // Prophecies with no verse in the table: the Ninth-of-Av calamities trace to Numbers 14; the eagle vision is 2 Esdras 11.
+  if (!pred && NINTH_OF_AV.has(num)) pred = 'Num. 14 (Ninth of Av)';
+  if (!pred && /esdras apocalypse/i.test(ful || '')) pred = '2 Esdras 11-12 (Esdras Apocalypse)';
   let given = m?.given?.year != null ? { ...m.given } : givenFor(pred, fy);
   if (m && /p[12]-/.test(m._f) && m.given?.yearSource === 'johnson' && adjust(given.year) !== given.year) {
     given.year = adjust(given.year); given.label = (given.approx ? 'c. ' : '') + (given.year <= 0 ? `${-given.year} BC` : `AD ${given.year}`);
