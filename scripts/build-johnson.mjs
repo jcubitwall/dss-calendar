@@ -51,7 +51,7 @@ const BYBOOK = {
 };
 const GEN = [[3, -3925], [4, -3925], [6, -2390], [9, -2270], [11, -1933], [12, -1903], [13, -1902], [15, -1908],
   [17, -1879], [18, -1879], [21, -1876], [22, -1850], [26, -1800], [28, -1760], [37, -1716], [41, -1706], [46, -1688], [49, -1671]];
-const DAN = { 2: -604, 4: -583, 5: -537, 7: -553, 8: -551, 9: -537, 10: -535, 11: -535, 12: -535 };
+const DAN = { 2: -604, 4: -583, 5: -537, 7: -553, 8: -551, 9: -536, 10: -535, 11: -535, 12: -535 };
 const MOSES = { exo: -1478, lev: -1477, num: -1477, deu: -1438, jos: -1438 };
 function givenFor(pred, fulfilled) {
   const k = refKey(pred); const label = y => (y <= 0 ? `c. ${-y} BC` : `c. AD ${y}`);
@@ -83,7 +83,7 @@ const DAY = {
   244: [32, 4, 13, 'julian'],
   246: [32, 6, 1, 'julian'], 247: [32, 6, 1, 'julian'], 248: [32, 6, 1, 'julian'], 249: [32, 6, 1, 'julian'], 251: [32, 6, 1, 'julian'], 252: [32, 6, 1, 'julian'],
   265: [70, 8, 4, 'julian'], 267: [70, 8, 4, 'julian'], 268: [70, 8, 4, 'julian'],
-  288: [1090, 7, 14, 'julian'], 289: [1095, 7, 14, 'julian'], 290: [1290, 7, 18, 'julian'], 291: [1492, 8, 2, 'julian'],
+  289: [1095, 7, 14, 'julian'], 290: [1290, 7, 18, 'julian'], 291: [1492, 8, 2, 'julian'],
   296: [1914, 8, 1, 'gregorian'], 302: [1942, 7, 10, 'gregorian'],
   306: [1948, 5, 14, 'gregorian'], 309: [1948, 5, 14, 'gregorian'], 316: [1948, 5, 14, 'gregorian'],
   330: [1967, 6, 7, 'gregorian'],
@@ -121,17 +121,68 @@ function match(num, pred, fy) {
   return best;
 }
 
+
+// ---- Audit fixes (Oct 2026) -----------------------------------------------------------------
+// Research notes that were attached to the wrong Johnson entry: ignore the match.
+const NOMATCH = new Set([100, 123, 124, 155, 241, 315, 325, 329, 332, 335, 338, 343, 347, 360, 394, 439, 475]);
+// Keep the research item's dates but not its note.
+const NOSUM = new Set([186, 217, 234, 249]);
+// "Foretold" dates fixed by hand: [year (negative = BC), label]; 'f' = same as the fulfilment.
+const GFIX = {
+  13: 'f', 15: 'f', 29: 'f', 49: 'f', 53: 'f', 55: 'f', 56: 'f', 58: 'f', 63: 'f',
+  14: [-1710, 'c. 1710 BC (Joseph aged 17)'], 31: [-1070, 'c. 1070 BC'], 132: [-3925, '3925 BC (the Fall)'],
+  47: [-1438, 'c. 1438 BC (fall of Jericho)'], 157: [-1438, 'c. 1438 BC (end of the wilderness years)'],
+  172: [-1438, 'c. 1438 BC (Moses on the plains of Moab)'], 279: [-1438, 'c. 1438 BC (Moses on the plains of Moab)'],
+  214: [-1478, 'c. 1478 BC (Exodus / Sinai)'], 138: [-1007, 'c. 1007 BC (Nathan)'], 158: [-710, 'c. 710 BC'], 159: [-2, 'c. 2 BC'],
+  248: [32, 'night of 9-10 Apr AD 32'], 249: [32, 'night of 9-10 Apr AD 32'], 271: [32, 'night of 9-10 Apr AD 32'],
+  373: [51, 'c. AD 51'], 387: [51, 'c. AD 51'], 394: [-430, 'c. 430 BC'], 439: [-480, 'c. 480 BC (Zechariah 9-14)'], 475: [57, 'c. AD 57'],
+};
+// Fulfilment year fixed by hand where the book's year contradicts the Bible's own sequence.
+const FFIX = { 14: [-1689, 'c. 1689 BC (book: 1876 BC)'] };
+// Where secular dating differs from the book's year, say so (source priority: the book's year is shown).
+const SECULAR = {
+  86: 'Secular dating: Babylon fell to Cyrus in 539 BC.', 88: 'Secular dating: Lydia fell to Cyrus c. 547-546 BC.',
+  99: 'Secular dating: Alexander took Tyre in 332 BC.', 105: 'Secular dating: Seleucus regained Babylon after the battle of Gaza, 312 BC.',
+  106: 'Secular dating: the marriage was c. 252 BC.', 107: 'Secular dating: Antiochus II and Berenice died in 246 BC.',
+  119: 'Secular dating: Onias III was deposed in 175 BC and killed c. 171 BC.', 264: 'Secular dating: James was stoned c. AD 62 (Josephus, Antiquities 20.9.1).',
+  287: 'Secular dating: the East-West Schism is usually dated 1054.', 292: 'Secular dating: the Golden Gate was walled up c. 1541 under Suleiman; the Ottomans took Jerusalem in 1517.',
+  301: 'Secular dating: the Republic of Turkey was proclaimed in 1923.', 288: '',
+};
+const NOTE_ADD = {
+  124: "Micah says the ruler from Bethlehem has goings forth \"from of old, from everlasting\"; John 1:1, 14 calls him the Word who was with God in the beginning and was made flesh.",
+  155: "Micah named Bethlehem Ephratah as the birthplace of Israel's ruler; Jesus was born there, and the scribes quoted Micah to Herod (Matt. 2:4-6).",
+};
+// One date per prophet section, so the same chapter is never dated two ways.
+function canonGiven(pred, g) {
+  if (!g || g.yearSource === 'johnson') return g;
+  const k = refKey(pred); if (!k) return g;
+  let y = null, lbl = null;
+  if (k.b === 'isa' && k.c === 7) y = -735; else if (k.b === 'isa' && (k.c === 8 || k.c === 9)) y = -734;
+  else if (k.b === 'zec') { y = k.c <= 8 ? -518 : -480; lbl = k.c <= 8 ? 'c. 518 BC' : 'c. 480 BC (Zechariah 9-14)'; }
+  else if (k.b === 'dan' && k.c === 9) { y = -536; lbl = '536 BC (1st year of Darius the Mede)'; }
+  else if (k.b === 'dan' && k.c >= 10) { y = -535; lbl = 'c. 535 BC (3rd year of Cyrus)'; }
+  else if (k.b === 'joe') y = -835;
+  if (y == null) return g;
+  return { year: y, approx: !/^536/.test(lbl || ''), label: lbl || `c. ${-y} BC`, yearSource: 'derived' };
+}
+
+// Research notes written before the book was available may say Johnson's view couldn't be found, or that a reference is inferred; drop those sentences.
+const cleanNote = t => (t || '').split(/(?<=\.)\s+/).filter(x => !(/Johnson/.test(x) && /(not use|does not|doesn't|not found|could not|couldn't|no Johnson|unconfirmed|visible|did not)/i.test(x)) && !/could not be read|not seen|reference here is inferred|verse he uses could not/i.test(x)).join(' ');
 // ---- Build Johnson items ------------------------------------------------------------------
 const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48);
 const SRC = n => ({ name: `Ancient Prophecies Revealed, #${n}`, url: 'https://biblefacts.org' });
 const out = [];
 for (let [n, yr, title, pred, ful] of tsv('johnson-table.tsv')) {
   const num = +n, bookY = +yr, fy = adjust(bookY);
-  const m = match(num, pred, fy); if (m) used.add(m);
+  // a wrongly matched research item is still consumed here, so it cannot drift onto a neighbouring entry
+  const mr = match(num, pred, fy); if (mr) used.add(mr);
+  const m0 = NOMATCH.has(num) ? null : mr;
+  const m = m0 && NOSUM.has(num) ? { ...m0, summary: '', fulfilment: '' } : m0;
   const fl = { year: fy, approx: false, label: fy <= 0 ? `${-fy} BC` : `AD ${fy}`, yearSource: 'johnson' };
   if (DAY[num]) { const [y, mo, d, cal] = DAY[num]; Object.assign(fl, { year: y, m: mo, d, cal }); }
   if (bookY !== fy) fl.label += ` (book: ${-bookY} BC)`;
   if (APPROX[num]) Object.assign(fl, { approx: true, label: APPROX[num] });
+  if (FFIX[num]) Object.assign(fl, { year: FFIX[num][0], approx: true, label: FFIX[num][1] });
   // Prophecies with no verse in the table: the Ninth-of-Av calamities trace to Numbers 14; the eagle vision is 2 Esdras 11.
   if (!pred && NINTH_OF_AV.has(num)) pred = 'Num. 14 (Ninth of Av)';
   if (!pred && /esdras apocalypse/i.test(ful || '')) pred = '2 Esdras 11-12 (Esdras Apocalypse)';
@@ -139,26 +190,31 @@ for (let [n, yr, title, pred, ful] of tsv('johnson-table.tsv')) {
   if (m && /p[12]-/.test(m._f) && m.given?.yearSource === 'johnson' && adjust(given.year) !== given.year) {
     given.year = adjust(given.year); given.label = (given.approx ? 'c. ' : '') + (given.year <= 0 ? `${-given.year} BC` : `AD ${given.year}`);
   }
-  if (given.year > fy) given = givenFor(pred, fy);
+  given = canonGiven(pred, given);
+  if (GFIX[num]) given = GFIX[num] === 'f' ? { year: fl.year, approx: true, label: 'c. ' + fl.label.replace(/ \(book.*$/, ''), yearSource: 'derived' } : { year: GFIX[num][0], approx: /^c\./.test(GFIX[num][1]), label: GFIX[num][1], yearSource: 'derived' };
+  if (given.year > fl.year) given = givenFor(pred, fl.year);
   // Research notes written before the book was available may say Johnson's view couldn't be found; drop those.
-  const clean = t => (t || '').split(/(?<=\.)\s+/).filter(x => !(/Johnson/.test(x) && /(not use|does not|doesn't|not found|could not|couldn't|no Johnson|unconfirmed|visible|did not)/i.test(x))).join(' ');
-  if (m) m.summary = clean(m.summary);
-  const notes = [NOTE[num], CORR[num], NINTH_OF_AV.has(num) ? "Johnson lists this among the calamities that fell on the Ninth of Av (Tisha B'Av)." : '', m?.summary].filter(Boolean);
+  const clean = t => (t || '').split(/(?<=\.)\s+/).filter(x => !(/Johnson/.test(x) && /(not use|does not|doesn't|not found|could not|couldn't|no Johnson|unconfirmed|visible|did not)/i.test(x)) && !/could not be read|not seen|reference here is inferred|verse he uses could not/i.test(x)).join(' ');
+  if (m) m.summary = cleanNote(m.summary);
+  const notes = [NOTE[num], NOTE_ADD[num], CORR[num], SECULAR[num], NINTH_OF_AV.has(num) ? "Johnson lists this among the calamities that fell on the Ninth of Av (Tisha B'Av)." : '', m?.summary].filter(Boolean);
   out.push({
     id: `apr-${num}`, num, title, prophecy: pred || (NINTH_OF_AV.has(num) ? 'Num. 14 (Ninth of Av)' : ''),
     prophet: m?.prophet || '', given, fulfilled: fl, fulfilment: ful || m?.fulfilment || '',
-    status: num === 38 || num === 28 || num === 137 ? 'partial' : 'fulfilled',
+    status: num === 38 || num === 28 ? 'partial' : 'fulfilled',
     summary: notes.join(' '), agreement: [...new Set(['Ken Johnson', ...(m?.agreement || [])])], dss: m?.dss || '',
     sources: [SRC(num), ...(m?.sources || []).filter(s => !/Ancient Prophecies Revealed/.test(s.name))],
   });
 }
 for (const [n, section, title, refs] of tsv('johnson-future.tsv')) {
   const num = +n;
-  const m = match(num, refs, null); if (m) used.add(m);
+  const mr = match(num, refs, null); if (mr) used.add(mr);
+  const m = NOMATCH.has(num) ? null : mr;
+  let gv = canonGiven(refs, m?.given?.year != null ? m.given : givenFor(refs, null));
+  if (GFIX[num]) gv = { year: GFIX[num][0], approx: /^c\./.test(GFIX[num][1]), label: GFIX[num][1], yearSource: 'derived' };
   out.push({
     id: `apr-${num}`, num, section, title, prophecy: refs, prophet: m?.prophet || '',
-    given: m?.given?.year != null ? m.given : givenFor(refs, null), fulfilled: null, fulfilment: '',
-    status: 'future', summary: [CORR[num], m?.summary].filter(Boolean).join(' '), agreement: [...new Set(['Ken Johnson', ...(m?.agreement || [])])],
+    given: gv, fulfilled: null, fulfilment: '',
+    status: 'future', summary: [CORR[num], cleanNote(m?.summary)].filter(Boolean).join(' '), agreement: [...new Set(['Ken Johnson', ...(m?.agreement || [])])],
     dss: m?.dss || '', expected: m?.expected || null,
     sources: [SRC(num), ...(m?.sources || []).filter(s => !/Ancient Prophecies Revealed/.test(s.name))],
   });
@@ -181,8 +237,10 @@ for (const p of research.filter(p => !used.has(p))) {
   }
   if (best >= 0.6) {
     bj.agreement = [...new Set([...bj.agreement, ...(p.agreement || [])])];
-    if (!bj.dss && p.dss) bj.dss = p.dss;
-    if (!bj.summary && p.summary) bj.summary = p.summary;
+    if (!NOMATCH.has(bj.num)) {
+      if (!bj.dss && p.dss) bj.dss = p.dss;
+      if (!bj.summary && p.summary) bj.summary = cleanNote(p.summary);
+    }
     bj.sources.push(...(p.sources || []).filter(s => !/Ancient Prophecies Revealed/.test(s.name) && !bj.sources.some(t => t.name === s.name)));
     continue;
   }

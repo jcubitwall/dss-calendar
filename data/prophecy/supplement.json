@@ -7357,41 +7357,6 @@
   "notJohnson": true
  },
  {
-  "id": "zec9-philistia",
-  "title": "Ashkelon, Gaza, Ekron and Ashdod humbled; Gaza's king perishes",
-  "prophecy": "Zechariah 9:5-7",
-  "prophet": "Zechariah",
-  "given": {
-   "year": -480,
-   "approx": true,
-   "label": "c. 480 BC (Zechariah 9-14)",
-   "yearSource": "evangelical"
-  },
-  "fulfilled": {
-   "year": -332,
-   "approx": false,
-   "label": "332 BC (siege of Gaza)",
-   "yearSource": "secular",
-   "m": null,
-   "d": null,
-   "cal": null
-  },
-  "fulfilment": "History: Alexander takes Gaza and executes Batis",
-  "status": "fulfilled",
-  "summary": "The Philistine cities would see Tyre fall and tremble, and Gaza would lose its king. Alexander stormed Gaza after a two-month siege and killed its commander Batis. The other cities submitted.",
-  "agreement": [
-   "Chuck Smith",
-   "evangelical consensus"
-  ],
-  "sources": [
-   {
-    "name": "Chuck Smith, C2000 Zechariah 6-10",
-    "url": "https://www.blueletterbible.org/Comm/smith_chuck/c2000_Zec/Zec_006.cfm"
-   }
-  ],
-  "notJohnson": true
- },
- {
   "id": "zec9-jerusalem-spared",
   "title": "God will encamp about His house: Jerusalem spared",
   "prophecy": "Zechariah 9:8",
@@ -9855,40 +9820,6 @@
    {
     "name": "Ken Johnson, Ancient Messianic Festivals",
     "url": "https://pdfcoffee.com/ancient-messianic-festivals-johnson-ken-3-pdf-free.html"
-   }
-  ],
-  "notJohnson": true
- },
- {
-  "id": "john2-destroy-this-temple",
-  "title": "Destroy this temple and in three days I will raise it up",
-  "prophecy": "John 2:19-22",
-  "prophet": "Jesus",
-  "given": {
-   "year": 29,
-   "approx": true,
-   "label": "c. AD 29",
-   "yearSource": "evangelical"
-  },
-  "fulfilled": {
-   "year": 32,
-   "approx": false,
-   "label": "Sun 13 Apr AD 32 (First Fruits)",
-   "yearSource": "johnson",
-   "m": 4,
-   "d": 13,
-   "cal": "julian"
-  },
-  "fulfilment": "John 2:22; Matthew 26:61",
-  "status": "fulfilled",
-  "summary": "At his first Passover cleansing Jesus said he would raise up the 'temple' in three days, meaning his body. The disciples remembered this after he rose.",
-  "agreement": [
-   "evangelical consensus"
-  ],
-  "sources": [
-   {
-    "name": "Scripture (KJV)",
-    "url": "https://www.biblegateway.com/"
    }
   ],
   "notJohnson": true

@@ -510,9 +510,9 @@
   "prophecy": "Gen. 21:13",
   "prophet": "God",
   "given": {
-   "year": -1880,
+   "year": -1878,
    "approx": true,
-   "label": "c. 1880 BC",
+   "label": "c. 1878 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -551,15 +551,15 @@
   "prophecy": "Gen. 37:9",
   "prophet": "Joseph",
   "given": {
-   "year": -1880,
+   "year": -1710,
    "approx": true,
-   "label": "c. 1880 BC",
+   "label": "c. 1710 BC (Joseph aged 17)",
    "yearSource": "derived"
   },
   "fulfilled": {
-   "year": -1878,
-   "approx": false,
-   "label": "1878 BC (book: 1876 BC)",
+   "year": -1689,
+   "approx": true,
+   "label": "c. 1689 BC (book: 1876 BC)",
    "yearSource": "johnson"
   },
   "fulfilment": "Gen. 42:6; 44:26",
@@ -596,9 +596,9 @@
   "prophecy": "Gen. 41:1-25",
   "prophet": "Joseph",
   "given": {
-   "year": -1706,
+   "year": -1700,
    "approx": true,
-   "label": "c. 1706 BC",
+   "label": "c. 1700 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -1194,9 +1194,9 @@
   "prophecy": "Num. 14:20-23,34",
   "prophet": "God (to Moses)",
   "given": {
-   "year": -1480,
+   "year": -1478,
    "approx": true,
-   "label": "c. 1480 BC",
+   "label": "c. 1478 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -1276,10 +1276,10 @@
   "prophecy": "1 Sam. 2:31-34",
   "prophet": "Man of God",
   "given": {
-   "year": -1060,
+   "year": -1070,
    "approx": true,
-   "label": "before 1054 BC",
-   "yearSource": "evangelical"
+   "label": "c. 1070 BC",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -1056,
@@ -1897,10 +1897,10 @@
   "prophecy": "Josh. 6:26",
   "prophet": "Joshua",
   "given": {
-   "year": -1436,
+   "year": -1438,
    "approx": true,
-   "label": "c. 1436 BC (fall of Jericho)",
-   "yearSource": "johnson"
+   "label": "c. 1438 BC (fall of Jericho)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -888,
@@ -1969,9 +1969,9 @@
   "prophecy": "1 Kings 22:13-28",
   "prophet": "",
   "given": {
-   "year": -887,
+   "year": -884,
    "approx": true,
-   "label": "c. 887 BC",
+   "label": "c. 884 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -2111,9 +2111,9 @@
   "prophecy": "2 Kings 2:5",
   "prophet": "",
   "given": {
-   "year": -885,
+   "year": -882,
    "approx": true,
-   "label": "c. 885 BC",
+   "label": "c. 882 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -2183,9 +2183,9 @@
   "prophecy": "2 Kings 3:15-19",
   "prophet": "",
   "given": {
-   "year": -885,
+   "year": -882,
    "approx": true,
-   "label": "c. 885 BC",
+   "label": "c. 882 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -2215,9 +2215,9 @@
   "prophecy": "2 Kings 5:1-10",
   "prophet": "",
   "given": {
-   "year": -885,
+   "year": -882,
    "approx": true,
-   "label": "c. 885 BC",
+   "label": "c. 882 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -2283,9 +2283,9 @@
   "prophecy": "2 Kings 5:19-27",
   "prophet": "",
   "given": {
-   "year": -879,
+   "year": -876,
    "approx": true,
-   "label": "c. 879 BC",
+   "label": "c. 876 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -2461,10 +2461,10 @@
   "prophecy": "2 Kings 13:14-19",
   "prophet": "Elisha",
   "given": {
-   "year": -841,
+   "year": -840,
    "approx": true,
-   "label": "c. 841 BC",
-   "yearSource": "johnson"
+   "label": "c. 840 BC",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -840,
@@ -3294,7 +3294,7 @@
   },
   "fulfilment": "",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "Secular dating: Babylon fell to Cyrus in 539 BC.",
   "agreement": [
    "Ken Johnson"
   ],
@@ -3358,7 +3358,7 @@
   },
   "fulfilment": "Persian conquests of Lydia (547), Babylon (539) and Egypt (525 BC)",
   "status": "fulfilled",
-  "summary": "Daniel's second beast, a bear raised on one side with three ribs in its mouth, is read as Medo-Persia, with Persia the stronger side. Its three great conquests were Lydia, Babylon and Egypt.",
+  "summary": "Secular dating: Lydia fell to Cyrus c. 547-546 BC. Daniel's second beast, a bear raised on one side with three ribs in its mouth, is read as Medo-Persia, with Persia the stronger side. Its three great conquests were Lydia, Babylon and Egypt.",
   "agreement": [
    "Ken Johnson",
    "evangelical consensus"
@@ -3674,7 +3674,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -3736,10 +3736,10 @@
   "prophecy": "Dan. 11:3",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -326,
@@ -3791,7 +3791,7 @@
   },
   "fulfilment": "",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "Secular dating: Alexander took Tyre in 332 BC.",
   "agreement": [
    "Ken Johnson"
   ],
@@ -3808,49 +3808,11 @@
   "num": 100,
   "title": "Ekron will be destroyed, never to rise again",
   "prophecy": "Zech. 9:1-8",
-  "prophet": "Zechariah",
+  "prophet": "",
   "given": {
    "year": -480,
    "approx": true,
    "label": "c. 480 BC (Zechariah 9-14)",
-   "yearSource": "evangelical"
-  },
-  "fulfilled": {
-   "year": -326,
-   "approx": false,
-   "label": "326 BC",
-   "yearSource": "johnson"
-  },
-  "fulfilment": "History: Parmenion takes Damascus",
-  "status": "fulfilled",
-  "summary": "Zechariah announces the word of the LORD against the Syrian cities of Hadrach, Damascus and Hamath. After Issus, Alexander's forces took Damascus and the Syrian interior.",
-  "agreement": [
-   "Ken Johnson",
-   "Chuck Smith",
-   "evangelical consensus"
-  ],
-  "dss": "",
-  "sources": [
-   {
-    "name": "Ancient Prophecies Revealed, #100",
-    "url": "https://biblefacts.org"
-   },
-   {
-    "name": "Chuck Smith, C2000 Zechariah 6-10",
-    "url": "https://www.blueletterbible.org/Comm/smith_chuck/c2000_Zec/Zec_006.cfm"
-   }
-  ]
- },
- {
-  "id": "apr-101",
-  "num": 101,
-  "title": "Ashkalon and Gaza will be destroyed",
-  "prophecy": "Zech. 9:1-8",
-  "prophet": "",
-  "given": {
-   "year": -518,
-   "approx": true,
-   "label": "c. 518 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -3868,8 +3830,46 @@
   "dss": "",
   "sources": [
    {
+    "name": "Ancient Prophecies Revealed, #100",
+    "url": "https://biblefacts.org"
+   }
+  ]
+ },
+ {
+  "id": "apr-101",
+  "num": 101,
+  "title": "Ashkelon and Gaza will be destroyed",
+  "prophecy": "Zech. 9:1-8",
+  "prophet": "",
+  "given": {
+   "year": -480,
+   "approx": true,
+   "label": "c. 480 BC (Zechariah 9-14)",
+   "yearSource": "derived"
+  },
+  "fulfilled": {
+   "year": -326,
+   "approx": false,
+   "label": "326 BC",
+   "yearSource": "johnson"
+  },
+  "fulfilment": "",
+  "status": "fulfilled",
+  "summary": "The book prints \"Ashkalon\"; corrected here to Ashkelon (KJV spelling).",
+  "agreement": [
+   "Ken Johnson",
+   "Chuck Smith",
+   "evangelical consensus"
+  ],
+  "dss": "",
+  "sources": [
+   {
     "name": "Ancient Prophecies Revealed, #101",
     "url": "https://biblefacts.org"
+   },
+   {
+    "name": "Chuck Smith, C2000 Zechariah 6-10",
+    "url": "https://www.blueletterbible.org/Comm/smith_chuck/c2000_Zec/Zec_006.cfm"
    }
   ]
  },
@@ -3880,9 +3880,9 @@
   "prophecy": "Zech. 9:1-8",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -3912,9 +3912,9 @@
   "prophecy": "Zech. 9:1-8",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -3944,10 +3944,10 @@
   "prophecy": "Dan. 11:4",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -323,
@@ -3986,10 +3986,10 @@
   "prophecy": "Dan. 11:5",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -323,
@@ -3999,7 +3999,7 @@
   },
   "fulfilment": "History: Ptolemy I and Seleucus I",
   "status": "fulfilled",
-  "summary": "The king of the South (Ptolemy I of Egypt) would be strong, but one of his commanders would become stronger. Seleucus, once Ptolemy's officer, built the larger Seleucid kingdom. Johnson's dates: Ptolemy I 323-285 BC, Seleucus 311-280 BC.",
+  "summary": "Secular dating: Seleucus regained Babylon after the battle of Gaza, 312 BC. The king of the South (Ptolemy I of Egypt) would be strong, but one of his commanders would become stronger. Seleucus, once Ptolemy's officer, built the larger Seleucid kingdom. Johnson's dates: Ptolemy I 323-285 BC, Seleucus 311-280 BC.",
   "agreement": [
    "Ken Johnson",
    "Chuck Smith",
@@ -4028,10 +4028,10 @@
   "prophecy": "Dan. 11:6",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -285,
@@ -4041,7 +4041,7 @@
   },
   "fulfilment": "History: Berenice and Antiochus II",
   "status": "fulfilled",
-  "summary": "A daughter of the southern king would marry the northern king to seal an alliance, but she would not keep her position. Berenice married Antiochus II. After his death Laodice had her and her son killed, as Seleucus II took the throne (Johnson: 246 BC).",
+  "summary": "Secular dating: the marriage was c. 252 BC. A daughter of the southern king would marry the northern king to seal an alliance, but she would not keep her position. Berenice married Antiochus II. After his death Laodice had her and her son killed, as Seleucus II took the throne (Johnson: 246 BC).",
   "agreement": [
    "Ken Johnson",
    "Chuck Smith",
@@ -4072,7 +4072,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -4083,7 +4083,7 @@
   },
   "fulfilment": "",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "Secular dating: Antiochus II and Berenice died in 246 BC.",
   "agreement": [
    "Ken Johnson"
   ],
@@ -4104,7 +4104,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -4134,10 +4134,10 @@
   "prophecy": "Dan. 11:7",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -246,
@@ -4176,10 +4176,10 @@
   "prophecy": "Dan. 11:8",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -246,
@@ -4218,10 +4218,10 @@
   "prophecy": "Dan. 11:10",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -217,
@@ -4260,10 +4260,10 @@
   "prophecy": "Dan. 11:13",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -204,
@@ -4302,10 +4302,10 @@
   "prophecy": "Dan. 11:14",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -204,
@@ -4348,10 +4348,10 @@
   "prophecy": "Dan. 11:16",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -197,
@@ -4390,10 +4390,10 @@
   "prophecy": "Dan. 11:17",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -194,
@@ -4432,10 +4432,10 @@
   "prophecy": "Dan. 11:18",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -190,
@@ -4474,10 +4474,10 @@
   "prophecy": "Dan. 11:20",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -175,
@@ -4520,10 +4520,10 @@
   "prophecy": "Dan. 11:21",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -175,
@@ -4562,10 +4562,10 @@
   "prophecy": "Dan. 11:22",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -175,
@@ -4575,7 +4575,7 @@
   },
   "fulfilment": "2 Maccabees 4:33-34",
   "status": "fulfilled",
-  "summary": "Armies would be swept away before him, and the prince of the covenant would be broken. Johnson identifies this prince as the deposed high priest Onias III, who was murdered.",
+  "summary": "Secular dating: Onias III was deposed in 175 BC and killed c. 171 BC. Armies would be swept away before him, and the prince of the covenant would be broken. Johnson identifies this prince as the deposed high priest Onias III, who was murdered.",
   "agreement": [
    "Ken Johnson",
    "evangelical consensus"
@@ -4603,10 +4603,10 @@
   "prophecy": "Dan. 11:23",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -175,
@@ -4649,10 +4649,10 @@
   "prophecy": "Dan. 11:32; Zech. 9:13",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -165,
@@ -4697,7 +4697,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -4725,12 +4725,12 @@
   "num": 123,
   "title": "Rome will destroy Ashur (Syria/Assyria)",
   "prophecy": "Num. 24:23-24; Isa. 7:14",
-  "prophet": "Isaiah",
+  "prophet": "",
   "given": {
-   "year": -735,
+   "year": -1439,
    "approx": true,
-   "label": "c. 735 BC",
-   "yearSource": "evangelical"
+   "label": "c. 1439 BC",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -40,
@@ -4738,23 +4738,17 @@
    "label": "40 BC",
    "yearSource": "johnson"
   },
-  "fulfilment": "Matthew 1:18-25; Luke 1:26-35",
+  "fulfilment": "",
   "status": "fulfilled",
-  "summary": "Isaiah gave the sign of a virgin bearing a son. Matthew and Luke record Jesus conceived by the Holy Spirit and born of the virgin Mary.",
+  "summary": "",
   "agreement": [
-   "Ken Johnson",
-   "Josh McDowell",
-   "evangelical consensus"
+   "Ken Johnson"
   ],
-  "dss": "1QIsa-a",
+  "dss": "",
   "sources": [
    {
     "name": "Ancient Prophecies Revealed, #123",
     "url": "https://biblefacts.org"
-   },
-   {
-    "name": "Josh McDowell, Evidence That Demands a Verdict, messianic prophecy list (as summarised online)",
-    "url": "https://www.oocities.org/paulntobin/messianic.html"
    }
   ]
  },
@@ -4763,12 +4757,12 @@
   "num": 124,
   "title": "The Messiah will be the One who has existed from eternity",
   "prophecy": "Mic. 5:2; cf. Ps. 90:2",
-  "prophet": "Micah",
+  "prophet": "",
   "given": {
-   "year": -710,
+   "year": -730,
    "approx": true,
-   "label": "c. 710 BC",
-   "yearSource": "evangelical"
+   "label": "c. 730 BC",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -2,
@@ -4778,25 +4772,15 @@
   },
   "fulfilment": "John 1:1, 14",
   "status": "fulfilled",
-  "summary": "Micah named little Bethlehem as birthplace of Israel's ruler. Jesus was born there, and the scribes quoted this verse to Herod. Johnson dates the birth to 2 BC.",
+  "summary": "Micah says the ruler from Bethlehem has goings forth \"from of old, from everlasting\"; John 1:1, 14 calls him the Word who was with God in the beginning and was made flesh.",
   "agreement": [
-   "Ken Johnson",
-   "Josh McDowell",
-   "evangelical consensus"
+   "Ken Johnson"
   ],
   "dss": "",
   "sources": [
    {
     "name": "Ancient Prophecies Revealed, #124",
     "url": "https://biblefacts.org"
-   },
-   {
-    "name": "Ken Johnson, Seven Shepherds chart (biblefacts.org)",
-    "url": "https://biblefacts.org/study/Seven_Shepherds.pdf"
-   },
-   {
-    "name": "Josh McDowell, Evidence That Demands a Verdict, messianic prophecy list (as summarised online)",
-    "url": "https://www.oocities.org/paulntobin/messianic.html"
    }
   ]
  },
@@ -4842,7 +4826,7 @@
    "year": -734,
    "approx": true,
    "label": "c. 734 BC",
-   "yearSource": "evangelical"
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -2,
@@ -4940,10 +4924,10 @@
   "prophecy": "Zech. 13:7c; Jer. 23:5-6",
   "prophet": "Jeremiah",
   "given": {
-   "year": -600,
+   "year": -480,
    "approx": true,
-   "label": "c. 600 BC",
-   "yearSource": "evangelical"
+   "label": "c. 480 BC (Zechariah 9-14)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -2,
@@ -4977,9 +4961,9 @@
   "prophecy": "Isa. 9:6",
   "prophet": "",
   "given": {
-   "year": -710,
+   "year": -734,
    "approx": true,
-   "label": "c. 710 BC",
+   "label": "c. 734 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -5012,7 +4996,7 @@
    "year": -735,
    "approx": true,
    "label": "c. 735 BC",
-   "yearSource": "evangelical"
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -2,
@@ -5047,10 +5031,10 @@
   "prophecy": "Gen. 3:15",
   "prophet": "God (to the serpent)",
   "given": {
-   "year": -3924,
-   "approx": true,
-   "label": "3924 BC (the Fall)",
-   "yearSource": "johnson"
+   "year": -3925,
+   "approx": false,
+   "label": "3925 BC (the Fall)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -2,
@@ -5230,7 +5214,7 @@
    "yearSource": "johnson"
   },
   "fulfilment": "Matthew 2:1-6; Luke 2:1-7",
-  "status": "partial",
+  "status": "fulfilled",
   "summary": "Jacob promised that rule would stay with Judah until Shiloh came. 4Q252 explains that the ruler's staff will not depart until the 'Messiah of Righteousness, the Branch of David' comes, so it read Shiloh as the Messiah. Johnson's book lists it under the Messiah's first coming: Jewish rulers lasted until the Messiah came.",
   "agreement": [
    "Ken Johnson",
@@ -5255,12 +5239,12 @@
   "id": "apr-138",
   "num": 138,
   "title": "The Messiah will be a descendant of David",
-  "prophecy": "2 Chron. 17:11; Ezek. 17:22-24",
+  "prophecy": "1 Chron. 17:11; Ezek. 17:22-24",
   "prophet": "",
   "given": {
-   "year": -5,
+   "year": -1007,
    "approx": true,
-   "label": "c. 5 BC",
+   "label": "c. 1007 BC (Nathan)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -5271,7 +5255,7 @@
   },
   "fulfilment": "Luke 3:23-31",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "The book prints \"2 Chron. 17:11\"; corrected here to 1 Chron. 17:11 (Nathan's promise of David's seed).",
   "agreement": [
    "Ken Johnson"
   ],
@@ -5290,9 +5274,9 @@
   "prophecy": "Isa. 9:6-7; 2 Sam. 7:16",
   "prophet": "",
   "given": {
-   "year": -710,
+   "year": -734,
    "approx": true,
-   "label": "c. 710 BC",
+   "label": "c. 734 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -5356,8 +5340,8 @@
   "given": {
    "year": -735,
    "approx": true,
-   "label": "c. 735 BC (reign of Ahaz)",
-   "yearSource": "evangelical"
+   "label": "c. 735 BC",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -2,
@@ -5662,9 +5646,9 @@
   "prophecy": "Isa. 8:3",
   "prophet": "",
   "given": {
-   "year": -710,
+   "year": -734,
    "approx": true,
-   "label": "c. 710 BC",
+   "label": "c. 734 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -5690,13 +5674,13 @@
  {
   "id": "apr-151",
   "num": 151,
-  "title": "Child of the prophetess will be called Mahr-Shalal-Hash-Baz",
+  "title": "Child of the prophetess will be called Maher-shalal-hash-baz",
   "prophecy": "Isa. 8:3, 18; cf. Isa. 53:3",
   "prophet": "",
   "given": {
-   "year": -710,
+   "year": -734,
    "approx": true,
-   "label": "c. 710 BC",
+   "label": "c. 734 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -5707,7 +5691,7 @@
   },
   "fulfilment": "Matt. 27:33",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "The book prints \"Mahr-Shalal-Hash-Baz\"; corrected here to Maher-shalal-hash-baz (KJV).",
   "agreement": [
    "Ken Johnson"
   ],
@@ -5820,12 +5804,12 @@
   "num": 155,
   "title": "The Messiah will be born in Bethlehem",
   "prophecy": "Mic. 5:2a",
-  "prophet": "Micah",
+  "prophet": "",
   "given": {
-   "year": -710,
+   "year": -730,
    "approx": true,
-   "label": "c. 710 BC",
-   "yearSource": "evangelical"
+   "label": "c. 730 BC",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -2,
@@ -5835,21 +5819,15 @@
   },
   "fulfilment": "Matt. 2:1-2",
   "status": "fulfilled",
-  "summary": "The ruler from Bethlehem would have origins from of old, from eternity. The New Testament says the one born in Bethlehem existed before all things.",
+  "summary": "Micah named Bethlehem Ephratah as the birthplace of Israel's ruler; Jesus was born there, and the scribes quoted Micah to Herod (Matt. 2:4-6).",
   "agreement": [
-   "Ken Johnson",
-   "Josh McDowell",
-   "evangelical consensus"
+   "Ken Johnson"
   ],
   "dss": "",
   "sources": [
    {
     "name": "Ancient Prophecies Revealed, #155",
     "url": "https://biblefacts.org"
-   },
-   {
-    "name": "Josh McDowell, Evidence That Demands a Verdict, messianic prophecy list (as summarised online)",
-    "url": "https://www.oocities.org/paulntobin/messianic.html"
    }
   ]
  },
@@ -5892,10 +5870,10 @@
   "prophecy": "Num. 24:17-19",
   "prophet": "Balaam",
   "given": {
-   "year": -1437,
+   "year": -1438,
    "approx": true,
-   "label": "c. 1437 BC (end of the wilderness years)",
-   "yearSource": "johnson"
+   "label": "c. 1438 BC (end of the wilderness years)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -2,
@@ -5926,13 +5904,13 @@
   "id": "apr-158",
   "num": 158,
   "title": "The Messiah will be visited by Magi (given gifts of frankincense)",
-  "prophecy": "Isa. 60:3",
+  "prophecy": "Isa. 60:3, 6",
   "prophet": "Solomon",
   "given": {
-   "year": -985,
+   "year": -710,
    "approx": true,
-   "label": "c. 990 BC (Solomon)",
-   "yearSource": "johnson"
+   "label": "c. 710 BC",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -2,
@@ -5942,7 +5920,7 @@
   },
   "fulfilment": "Matt. 2:1",
   "status": "fulfilled",
-  "summary": "Kings from distant lands would bring gifts of gold and frankincense. Magi from the east brought gold, frankincense and myrrh to the child Jesus. The worldwide homage is still future.",
+  "summary": "The book prints \"Isa. 60:3\"; corrected here to Isa. 60:3, 6 (verse 6 names the gold and incense). Kings from distant lands would bring gifts of gold and frankincense. Magi from the east brought gold, frankincense and myrrh to the child Jesus. The worldwide homage is still future.",
   "agreement": [
    "Ken Johnson",
    "evangelical consensus"
@@ -5966,9 +5944,9 @@
   "prophecy": "Matt. 2:12",
   "prophet": "",
   "given": {
-   "year": -4,
+   "year": -2,
    "approx": true,
-   "label": "c. 4 BC",
+   "label": "c. 2 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -6110,9 +6088,9 @@
   "prophecy": "Isa. 7:14-17",
   "prophet": "",
   "given": {
-   "year": -710,
+   "year": -735,
    "approx": true,
-   "label": "c. 710 BC",
+   "label": "c. 735 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -6142,9 +6120,9 @@
   "prophecy": "Isa. 7:14-17",
   "prophet": "",
   "given": {
-   "year": -710,
+   "year": -735,
    "approx": true,
-   "label": "c. 710 BC",
+   "label": "c. 735 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -6364,7 +6342,7 @@
   "id": "apr-170",
   "num": 170,
   "title": "The Father will call the Messiah His firstborn",
-  "prophecy": "Ps. 89:26",
+  "prophecy": "Ps. 89:26-27",
   "prophet": "",
   "given": {
    "year": -1010,
@@ -6380,7 +6358,7 @@
   },
   "fulfilment": "",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "The book prints \"Ps. 89:26\"; corrected here to Ps. 89:26-27 (\"firstborn\" is verse 27).",
   "agreement": [
    "Ken Johnson"
   ],
@@ -6436,10 +6414,10 @@
   "prophecy": "Deut. 18:15-18",
   "prophet": "Moses",
   "given": {
-   "year": -1436,
+   "year": -1438,
    "approx": true,
-   "label": "c. 1436 BC (Moses on the plains of Moab)",
-   "yearSource": "johnson"
+   "label": "c. 1438 BC (Moses on the plains of Moab)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 28,
@@ -6480,7 +6458,7 @@
    "year": -734,
    "approx": true,
    "label": "c. 734 BC",
-   "yearSource": "evangelical"
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 28,
@@ -6861,7 +6839,7 @@
    "year": -734,
    "approx": true,
    "label": "c. 734 BC",
-   "yearSource": "evangelical"
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 28,
@@ -6938,9 +6916,9 @@
    "label": "AD 28",
    "yearSource": "johnson"
   },
-  "fulfilment": "Matthew 28:1-6",
+  "fulfilment": "",
   "status": "fulfilled",
-  "summary": "Jesus said his only sign would be Jonah's: three days and nights in the earth. Johnson's Thursday crucifixion and Sunday resurrection are built to fit this sign.",
+  "summary": "",
   "agreement": [
    "Ken Johnson"
   ],
@@ -6966,7 +6944,7 @@
    "year": -480,
    "approx": true,
    "label": "c. 480 BC (Zechariah 9-14)",
-   "yearSource": "evangelical"
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 32,
@@ -7090,7 +7068,7 @@
    "year": -480,
    "approx": true,
    "label": "c. 480 BC (Zechariah 9-14)",
-   "yearSource": "evangelical"
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 32,
@@ -7277,7 +7255,7 @@
    "year": -480,
    "approx": true,
    "label": "c. 480 BC (Zechariah 9-14)",
-   "yearSource": "evangelical"
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 32,
@@ -7320,7 +7298,7 @@
    "year": -480,
    "approx": true,
    "label": "c. 480 BC (Zechariah 9-14)",
-   "yearSource": "evangelical"
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 32,
@@ -7357,12 +7335,12 @@
   "id": "apr-197",
   "num": 197,
   "title": "The 30 pieces of silver will be used to buy a potter's field",
-  "prophecy": "Zech. 11:12",
+  "prophecy": "Zech. 11:12-13",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -7373,7 +7351,7 @@
   },
   "fulfilment": "Matt. 27:9-10",
   "status": "fulfilled",
-  "summary": "The money was cast to the potter. The priests used Judas' silver to buy the potter's field as a burial ground for foreigners.",
+  "summary": "The book prints \"Zech. 11:12\"; corrected here to Zech. 11:12-13 (the potter is verse 13).",
   "agreement": [
    "Ken Johnson",
    "Chuck Smith",
@@ -7437,7 +7415,7 @@
   "id": "apr-199",
   "num": 199,
   "title": "Rulers will plot to put the Messiah to death",
-  "prophecy": "Isa. 28:13",
+  "prophecy": "Isa. 28:14-15",
   "prophet": "",
   "given": {
    "year": -710,
@@ -7453,7 +7431,7 @@
   },
   "fulfilment": "",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "The book prints \"Isa. 28:13\"; corrected here to Isa. 28:14-15 (the rulers of Jerusalem).",
   "agreement": [
    "Ken Johnson"
   ],
@@ -7468,7 +7446,7 @@
  {
   "id": "apr-200",
   "num": 200,
-  "title": "Leaders will take council to put the Messiah to death",
+  "title": "Leaders will take counsel to put the Messiah to death",
   "prophecy": "Ps. 31:13",
   "prophet": "",
   "given": {
@@ -7485,7 +7463,7 @@
   },
   "fulfilment": "John 11:53",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "The book prints \"take council\"; corrected here to take counsel.",
   "agreement": [
    "Ken Johnson"
   ],
@@ -7725,13 +7703,13 @@
   "id": "apr-207",
   "num": 207,
   "title": "Jesus predicts He will be in the grave for three days",
-  "prophecy": "Matt. 12:38-45; John 2",
-  "prophet": "",
+  "prophecy": "Matt. 12:38-45; John 2:19-22",
+  "prophet": "Jesus",
   "given": {
-   "year": 30,
+   "year": 29,
    "approx": true,
-   "label": "c. AD 30",
-   "yearSource": "derived"
+   "label": "c. AD 29",
+   "yearSource": "evangelical"
   },
   "fulfilled": {
    "year": 32,
@@ -7741,15 +7719,20 @@
   },
   "fulfilment": "Matt. 27:50",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "The book prints \"John 2\"; corrected here to John 2:19-22. At his first Passover cleansing Jesus said he would raise up the 'temple' in three days, meaning his body. The disciples remembered this after he rose.",
   "agreement": [
-   "Ken Johnson"
+   "Ken Johnson",
+   "evangelical consensus"
   ],
   "dss": "",
   "sources": [
    {
     "name": "Ancient Prophecies Revealed, #207",
     "url": "https://biblefacts.org"
+   },
+   {
+    "name": "Scripture (KJV)",
+    "url": "https://www.biblegateway.com/"
    }
   ]
  },
@@ -7968,10 +7951,10 @@
   "prophecy": "Num. 9:12; Ps. 34:20",
   "prophet": "Moses / David",
   "given": {
-   "year": -1476,
+   "year": -1478,
    "approx": true,
-   "label": "1476 BC (Exodus / Sinai)",
-   "yearSource": "johnson"
+   "label": "c. 1478 BC (Exodus / Sinai)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 32,
@@ -8008,7 +7991,7 @@
    "year": -480,
    "approx": true,
    "label": "c. 480 BC (Zechariah 9-14)",
-   "yearSource": "evangelical"
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 32,
@@ -8122,7 +8105,7 @@
   },
   "fulfilment": "Matt. 27:50",
   "status": "fulfilled",
-  "summary": "Johnson: 483 prophetic years of 360 days (173,880 days) from Artaxerxes' decree in Nisan 444 BC end on April 6, AD 32. From the decree to rebuild Jerusalem to Messiah the Prince would be 69 weeks of years. Johnson, following Anderson, counts 173,880 days from Nisan 444 BC to 6 April AD 32, the triumphal entry. Chuck Smith and Skip Heitzig give the same end date (they start from 445 BC).",
+  "summary": "Johnson: 483 prophetic years of 360 days (173,880 days) from Artaxerxes' decree in Nisan 444 BC end on April 6, AD 32.",
   "agreement": [
    "Ken Johnson",
    "Chuck Smith",
@@ -8787,7 +8770,7 @@
   },
   "fulfilment": "Matt. 20:28",
   "status": "fulfilled",
-  "summary": "After Messiah was cut off, the people of a coming prince would destroy Jerusalem and the Temple. Titus' Roman legions burned the Temple in AD 70 (Johnson: 3995 AM). Tradition dates the burning to 9/10 Av.",
+  "summary": "",
   "agreement": [
    "Ken Johnson",
    "Chuck Smith",
@@ -8824,9 +8807,9 @@
   "prophecy": "Dan. 9:26b",
   "prophet": "",
   "given": {
-   "year": -537,
-   "approx": true,
-   "label": "c. 537 BC",
+   "year": -536,
+   "approx": false,
+   "label": "536 BC (1st year of Darius the Mede)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -9035,12 +9018,12 @@
   "num": 241,
   "title": "The Messiah will make an end to sin",
   "prophecy": "Dan. 9:24a",
-  "prophet": "Zadokite priests (Essenes)",
+  "prophet": "",
   "given": {
-   "year": -100,
-   "approx": true,
-   "label": "c. 100 BC (Qumran texts)",
-   "yearSource": "secular"
+   "year": -536,
+   "approx": false,
+   "label": "536 BC (1st year of Darius the Mede)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 32,
@@ -9050,23 +9033,15 @@
   },
   "fulfilment": "Gal. 1:3-5",
   "status": "fulfilled",
-  "summary": "In his books on the Essenes, Johnson argues that the Zadokite priests expected a God-incarnate, virgin-born Messiah with a first and a second coming. He says they expected him to die for sin at his first coming, and that their calendar placed it in AD 32.",
+  "summary": "",
   "agreement": [
    "Ken Johnson"
   ],
-  "dss": "CD; 11Q13",
+  "dss": "",
   "sources": [
    {
     "name": "Ancient Prophecies Revealed, #241",
     "url": "https://biblefacts.org"
-   },
-   {
-    "name": "Ken Johnson, The New Covenant of Damascus (description: Essenes predicted AD 32)",
-    "url": "https://www.walmart.com/ip/The-New-Covenant-of-Damascus-Paperback-by-Ken-Johnson-Th-D-9798351937656/1106099116"
-   },
-   {
-    "name": "Ken Johnson, Ancient Prophecies from the Dead Sea Scrolls (2024, publisher description)",
-    "url": "https://origin-www.audible.fr/pd/Ancient-Prophecies-from-the-Dead-Sea-Scrolls-Audiobook/B0DHSQ3Z7B"
    }
   ]
  },
@@ -9088,9 +9063,9 @@
    "label": "AD 32",
    "yearSource": "johnson"
   },
-  "fulfilment": "1 John 3:18",
+  "fulfilment": "1 John 3:8",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "The book prints \"fulfilment 1 John 3:18\"; corrected here to 1 John 3:8 (\"that he might destroy the works of the devil\").",
   "agreement": [
    "Ken Johnson"
   ],
@@ -9300,9 +9275,9 @@
   "prophecy": "John 14:16-18,20,25-26",
   "prophet": "",
   "given": {
-   "year": 30,
-   "approx": true,
-   "label": "c. AD 30",
+   "year": 32,
+   "approx": false,
+   "label": "night of 9-10 Apr AD 32",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -9335,9 +9310,9 @@
   "prophecy": "John 7:37-39; 15:26-27; Isa. 44:3",
   "prophet": "",
   "given": {
-   "year": 30,
-   "approx": true,
-   "label": "c. AD 30",
+   "year": 32,
+   "approx": false,
+   "label": "night of 9-10 Apr AD 32",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -9410,7 +9385,7 @@
    "year": -835,
    "approx": true,
    "label": "c. 835 BC",
-   "yearSource": "evangelical"
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 32,
@@ -9643,7 +9618,7 @@
  {
   "id": "apr-258",
   "num": 258,
-  "title": "Judas' office will be filled by another (Mathias)",
+  "title": "Judas' office will be filled by another (Matthias)",
   "prophecy": "Ps. 109:7-8",
   "prophet": "",
   "given": {
@@ -9660,7 +9635,7 @@
   },
   "fulfilment": "Acts 1:16-20",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "The book prints \"Mathias\"; corrected here to Matthias.",
   "agreement": [
    "Ken Johnson"
   ],
@@ -9858,7 +9833,7 @@
   },
   "fulfilment": "Eusebius 2:23",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "Secular dating: James was stoned c. AD 62 (Josephus, Antiquities 20.9.1).",
   "agreement": [
    "Ken Johnson"
   ],
@@ -9963,9 +9938,9 @@
   "prophecy": "Dan. 9:26",
   "prophet": "",
   "given": {
-   "year": -537,
-   "approx": true,
-   "label": "c. 537 BC",
+   "year": -536,
+   "approx": false,
+   "label": "536 BC (1st year of Darius the Mede)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -9998,10 +9973,10 @@
   "prophecy": "Dan. 11:33",
   "prophet": "Daniel",
   "given": {
-   "year": -534,
+   "year": -535,
    "approx": true,
-   "label": "c. 534 BC (3rd year of Cyrus)",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 70,
@@ -10038,7 +10013,7 @@
   "id": "apr-269",
   "num": 269,
   "title": "Pharisees that reject Jesus will die in their sins",
-  "prophecy": "John 8:12-20",
+  "prophecy": "John 8:21-24",
   "prophet": "",
   "given": {
    "year": 30,
@@ -10054,7 +10029,7 @@
   },
   "fulfilment": "",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "The book prints \"John 8:12-20\"; corrected here to John 8:21-24 (\"ye shall die in your sins\").",
   "agreement": [
    "Ken Johnson"
   ],
@@ -10105,9 +10080,9 @@
   "prophecy": "John 14:28-31",
   "prophet": "",
   "given": {
-   "year": 30,
-   "approx": true,
-   "label": "c. AD 30",
+   "year": 32,
+   "approx": false,
+   "label": "night of 9-10 Apr AD 32",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -10297,9 +10272,9 @@
   "prophecy": "Zech. 13:8",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -10361,10 +10336,10 @@
   "prophecy": "Deut. 28:64; Ezek. 12:15-16; Hos. 9:17",
   "prophet": "Moses",
   "given": {
-   "year": -1436,
+   "year": -1438,
    "approx": true,
-   "label": "c. 1436 BC (Moses on the plains of Moab)",
-   "yearSource": "johnson"
+   "label": "c. 1438 BC (Moses on the plains of Moab)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 132,
@@ -10478,20 +10453,20 @@
   "prophecy": "",
   "prophet": "",
   "given": {
-   "year": 349,
+   "year": 390,
    "approx": true,
-   "label": "c. AD 349",
+   "label": "c. AD 390",
    "yearSource": "derived"
   },
   "fulfilled": {
-   "year": 350,
+   "year": 391,
    "approx": false,
-   "label": "AD 350",
+   "label": "AD 391",
    "yearSource": "johnson"
   },
-  "fulfilment": "Socrates EH 5.17",
+  "fulfilment": "Socrates, Ecclesiastical History 5.16-17",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "The book prints \"AD 350\"; corrected here to AD 391: Socrates (Eccl. Hist. 5.16-17) records the Serapeum's destruction under Theophilus in 391.",
   "agreement": [
    "Ken Johnson"
   ],
@@ -10587,7 +10562,7 @@
   },
   "fulfilment": "Esdras Apocalypse 11",
   "status": "fulfilled",
-  "summary": "Johnson's book traces a run of beast-empires after Rome, starting with Papal Rome from 476 to 1423. His Dragon-Heads chart suggests he reads this from the heads of the beast. The verse he uses could not be read and is inferred.",
+  "summary": "Johnson's book traces a run of beast-empires after Rome, starting with Papal Rome from 476 to 1423. His Dragon-Heads chart suggests he reads this from the heads of the beast.",
   "agreement": [
    "Ken Johnson"
   ],
@@ -10651,7 +10626,7 @@
   },
   "fulfilment": "Esdras Apocalypse 11",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "Secular dating: the East-West Schism is usually dated 1054.",
   "agreement": [
    "Ken Johnson"
   ],
@@ -10676,17 +10651,14 @@
    "yearSource": "derived"
   },
   "fulfilled": {
-   "year": 1090,
+   "year": 1190,
    "approx": false,
-   "label": "AD 1090",
-   "yearSource": "johnson",
-   "m": 7,
-   "d": 14,
-   "cal": "julian"
+   "label": "AD 1190",
+   "yearSource": "johnson"
   },
   "fulfilment": "Tisha B'Av",
   "status": "fulfilled",
-  "summary": "Johnson lists this among the calamities that fell on the Ninth of Av (Tisha B'Av).",
+  "summary": "The book prints \"AD 1090, on the Ninth of Av\"; corrected here to AD 1190: the York massacre was on 16-17 March 1190 (Shabbat ha-Gadol), not on the Ninth of Av. Johnson lists this among the calamities that fell on the Ninth of Av (Tisha B'Av).",
   "agreement": [
    "Ken Johnson"
   ],
@@ -10823,7 +10795,7 @@
   },
   "fulfilment": "",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "Secular dating: the Golden Gate was walled up c. 1541 under Suleiman; the Ottomans took Jerusalem in 1517.",
   "agreement": [
    "Ken Johnson"
   ],
@@ -10880,14 +10852,14 @@
    "yearSource": "derived"
   },
   "fulfilled": {
-   "year": 1929,
+   "year": 1829,
    "approx": false,
-   "label": "AD 1929",
+   "label": "AD 1829",
    "yearSource": "johnson"
   },
   "fulfilment": "",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "The book prints \"1929\"; corrected here to 1829: Greece won independence 1829-1832, and the book lists it between 1523 and 1880.",
   "agreement": [
    "Ken Johnson"
   ],
@@ -11037,9 +11009,9 @@
   "prophecy": "Joel 3:2",
   "prophet": "",
   "given": {
-   "year": -820,
+   "year": -835,
    "approx": true,
-   "label": "c. 820 BC",
+   "label": "c. 835 BC",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -11114,7 +11086,7 @@
   },
   "fulfilment": "",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "Secular dating: the Republic of Turkey was proclaimed in 1923.",
   "agreement": [
    "Ken Johnson"
   ],
@@ -11594,12 +11566,12 @@
   "num": 315,
   "title": "Israel will not be restored as a monarchy",
   "prophecy": "Mic. 5:5",
-  "prophet": "Micah",
+  "prophet": "",
   "given": {
-   "year": -700,
+   "year": -730,
    "approx": true,
-   "label": "c. 700 BC",
-   "yearSource": "evangelical"
+   "label": "c. 730 BC",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 1948,
@@ -11607,9 +11579,9 @@
    "label": "AD 1948",
    "yearSource": "johnson"
   },
-  "fulfilment": "History: War of Independence; Israel–Syria armistice",
+  "fulfilment": "",
   "status": "fulfilled",
-  "summary": "Johnson reads the seven shepherds and eight leaders as Israel's defence ministers and prime ministers. Each shepherd fights Syria (\"Assyria\") over Bashan, the Golan. The first is Ben-Gurion in the War of Independence, ending with the armistice of 20 July 1949.",
+  "summary": "",
   "agreement": [
    "Ken Johnson"
   ],
@@ -11618,10 +11590,6 @@
    {
     "name": "Ancient Prophecies Revealed, #315",
     "url": "https://biblefacts.org"
-   },
-   {
-    "name": "Biblefacts.org, Seven Shepherds chart (Ken Johnson ministry)",
-    "url": "https://biblefacts.org/study/Seven_Shepherds.pdf"
    }
   ]
  },
@@ -11713,9 +11681,9 @@
   "prophecy": "Zech. 14:1-3",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -11777,9 +11745,9 @@
   "prophecy": "Zech. 12:1-7",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -11809,9 +11777,9 @@
   "prophecy": "Zech. 12:1-7; Isa. 41",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -11882,10 +11850,10 @@
   "prophecy": "Zech. 1:18-21",
   "prophet": "Zechariah",
   "given": {
-   "year": -520,
+   "year": -518,
    "approx": true,
-   "label": "520 BC",
-   "yearSource": "evangelical"
+   "label": "c. 518 BC",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 1948,
@@ -11895,7 +11863,7 @@
   },
   "fulfilment": "History (Johnson): Israel's rebirth",
   "status": "fulfilled",
-  "summary": "Zechariah saw four horns that scattered Judah and four craftsmen sent to cast them down. Johnson places this fulfilment in 1948. How he identifies the four could not be read.",
+  "summary": "Zechariah saw four horns that scattered Judah and four craftsmen sent to cast them down. Johnson places this fulfilment in 1948.",
   "agreement": [
    "Ken Johnson"
   ],
@@ -11944,12 +11912,12 @@
   "num": 325,
   "title": "First Shepherd will arise",
   "prophecy": "Mic. 5:5-8",
-  "prophet": "Micah",
+  "prophet": "",
   "given": {
-   "year": -700,
+   "year": -730,
    "approx": true,
-   "label": "c. 700 BC",
-   "yearSource": "evangelical"
+   "label": "c. 730 BC",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 1948,
@@ -11957,9 +11925,9 @@
    "label": "AD 1948",
    "yearSource": "johnson"
   },
-  "fulfilment": "History: Golan Heights captured in the Six-Day War",
+  "fulfilment": "",
   "status": "fulfilled",
-  "summary": "In Johnson's reading the second leader is Levi Eshkol and the second shepherd is defence minister Moshe Dayan, who took the Golan (Bashan) from Syria in the Six-Day War.",
+  "summary": "",
   "agreement": [
    "Ken Johnson"
   ],
@@ -11968,10 +11936,6 @@
    {
     "name": "Ancient Prophecies Revealed, #325",
     "url": "https://biblefacts.org"
-   },
-   {
-    "name": "Biblefacts.org, Seven Shepherds chart (Ken Johnson ministry)",
-    "url": "https://biblefacts.org/study/Seven_Shepherds.pdf"
    }
   ]
  },
@@ -12014,9 +11978,9 @@
   "prophecy": "Zech. 9:1-8",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -12042,13 +12006,13 @@
  {
   "id": "apr-328",
   "num": 328,
-  "title": "Egypt will no longer have kings (Suez crises)",
+  "title": "Egypt will no longer have kings (Suez crisis)",
   "prophecy": "Zech. 10:9-11",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -12076,12 +12040,12 @@
   "num": 329,
   "title": "Second Shepherd will arise",
   "prophecy": "Mic. 5:5-8",
-  "prophet": "Micah",
+  "prophet": "",
   "given": {
-   "year": -700,
+   "year": -730,
    "approx": true,
-   "label": "c. 700 BC",
-   "yearSource": "evangelical"
+   "label": "c. 730 BC",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 1967,
@@ -12089,9 +12053,9 @@
    "label": "AD 1967",
    "yearSource": "johnson"
   },
-  "fulfilment": "History: Yom Kippur War",
+  "fulfilment": "",
   "status": "fulfilled",
-  "summary": "Johnson explains why there are eight leaders but seven shepherds: Dayan served under two prime ministers, Eshkol and Golda Meir. In 1973 he won back the Golan after Syria's surprise attack on Yom Kippur.",
+  "summary": "",
   "agreement": [
    "Ken Johnson"
   ],
@@ -12100,14 +12064,6 @@
    {
     "name": "Ancient Prophecies Revealed, #329",
     "url": "https://biblefacts.org"
-   },
-   {
-    "name": "Biblefacts.org, Seven Shepherds chart (Ken Johnson ministry)",
-    "url": "https://biblefacts.org/study/Seven_Shepherds.pdf"
-   },
-   {
-    "name": "Wikipedia, Yom Kippur War",
-    "url": "https://en.wikipedia.org/wiki/Yom_Kippur_War"
    }
   ]
  },
@@ -12183,12 +12139,12 @@
   "num": 332,
   "title": "Jordan will give up the West Bank",
   "prophecy": "Zech. 12:6",
-  "prophet": "Moses",
+  "prophet": "",
   "given": {
-   "year": -1476,
+   "year": -480,
    "approx": true,
-   "label": "c. 1476 BC (Sinai)",
-   "yearSource": "johnson"
+   "label": "c. 480 BC (Zechariah 9-14)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 1967,
@@ -12196,30 +12152,17 @@
    "label": "AD 1967",
    "yearSource": "johnson"
   },
-  "fulfilment": "History: War of Independence, Six-Day War, Yom Kippur War",
+  "fulfilment": "",
   "status": "fulfilled",
-  "summary": "Five would chase a hundred, and Judah would be like a firepot among sheaves. Israel's wins against larger armies in 1948, 1967 and 1973 are the usual examples.",
+  "summary": "",
   "agreement": [
-   "Ken Johnson",
-   "evangelical consensus"
+   "Ken Johnson"
   ],
   "dss": "",
   "sources": [
    {
     "name": "Ancient Prophecies Revealed, #332",
     "url": "https://biblefacts.org"
-   },
-   {
-    "name": "Watchman Bible Study, \"10 Prophecies Fulfilled in 1948\" (cites Grant Jeffrey and Ken Johnson)",
-    "url": "https://www.watchmanbiblestudy.com/Articles/1948PropheciesFulfilled.html"
-   },
-   {
-    "name": "Wikipedia, Six-Day War",
-    "url": "https://en.wikipedia.org/wiki/Six-Day_War"
-   },
-   {
-    "name": "Wikipedia, Yom Kippur War",
-    "url": "https://en.wikipedia.org/wiki/Yom_Kippur_War"
    }
   ]
  },
@@ -12230,9 +12173,9 @@
   "prophecy": "Zech. 12:6",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -12262,9 +12205,9 @@
   "prophecy": "Zech. 9:1-8",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -12292,12 +12235,12 @@
   "num": 335,
   "title": "Yom Kippur War will occur",
   "prophecy": "Mic. 5:5-8",
-  "prophet": "Micah",
+  "prophet": "",
   "given": {
-   "year": -700,
+   "year": -730,
    "approx": true,
-   "label": "c. 700 BC",
-   "yearSource": "evangelical"
+   "label": "c. 730 BC",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 1973,
@@ -12305,9 +12248,9 @@
    "label": "AD 1973",
    "yearSource": "johnson"
   },
-  "fulfilment": "History: Golan Heights Law; 1982 Lebanon War defeat of Syrian air force",
+  "fulfilment": "",
   "status": "fulfilled",
-  "summary": "The fourth leader, Begin, and the third shepherd, Sharon, applied Israeli law to the Golan on 14 December 1981. In 1982 they fought Syria in Lebanon, where Syria lost about 80 MiGs and 19 missile batteries.",
+  "summary": "",
   "agreement": [
    "Ken Johnson"
   ],
@@ -12316,14 +12259,6 @@
    {
     "name": "Ancient Prophecies Revealed, #335",
     "url": "https://biblefacts.org"
-   },
-   {
-    "name": "Biblefacts.org, Seven Shepherds chart (Ken Johnson ministry)",
-    "url": "https://biblefacts.org/study/Seven_Shepherds.pdf"
-   },
-   {
-    "name": "Wikipedia, Golan Heights Law",
-    "url": "https://en.wikipedia.org/wiki/Golan_Heights_Law"
    }
   ]
  },
@@ -12336,8 +12271,8 @@
   "given": {
    "year": -480,
    "approx": true,
-   "label": "c. 480 BC",
-   "yearSource": "evangelical"
+   "label": "c. 480 BC (Zechariah 9-14)",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 1973,
@@ -12364,7 +12299,7 @@
   "id": "apr-337",
   "num": 337,
   "title": "The shekel will be revived as Israeli currency",
-  "prophecy": "Ezek. 45:1,2",
+  "prophecy": "Ezek. 45:12",
   "prophet": "",
   "given": {
    "year": -590,
@@ -12380,7 +12315,7 @@
   },
   "fulfilment": "",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "The book prints \"Ezek. 45:1,2\"; corrected here to Ezek. 45:12 (the shekel).",
   "agreement": [
    "Ken Johnson"
   ],
@@ -12397,12 +12332,12 @@
   "num": 338,
   "title": "Third Shepherd will arise",
   "prophecy": "Mic. 5:5-8",
-  "prophet": "Micah",
+  "prophet": "",
   "given": {
-   "year": -700,
+   "year": -730,
    "approx": true,
-   "label": "c. 700 BC",
-   "yearSource": "evangelical"
+   "label": "c. 730 BC",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 1981,
@@ -12410,9 +12345,9 @@
    "label": "AD 1981",
    "yearSource": "johnson"
   },
-  "fulfilment": "History: Israel–Hezbollah war",
+  "fulfilment": "",
   "status": "fulfilled",
-  "summary": "Johnson's last fulfilled entry is the 2006 Lebanon war, which his Seven Shepherds chart describes as fought over Galilee and the Golan while Israel still held them.",
+  "summary": "",
   "agreement": [
    "Ken Johnson"
   ],
@@ -12421,10 +12356,6 @@
    {
     "name": "Ancient Prophecies Revealed, #338",
     "url": "https://biblefacts.org"
-   },
-   {
-    "name": "Biblefacts.org, Seven Shepherds chart (Ken Johnson ministry)",
-    "url": "https://biblefacts.org/study/Seven_Shepherds.pdf"
    }
   ]
  },
@@ -12467,9 +12398,9 @@
   "prophecy": "Zech. 10:6",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -12499,9 +12430,9 @@
   "prophecy": "Zech. 12:6",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": {
@@ -12544,7 +12475,7 @@
   },
   "fulfilment": "",
   "status": "fulfilled",
-  "summary": "Johnson has an entry for the fall of the Berlin Wall in 1989. Evangelicals tie it to God telling the north to \"give up\" his people. In the years after, about a million Jews left the former USSR for Israel. The reference here is inferred.",
+  "summary": "Johnson has an entry for the fall of the Berlin Wall in 1989. Evangelicals tie it to God telling the north to \"give up\" his people. In the years after, about a million Jews left the former USSR for Israel.",
   "agreement": [
    "Ken Johnson",
    "evangelical consensus"
@@ -12581,7 +12512,7 @@
   },
   "fulfilment": "",
   "status": "fulfilled",
-  "summary": "Zephaniah said worshippers from beyond the rivers of Ethiopia would bring God's offering. Johnson's heading dates the Ethiopian Jews' airlift home to 1990. Operation Solomon flew about 14,000 in 36 hours in May 1991.",
+  "summary": "",
   "agreement": [
    "Ken Johnson",
    "evangelical consensus"
@@ -12699,12 +12630,12 @@
   "num": 347,
   "title": "Tourists will fly in and support Israel",
   "prophecy": "Isa. 60:8-10; Isa. 61",
-  "prophet": "Isaiah",
+  "prophet": "",
   "given": {
-   "year": -700,
+   "year": -710,
    "approx": true,
-   "label": "c. 700 BC",
-   "yearSource": "evangelical"
+   "label": "c. 710 BC",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": 2000,
@@ -12712,22 +12643,17 @@
    "label": "c. AD 2000",
    "yearSource": "johnson"
   },
-  "fulfilment": "History: about 49,000 Yemenite Jews airlifted",
+  "fulfilment": "",
   "status": "fulfilled",
-  "summary": "Johnson has a 1949 entry for the return of the Yemenite Jews. Operation Magic Carpet airlifted about 49,000 of them, many of whom recalled the promise of \"eagles' wings\". The prophecy reference here is inferred.",
+  "summary": "",
   "agreement": [
-   "Ken Johnson",
-   "evangelical consensus"
+   "Ken Johnson"
   ],
   "dss": "",
   "sources": [
    {
     "name": "Ancient Prophecies Revealed, #347",
     "url": "https://biblefacts.org"
-   },
-   {
-    "name": "Wikipedia, Operation Magic Carpet (Yemen)",
-    "url": "https://en.wikipedia.org/wiki/Operation_Magic_Carpet_(Yemen)"
    }
   ]
  },
@@ -13133,13 +13059,13 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
   "fulfilment": "",
   "status": "future",
-  "summary": "Johnson lists, as future after 2008, a sovereign Palestinian state on the West Bank. The reference here is inferred (Joel's rebuke of nations that \"parted my land\").",
+  "summary": "",
   "agreement": [
    "Ken Johnson"
   ],
@@ -13218,15 +13144,15 @@
   "prophecy": "Zech. 10-11; Obad. 1:19",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": null,
   "fulfilment": "",
   "status": "future",
-  "summary": "Johnson foresees a \"Lebanese-Jordanian\" war before the Tribulation. Many prophecy teachers link this to the Psalm 83 coalition of Israel's near neighbours. The reference here is inferred.",
+  "summary": "Johnson foresees a \"Lebanese-Jordanian\" war before the Tribulation. Many prophecy teachers link this to the Psalm 83 coalition of Israel's near neighbours.",
   "agreement": [
    "Ken Johnson"
   ],
@@ -13367,7 +13293,7 @@
   "num": 368,
   "section": "After 2008",
   "title": "Rise of the ten nations occurs after the Gog-Magog War",
-  "prophecy": "Dan. 8,11",
+  "prophecy": "Dan. 8; 11",
   "prophet": "",
   "given": {
    "year": -551,
@@ -13378,7 +13304,7 @@
   "fulfilled": null,
   "fulfilment": "",
   "status": "future",
-  "summary": "",
+  "summary": "The book prints \"Dan. 8,11\"; corrected here to Dan. 8; 11.",
   "agreement": [
    "Ken Johnson"
   ],
@@ -13401,7 +13327,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -13515,10 +13441,10 @@
   "prophecy": "2 Thess. 2:3 (the book: see the section on the Apostasy of the Church)",
   "prophet": "Paul",
   "given": {
-   "year": 52,
+   "year": 51,
    "approx": true,
-   "label": "c. AD 52",
-   "yearSource": "evangelical"
+   "label": "c. AD 51",
+   "yearSource": "derived"
   },
   "fulfilled": null,
   "fulfilment": "",
@@ -13575,7 +13501,7 @@
   "num": 375,
   "section": "The Birth Pangs",
   "title": "Many false Christs will come",
-  "prophecy": "Matt. 24:4",
+  "prophecy": "Matt. 24:4-5",
   "prophet": "",
   "given": {
    "year": 30,
@@ -13586,7 +13512,7 @@
   "fulfilled": null,
   "fulfilment": "",
   "status": "future",
-  "summary": "",
+  "summary": "The book prints \"Matt. 24:4\"; corrected here to Matt. 24:4-5 (false Christs are verse 5).",
   "agreement": [
    "Ken Johnson"
   ],
@@ -13984,10 +13910,10 @@
   "prophecy": "Dan. 9:27; 2 Thess. 2:3",
   "prophet": "Daniel",
   "given": {
-   "year": -538,
-   "approx": true,
-   "label": "c. 538 BC",
-   "yearSource": "evangelical"
+   "year": -536,
+   "approx": false,
+   "label": "536 BC (1st year of Darius the Mede)",
+   "yearSource": "derived"
   },
   "fulfilled": null,
   "fulfilment": "",
@@ -14022,10 +13948,10 @@
   "prophecy": "Dan. 9:27",
   "prophet": "Daniel",
   "given": {
-   "year": -538,
-   "approx": true,
-   "label": "c. 538 BC",
-   "yearSource": "evangelical"
+   "year": -536,
+   "approx": false,
+   "label": "536 BC (1st year of Darius the Mede)",
+   "yearSource": "derived"
   },
   "fulfilled": null,
   "fulfilment": "",
@@ -14152,20 +14078,19 @@
   "section": "First half of the Tribulation",
   "title": "Elijah returns and preaches against the Antichrist for 3.5 years",
   "prophecy": "Mal. 4:5-6",
-  "prophet": "John",
+  "prophet": "",
   "given": {
-   "year": 95,
+   "year": -430,
    "approx": true,
-   "label": "c. AD 95",
-   "yearSource": "evangelical"
+   "label": "c. 430 BC",
+   "yearSource": "derived"
   },
   "fulfilled": null,
   "fulfilment": "",
   "status": "future",
-  "summary": "Two witnesses prophesy in Jerusalem for 1,260 days, are killed, lie in the street and rise again. Johnson identifies one as Elijah, whose ministry ends at the sixth trumpet, before the midpoint, as \"the restoration of all things\".",
+  "summary": "",
   "agreement": [
-   "Ken Johnson",
-   "evangelical consensus"
+   "Ken Johnson"
   ],
   "dss": "",
   "expected": null,
@@ -14173,14 +14098,6 @@
    {
     "name": "Ancient Prophecies Revealed, #394",
     "url": "https://biblefacts.org"
-   },
-   {
-    "name": "Ken Johnson, The Rapture",
-    "url": "https://pdfcoffee.com/the-rapture-ken-johnson-pdf-free.html"
-   },
-   {
-    "name": "Biblefacts.org, Revelation chart",
-    "url": "https://biblefacts.org/study/RevelationChart.pdf"
    }
   ]
  },
@@ -14257,7 +14174,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -14286,7 +14203,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -14310,7 +14227,7 @@
   "num": 399,
   "section": "The Antichrist's identifying characteristics",
   "title": "The letters of his name will equal 666 if spelled out in Greek",
-  "prophecy": "Rev. 13:16-17",
+  "prophecy": "Rev. 13:16-18",
   "prophet": "",
   "given": {
    "year": 95,
@@ -14321,7 +14238,7 @@
   "fulfilled": null,
   "fulfilment": "",
   "status": "future",
-  "summary": "",
+  "summary": "The book prints \"Rev. 13:16-17\"; corrected here to Rev. 13:16-18 (666 is verse 18).",
   "agreement": [
    "Ken Johnson"
   ],
@@ -14342,9 +14259,9 @@
   "prophecy": "Zech. 11:17",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -14414,10 +14331,10 @@
   "prophecy": "Dan. 11:40",
   "prophet": "Daniel",
   "given": {
-   "year": -536,
+   "year": -535,
    "approx": true,
-   "label": "c. 536 BC",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": null,
   "fulfilment": "",
@@ -14449,7 +14366,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -14478,7 +14395,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -14507,7 +14424,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -14594,7 +14511,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -14623,7 +14540,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -14676,7 +14593,7 @@
   "num": 411,
   "section": "The wars of the Antichrist",
   "title": "Animals attack",
-  "prophecy": "Amos 5:18; Rev. 6:8",
+  "prophecy": "Amos 5:18-19; Rev. 6:8",
   "prophet": "",
   "given": {
    "year": -760,
@@ -14687,7 +14604,7 @@
   "fulfilled": null,
   "fulfilment": "",
   "status": "future",
-  "summary": "",
+  "summary": "The book prints \"Amos 5:18\"; corrected here to Amos 5:18-19 (the lion and the bear are verse 19).",
   "agreement": [
    "Ken Johnson"
   ],
@@ -14739,7 +14656,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -14942,7 +14859,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -15058,7 +14975,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -15087,7 +15004,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -15116,7 +15033,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -15145,7 +15062,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -15174,7 +15091,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -15203,7 +15120,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -15435,7 +15352,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -15489,20 +15406,19 @@
   "section": "The Invasion of Israel",
   "title": "The Jewish people will be expelled from their half of Jerusalem",
   "prophecy": "Zech. 14:2",
-  "prophet": "John",
+  "prophet": "",
   "given": {
-   "year": 95,
+   "year": -480,
    "approx": true,
-   "label": "c. AD 95",
-   "yearSource": "evangelical"
+   "label": "c. 480 BC (Zechariah 9-14)",
+   "yearSource": "derived"
   },
   "fulfilled": null,
   "fulfilment": "",
   "status": "future",
-  "summary": "The kings of the earth are gathered to Armageddon and against Jerusalem, and the returning Christ destroys their armies. Johnson places Armageddon at the end of the seven years, with Christ as the last \"shepherd\" of Micah 5.",
+  "summary": "",
   "agreement": [
-   "Ken Johnson",
-   "evangelical consensus"
+   "Ken Johnson"
   ],
   "dss": "",
   "expected": null,
@@ -15510,14 +15426,6 @@
    {
     "name": "Ancient Prophecies Revealed, #439",
     "url": "https://biblefacts.org"
-   },
-   {
-    "name": "Ken Johnson, The Rapture",
-    "url": "https://pdfcoffee.com/the-rapture-ken-johnson-pdf-free.html"
-   },
-   {
-    "name": "Biblefacts.org, Seven Shepherds chart (Ken Johnson ministry)",
-    "url": "https://biblefacts.org/study/Seven_Shepherds.pdf"
    }
   ]
  },
@@ -15589,7 +15497,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -15618,7 +15526,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -15935,10 +15843,10 @@
   "prophecy": "Dan. 12:11-12",
   "prophet": "Daniel",
   "given": {
-   "year": -536,
+   "year": -535,
    "approx": true,
-   "label": "c. 536 BC",
-   "yearSource": "evangelical"
+   "label": "c. 535 BC (3rd year of Cyrus)",
+   "yearSource": "derived"
   },
   "fulfilled": null,
   "fulfilment": "",
@@ -15971,7 +15879,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -16116,7 +16024,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -16177,9 +16085,9 @@
   "prophecy": "Joel 2:30-32; Rev. 6:12-17",
   "prophet": "",
   "given": {
-   "year": -820,
+   "year": -835,
    "approx": true,
-   "label": "c. 820 BC",
+   "label": "c. 835 BC",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -16324,7 +16232,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -16433,9 +16341,9 @@
   "prophecy": "Zech. 14:4",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -16462,9 +16370,9 @@
   "prophecy": "Zech. 14:4",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -16549,9 +16457,9 @@
   "prophecy": "Zech. 12:9-10",
   "prophet": "",
   "given": {
-   "year": -518,
+   "year": -480,
    "approx": true,
-   "label": "c. 518 BC",
+   "label": "c. 480 BC (Zechariah 9-14)",
    "yearSource": "derived"
   },
   "fulfilled": null,
@@ -16576,20 +16484,19 @@
   "section": "The Second Coming",
   "title": "Israel cleansed of all sin",
   "prophecy": "Rom. 11:25-27",
-  "prophet": "Zechariah",
+  "prophet": "",
   "given": {
-   "year": -480,
+   "year": 57,
    "approx": true,
-   "label": "c. 480 BC",
-   "yearSource": "evangelical"
+   "label": "c. AD 57",
+   "yearSource": "derived"
   },
   "fulfilled": null,
   "fulfilment": "",
   "status": "future",
-  "summary": "God pours out a spirit of grace on Jerusalem. They look on him whom they pierced and mourn, and a fountain is opened for cleansing. Paul says that when the fullness of the Gentiles has come in, all Israel will be saved.",
+  "summary": "",
   "agreement": [
-   "Ken Johnson",
-   "evangelical consensus"
+   "Ken Johnson"
   ],
   "dss": "",
   "expected": null,
@@ -16668,7 +16575,7 @@
   "given": {
    "year": -535,
    "approx": true,
-   "label": "c. 535 BC",
+   "label": "c. 535 BC (3rd year of Cyrus)",
    "yearSource": "derived"
   },
   "fulfilled": null,

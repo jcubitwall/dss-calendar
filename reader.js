@@ -94,9 +94,11 @@ async function showWiki(title) {
 }
 
 // ---------- Bible (KJV) ----------
-const BOOKS = { gen: 'Genesis', exod: 'Exodus', exo: 'Exodus', lev: 'Leviticus', num: 'Numbers', deut: 'Deuteronomy', deu: 'Deuteronomy', josh: 'Joshua', judg: 'Judges', sam: 'Samuel', kgs: 'Kings', chron: 'Chronicles', chr: 'Chronicles', neh: 'Nehemiah', esth: 'Esther', ps: 'Psalms', psa: 'Psalms', prov: 'Proverbs', eccl: 'Ecclesiastes', isa: 'Isaiah', jer: 'Jeremiah', lam: 'Lamentations', ezek: 'Ezekiel', eze: 'Ezekiel', dan: 'Daniel', hos: 'Hosea', obad: 'Obadiah', mic: 'Micah', nah: 'Nahum', hab: 'Habakkuk', zeph: 'Zephaniah', hag: 'Haggai', zech: 'Zechariah', mal: 'Malachi', matt: 'Matthew', mat: 'Matthew', mk: 'Mark', lk: 'Luke', jn: 'John', rom: 'Romans', cor: 'Corinthians', gal: 'Galatians', eph: 'Ephesians', phil: 'Philippians', col: 'Colossians', thess: 'Thessalonians', tim: 'Timothy', heb: 'Hebrews', pet: 'Peter', rev: 'Revelation' };
+const BOOKS = { gen: 'Genesis', exod: 'Exodus', exo: 'Exodus', lev: 'Leviticus', num: 'Numbers', deut: 'Deuteronomy', deu: 'Deuteronomy', josh: 'Joshua', judg: 'Judges', sam: 'Samuel', kgs: 'Kings', chron: 'Chronicles', chr: 'Chronicles', neh: 'Nehemiah', esth: 'Esther', ps: 'Psalms', psa: 'Psalms', prov: 'Proverbs', eccl: 'Ecclesiastes', isa: 'Isaiah', jer: 'Jeremiah', lam: 'Lamentations', ezek: 'Ezekiel', eze: 'Ezekiel', dan: 'Daniel', hos: 'Hosea', obad: 'Obadiah', jud: 'Jude', phlm: 'Philemon', phm: 'Philemon', mic: 'Micah', nah: 'Nahum', hab: 'Habakkuk', zeph: 'Zephaniah', hag: 'Haggai', zech: 'Zechariah', mal: 'Malachi', matt: 'Matthew', mat: 'Matthew', mk: 'Mark', lk: 'Luke', jn: 'John', rom: 'Romans', cor: 'Corinthians', gal: 'Galatians', eph: 'Ephesians', phil: 'Philippians', col: 'Colossians', thess: 'Thessalonians', tim: 'Timothy', heb: 'Hebrews', pet: 'Peter', rev: 'Revelation' };
+const ONE_CHAPTER = /^(Obadiah|Philemon|2 John|3 John|Jude)\s+(\d+(?:-\d+)?)\b(?!:)/;
 function normRef(ref) {
-  return ref.replace(/^\s*([1-3]?)\s*([A-Za-z]+)\.?/, (m, n, b) => `${n ? n + ' ' : ''}${BOOKS[b.toLowerCase()] || b}`).replace(/\s+/g, ' ').trim();
+  const r = ref.replace(/^\s*([1-3]?)\s*([A-Za-z]+)\.?/, (m, n, b) => `${n ? n + ' ' : ''}${BOOKS[b.toLowerCase()] || b}`).replace(/\s+/g, ' ').trim();
+  return r.replace(ONE_CHAPTER, (m, b, v) => `${b} 1:${v}`);   // "Jude 14-15" means verses, not chapters
 }
 async function showBible(ref) {
   ref = normRef(ref);

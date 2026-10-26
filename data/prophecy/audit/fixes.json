@@ -1,0 +1,171 @@
+{
+ "_about": "Corrections from the Oct 2026 audit (Dead Sea Scroll citations checked against Ulrich DJD XVI / dssenglishbible.com and the scroll editions; dates aligned to Johnson's AM chronology). Applied last by scripts/build-prophecies.mjs. Keys: dss, ref, s (replace note), sRep [[from,to],...], g/f {year,label} (year negative = BC).",
+ "apr-217": {
+  "dss": "11Q13 col. 2:18 (quotes Dan. 9:25)"
+ },
+ "apr-234": {
+  "dss": ""
+ },
+ "apr-216": {
+  "dss": "",
+  "sRep": [
+   [
+    " and links 11Q13's timing to it",
+    ""
+   ]
+  ]
+ },
+ "apr-118": {
+  "dss": ""
+ },
+ "apr-167": {
+  "dss": ""
+ },
+ "apr-181": {
+  "dss": "1QIsa-a; 4Q521 (parallel: Ps. 146 with Isa. 61)"
+ },
+ "apr-244": {
+  "dss": "1QIsa-a (Isa. 25:7-8; 55:3); 4Q521 (parallel)"
+ },
+ "apr-171": {
+  "dss": "3Q2 (Ps. 2:6-7); 4Q174 (Ps. 2:1-2)"
+ },
+ "apr-172": {
+  "dss": "4Q175 (Deut. 18:18-19)"
+ },
+ "apr-241": {
+  "dss": "11Q13 col. 2:6-8 (parallel)"
+ },
+ "apr-215": {
+  "dss": "4Q80 (4QXII-e, Zech. 12:10); 5/6HevPs (Ps. 22:16)"
+ },
+ "dss-4qdan-daniel-11-antiochus-abomination": {
+  "dss": "4Q114 (4QDan-c, Dan. 11:25-29); 6Q7 (11:33-36); 4Q174 (quotes 11:32)",
+  "sRep": [
+   [
+    "A 2025 radiocarbon and AI script study dated 4Q114 (4QDan-c, which has Daniel 10-11) to c. 230–160 BC. That challenges the theory that Daniel was written after 164 BC.",
+    "4Q114 (4QDan-c) preserves Daniel 10:5–11:29, 6Q7 has 11:33-36 and 4Q174 quotes 11:32; a 2025 radiocarbon and script study dated 4Q114 to c. 220–165 BC."
+   ]
+  ]
+ },
+ "dss-4qdan-daniel-2-four-kingdoms": {
+  "dss": "4Q112 (4QDan-a)"
+ },
+ "dss-4qdan-daniel-8-goat-alexander": {
+  "dss": "4Q113 (4QDan-b); 4Q112 (4QDan-a); 6Q7"
+ },
+ "dss-daniel-12-4-sealed-until-time-of-end": {
+  "dss": ""
+ },
+ "dss-4qen-week-5-house-of-glory": {
+  "dss": "1 Enoch (Apocalypse of Weeks, 4Q212; this verse survives only in Ethiopic)"
+ },
+ "dss-4qen-week-6-man-ascends": {
+  "dss": "1 Enoch (Apocalypse of Weeks, 4Q212; this verse survives only in Ethiopic)"
+ },
+ "dss-4qen-week-6-house-burned": {
+  "dss": "1 Enoch (Apocalypse of Weeks, 4Q212; this verse survives only in Ethiopic)"
+ },
+ "dss-4qen-week-6-root-dispersed": {
+  "dss": "1 Enoch (Apocalypse of Weeks, 4Q212; this verse survives only in Ethiopic)"
+ },
+ "dss-4q521-isaiah-35-blind-see-lame-walk": {
+  "dss": "1QIsa-a; 4Q521 (Ps. 146 with Isa. 61)",
+  "sRep": [
+   [
+    "4Q521 combines Psalm 146 and Isaiah 35",
+    "Isaiah 35 is preserved in 1QIsa-a; 4Q521 combines Psalm 146 and Isaiah 61"
+   ]
+  ]
+ },
+ "dss-4q174-psalm-2-nations-rage-against-anointed": {
+  "dss": "4Q174 (Ps. 2:1-2); 3Q2 (Ps. 2:6-7)"
+ },
+ "dss-4q174-amos-9-11-booth-of-david": {
+  "dss": "4Q174",
+  "sRep": [
+   [
+    "4Q174 (and CD 7:16) say",
+    "4Q174 says"
+   ]
+  ]
+ },
+ "dss-4q174-2-samuel-7-son-of-david": {
+  "sRep": [
+   [
+    "(989 BC)",
+    "(dedicated 991 BC, 2935 AM)"
+   ]
+  ]
+ },
+ "star-smites-moab-edom": {
+  "dss": "4Q175 (Num. 24:15-17)"
+ },
+ "dss-4q175-star-of-jacob-sceptre-of-israel": {
+  "dss": "4Q175; 4Q266 (Damascus Document, = CD 7:18-21); 1QM 11:6-7"
+ },
+ "dss-cd-390-years-after-nebuchadnezzar": {
+  "dss": "4Q266 (Damascus Document, = CD 1:5-11)",
+  "f": {
+   "year": -198,
+   "label": "c. 198 BC (3728 AM; Teacher of Righteousness +20 years)"
+  },
+  "s": "Ezekiel lay on his side 390 days for 390 years of Israel's sin. The Damascus Document (Qumran copy 4Q266; the medieval Cairo copy is CD) says that 390 years after God gave Israel to Nebuchadnezzar, he caused a 'root' to sprout; they groped like the blind for 20 years, then God raised up the Teacher of Righteousness. On Johnson's anchor of 3338 AM for the fall of Jerusalem, 390 years is 3728 AM (c. 198 BC); counting from 587/6 BC gives c. 196 BC."
+ },
+ "dss-4qmmt-blessings-curses-end-of-days": {
+  "f": {
+   "year": -588,
+   "label": "curses to 588 BC (3338 AM); return still awaited"
+  }
+ },
+ "enoch-judgment": {
+  "g": {
+   "year": -2939,
+   "label": "before 987 AM (c. 2939 BC)"
+  },
+  "f": {
+   "year": -2270,
+   "label": "2270 BC (1656 AM, the Flood)"
+  }
+ },
+ "gen49-sceptre-shiloh": {
+  "g": {
+   "year": -1671,
+   "label": "c. 1671 BC (Jacob's death, 2255 AM)"
+  }
+ },
+ "reuben-not-excel": {
+  "g": {
+   "year": -1671,
+   "label": "c. 1671 BC (Jacob's death, 2255 AM)"
+  }
+ },
+ "judah-ruler": {
+  "g": {
+   "year": -1671,
+   "label": "c. 1671 BC (Jacob's death, 2255 AM)"
+  }
+ },
+ "age-of-grace-ends-6000-am": {
+  "ref": "Psalm 90:4; 2 Peter 3:8",
+  "dss": "",
+  "g": {
+   "year": -1438,
+   "label": "c. 1438 BC (Moses, Psalm 90)"
+  }
+ },
+ "final-jubilee-age-of-grace-2026": {
+  "ref": "11Q13 col. 2:2 (on Leviticus 25:13)"
+ },
+ "apr-342": {
+  "sRep": [
+   [
+    " Evangelicals tie it to God telling the north to \"give up\" his people.",
+    ""
+   ]
+  ]
+ },
+ "apr-373": {
+  "s": "Paul says that day will not come \"except there come a falling away first\" (2 Thess. 2:3). The book treats the apostasy of the church in its own section."
+ }
+}
