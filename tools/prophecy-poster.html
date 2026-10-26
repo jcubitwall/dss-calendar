@@ -14,9 +14,9 @@
 @font-face { font-family: 'Alegreya Sans'; font-weight: 700; src: url(fonts/alegreya-sans-latin-700-normal.woff2); }
 @font-face { font-family: 'Alegreya Sans SC'; font-weight: 500; src: url(fonts/alegreya-sans-sc-latin-500-normal.woff2); }
 @font-face { font-family: 'Alegreya Sans SC'; font-weight: 700; src: url(fonts/alegreya-sans-sc-latin-700-normal.woff2); }
-@page { size: 48in 12in; margin: 0; }
+
 html, body { margin: 0; padding: 0; background: #FAF7F0; }
-svg { display: block; width: 48in; height: 12in; }
+svg { display: block; }
 </style>
 </head>
 <body>
@@ -25,8 +25,11 @@ svg { display: block; width: 48in; height: 12in; }
 // Prophecy Map: 7,000 years, foretold → fulfilled. 48 × 12 in, units = points (1/72 in).
 import * as D from '../engine/dss.js';
 
-const W = 3456, H = 864, M = 36;
 const params = new URLSearchParams(location.search);
+const WIN = +params.get('w') || 48, HIN = +params.get('h') || 12;           // paper size in inches
+const PW = WIN * 72, PH = HIN * 72;                                         // page in points
+const K = Math.min(PW / 3456, PH / 864);                                    // chrome scale vs the 48 × 12 design
+const W = PW / K, H = PH / K, M = 36;                                       // design space (scaled by K on output)
 const OTHERS = params.get('others') !== '0';          // add Dead Sea Scroll–referenced items from other teachers
 
 const C = {
@@ -94,7 +97,7 @@ const rows = items.map(p => {
 }).sort((a, b) => a.fam - b.fam || a.gam - b.gam || (a.p.n || 999) - (b.p.n || 999));
 
 // ---------- vertical layout ----------
-const headH = 74, arcTop = M + headH, axisY = 338, bandH = 26, fanTop = axisY + bandH + 4, colTop = fanTop + 58, colBot = H - M - 16;
+const headH = 74, arcTop = M + headH, axisY = Math.round(338 + 0.22 * (H - 864)), bandH = 26, fanTop = axisY + bandH + 4, colTop = fanTop + 58, colBot = H - M - 16;
 const left = M, right = W - M, span = right - left;
 
 // ---------- elastic scale: part linear, part density of fulfilments and foretellings ----------
@@ -188,52 +191,96 @@ for (const r of arcRows) {
 for (const r of rows) svg += `<circle cx="${f1(X(r.gam))}" cy="${axisY}" r="1.3" fill="${C[r.k]}" opacity="0.8"/>`;
 
 svg += lmText.join('');
-// ---------- index columns ----------
+// ---------- index columns (every entry wraps; nothing is cut) ----------
 const avail = colBot - colTop;
-let fs = 8.2, lh, perCol, ncol, colW, gutter;
-for (; fs > 5; fs -= 0.1) {
-  lh = fs * 1.22; perCol = Math.floor((avail - fs * 2.2) / lh);
-  ncol = Math.ceil(rows.length / perCol); gutter = 10; colW = (span - gutter * (ncol - 1)) / ncol;
-  if (colW >= fs * 38) break;
+const FK = { ref: '700 10px "Alegreya Sans"', dss: 'italic 400 10px "Alegreya Sans"', title: '400 10px "Alegreya Sans"', num: '500 8.2px "Alegreya Sans"', when: '500 10px "Alegreya Sans"' };
+const wc = new Map();
+const w10 = (s, k) => { const key = k + '|' + s; let v = wc.get(key); if (v == null) { v = tw(s, FK[k]); wc.set(key, v); } return v; };
+for (const r of rows) {
+  const tok = [];
+  r.ref.split(' ').filter(Boolean).forEach(t => tok.push({ s: t, k: 'ref' }));
+  if (r.dss && !r.ref.includes(r.dss)) r.dss.split(' ').forEach(t => tok.push({ s: t, k: 'dss' }));
+  (r.title + (r.partial ? ' (in part)' : '')).split(' ').filter(Boolean).forEach(t => tok.push({ s: t, k: 'title' }));
+  if (r.num) tok.push({ s: r.num, k: 'num' });
+  r.tok = tok; r.whenW10 = w10(r.when, 'when');
 }
-// balance: spread rows evenly
-perCol = Math.ceil(rows.length / ncol);
-const FONT = { ref: `700 ${fs}px "Alegreya Sans"`, num: `500 ${fs * 0.82}px "Alegreya Sans"`, title: `400 ${fs}px "Alegreya Sans"`, when: `500 ${fs}px "Alegreya Sans"`, dss: `italic 400 ${fs}px "Alegreya Sans"` };
-function fit(s, font, w) { if (tw(s, font) <= w) return s; let lo = 0, hi = s.length; while (lo < hi) { const m = (lo + hi + 1) >> 1; tw(s.slice(0, m) + '…', font) <= w ? lo = m : hi = m - 1; } return s.slice(0, lo).replace(/[\s,;:·–-]+$/, '') + '…'; }
-for (let c = 0; c < ncol; c++) {
-  const chunk = rows.slice(c * perCol, (c + 1) * perCol); if (!chunk.length) continue;
+const SP = 0.26;                       // word space, in em
+function wrap(r, fs, colW) {
+  const ind = fs * 0.6, sc = fs / 10;
+  const lines = [[]]; let x = 0, lim = colW - ind - r.whenW10 * sc - fs * 0.8;
+  for (const t of r.tok) {
+    const w = w10(t.s, t.k) * sc, gap = x ? fs * SP + (t.k !== lines.at(-1).at(-1)?.k ? fs * 0.15 : 0) : 0;
+    if (x && x + gap + w > lim) {
+      const prev = lines.at(-1);
+      lines.push([]); lim = colW - ind - fs * 0.5;
+      // never leave the grey Johnson number alone on a line: carry the last word down with it
+      if (t.k === 'num' && prev.length > 1) { const mv = prev.pop(); lines.at(-1).push({ ...mv, x: 0 }); x = w10(mv.s, mv.k) * sc; }
+      else x = 0;
+    }
+    const g = x ? gap : 0;
+    lines.at(-1).push({ ...t, x: x + g }); x += g + w;
+  }
+  return lines;
+}
+const LH = 1.2, EGAP = 0.32, HDR = 2.2;
+function pack(fs, colW, ncol) {
+  const lh = fs * LH, hts = rows.map(r => wrap(r, fs, colW).length * lh + fs * EGAP);
+  const cap = avail - fs * HDR;
+  const fits = c => { let n = 1, h = 0; for (const v of hts) { if (v > c) return false; if (h + v > c) { n++; h = 0; } h += v; } return n <= ncol; };
+  if (!fits(cap)) return null;
+  let lo = hts.reduce((a, b) => a + b, 0) / ncol, hi = cap;   // balance columns: smallest height that still fits
+  for (let k = 0; k < 18; k++) { const m = (lo + hi) / 2; fits(m) ? hi = m : lo = m; }
+  const cols = [[]]; let h = 0;
+  rows.forEach((r, i) => { if (h + hts[i] > hi && cols.at(-1).length) { cols.push([]); h = 0; } cols.at(-1).push(r); h += hts[i]; });
+  return cols;
+}
+const gutter = 12;
+let fs, colW, cols;
+search: for (fs = 10; fs > 4; fs = +(fs - 0.1).toFixed(2)) {
+  for (let n = 6; n <= 30; n++) {
+    colW = (span - gutter * (n - 1)) / n;
+    if (colW < fs * 30) break;
+    if (colW > fs * 75) continue;     // keep lines a comfortable length
+    cols = pack(fs, colW, n);
+    if (cols) break search;
+  }
+}
+const ncol = cols.length;
+colW = (span - gutter * (ncol - 1)) / ncol;
+cols = pack(fs, colW, ncol) || cols;
+const lh = fs * LH;
+const FILL = { ref: C.ink, dss: C.scrolls, title: '#34403F', num: C.faint };
+cols.forEach((chunk, c) => {
   const cx0 = left + c * (colW + gutter), cx1 = cx0 + colW;
   const f0 = chunk[0].fam, fN = chunk[chunk.length - 1].fam;
-  // dominant category colour for the funnel
   const cnt = {}; chunk.forEach(r => cnt[r.k] = (cnt[r.k] || 0) + 1);
   const dom = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0][0];
   let ax0 = X(f0), ax1 = X(fN); if (ax1 - ax0 < 3) { ax0 -= 1.5; ax1 += 1.5; }
-  svg += `<path d="M${f1(ax0)},${axisY + bandH} L${f1(ax1)},${axisY + bandH} C${f1(ax1)},${f1(fanTop + 34)} ${f1(cx1)},${f1(fanTop + 20)} ${f1(cx1)},${colTop - fs * 2.2} L${f1(cx0)},${colTop - fs * 2.2} C${f1(cx0)},${f1(fanTop + 20)} ${f1(ax0)},${f1(fanTop + 34)} ${f1(ax0)},${axisY + bandH} Z" fill="${C[dom]}" opacity="0.09"/>`;
+  const fy = colTop - fs * HDR;
+  svg += `<path d="M${f1(ax0)},${axisY + bandH} L${f1(ax1)},${axisY + bandH} C${f1(ax1)},${f1(fanTop + 34)} ${f1(cx1)},${f1(fanTop + 20)} ${f1(cx1)},${f1(fy)} L${f1(cx0)},${f1(fy)} C${f1(cx0)},${f1(fanTop + 20)} ${f1(ax0)},${f1(fanTop + 34)} ${f1(ax0)},${axisY + bandH} Z" fill="${C[dom]}" opacity="0.09"/>`;
   svg += `<line x1="${f1(ax0)}" y1="${axisY + bandH + 0.5}" x2="${f1(ax1)}" y2="${axisY + bandH + 0.5}" stroke="${C[dom]}" stroke-width="2"/>`;
-  // column header
   const hdr = fN >= NOW ? (f0 >= NOW ? 'Yet future' : `Fulfilled ${yearOf(f0)} → yet future`) : (yearOf(f0) === yearOf(fN) ? `Fulfilled ${yearOf(f0)}` : `Fulfilled ${yearOf(f0)} – ${yearOf(fN)}`);
   const hy = colTop - fs * 0.9;
   svg += T(cx0, hy, hdr.toUpperCase(), { ff: 'Alegreya Sans SC', fw: 700, fs: fs * 0.95, fill: C[dom], ls: 0.6 });
   svg += `<line x1="${f1(cx0)}" y1="${f1(hy + fs * 0.4)}" x2="${f1(cx1)}" y2="${f1(hy + fs * 0.4)}" stroke="${C[dom]}" stroke-width="0.6"/>`;
+  let y = colTop + fs * 0.4;
   chunk.forEach((r, i) => {
-    const y = colTop + fs * 0.4 + (i + 1) * lh - lh * 0.25;
-    if (i % 2) svg += `<rect x="${f1(cx0 - 2)}" y="${f1(y - fs * 0.92)}" width="${f1(colW + 4)}" height="${f1(lh)}" fill="${C.ink}" opacity="0.028"/>`;
-    const col = C[r.k];
-    svg += `<rect x="${f1(cx0)}" y="${f1(y - fs * 0.72)}" width="${f1(fs * 0.28)}" height="${f1(fs * 0.86)}" fill="${col}"${r.k === 'future' ? ' opacity="0.65"' : ''}/>`;
-    let x = cx0 + fs * 0.6;
-    const whenW = tw(r.when, FONT.when);
-    const xr = cx1;
-    // reference (bold), then DSS manuscript (italic), then the prophecy, dates right-aligned
-    const refS = fit(r.ref, FONT.ref, colW * 0.36);
-    svg += T(x, y, refS, { fw: 700, fs, fill: C.ink }); x += tw(refS, FONT.ref) + fs * 0.4;
-    if (r.dss && !r.ref.includes(r.dss)) { const d = fit(r.dss, FONT.dss, colW * 0.18); svg += T(x, y, d, { it: 1, fs, fill: C.scrolls }); x += tw(d, FONT.dss) + fs * 0.4; }
-    const room = xr - whenW - fs * 0.8 - x - (r.num ? tw(r.num, FONT.num) + fs * 0.4 : 0);
-    const ttl = fit(r.title + (r.partial ? ' (in part)' : ''), FONT.title, Math.max(room, fs * 3));
-    svg += T(x, y, ttl, { fs, fill: '#34403F' }); x += tw(ttl, FONT.title) + fs * 0.35;
-    if (r.num) svg += T(x, y, r.num, { fw: 500, fs: fs * 0.82, fill: C.faint });
-    svg += T(xr, y, r.when, { fw: 500, fs, a: 'end', fill: r.k === 'future' ? C.future : C.muted });
+    const lines = wrap(r, fs, colW), hgt = lines.length * lh + fs * EGAP;
+    if (i % 2) svg += `<rect x="${f1(cx0 - 2)}" y="${f1(y + fs * 0.05)}" width="${f1(colW + 4)}" height="${f1(hgt)}" fill="${C.ink}" opacity="0.03"/>`;
+    const base = y + fs * EGAP / 2 + lh * 0.82;
+    svg += `<rect x="${f1(cx0)}" y="${f1(base - fs * 0.74)}" width="${f1(fs * 0.28)}" height="${f1(lines.length * lh - lh + fs * 0.88)}" fill="${C[r.k]}"${r.k === 'future' ? ' opacity="0.65"' : ''}/>`;
+    lines.forEach((ln, li) => {
+      const ly = base + li * lh, x0 = cx0 + fs * 0.6 + (li ? fs * 0.5 : 0);
+      // merge runs of the same style into one <text>
+      let run = null;
+      const flush = () => { if (!run) return; const o = run.k === 'ref' ? { fw: 700, fs, fill: FILL.ref } : run.k === 'dss' ? { it: 1, fs, fill: FILL.dss } : run.k === 'num' ? { fw: 500, fs: fs * 0.82, fill: FILL.num } : { fs, fill: FILL.title }; svg += T(x0 + run.x, ly, run.s, o); run = null; };
+      for (const t of ln) { if (run && run.k === t.k) run.s += ' ' + t.s; else { flush(); run = { k: t.k, s: t.s, x: t.x }; } }
+      flush();
+    });
+    svg += T(cx1, base, r.when, { fw: 500, fs, a: 'end', fill: r.k === 'future' ? C.future : C.muted });
+    y += hgt;
   });
-}
+});
 
 // ---------- header ----------
 svg += T(M, M + 30, 'Seven Thousand Years of Prophecy', { ff: 'Alegreya', fw: 500, fs: 38, fill: C.title });
@@ -256,8 +303,11 @@ svg += `<line x1="${M}" y1="${M + headH - 18}" x2="${right}" y2="${M + headH - 1
 svg += T(M, H - M + 6, "Sources: Ken Johnson, Ancient Prophecies Revealed (#1–485; numbers in grey) and his biblical chronology; Scripture (KJV); Dead Sea Scroll manuscripts in italic green (e.g. 1QIsa-a, the Great Isaiah Scroll; 4Q174; 11Q13). Fulfilment years follow Johnson where he gives them; foretold dates are approximate dates of the prophet.", { fs: 7.5, fill: C.muted });
 svg += T(right, H - M + 6, 'DSS Calendar · dss-calendar.pages.dev · after Ken Johnson & dsscalendar.org', { fs: 7.5, a: 'end', fill: C.muted });
 
-document.getElementById('poster').innerHTML = svg;
-window.__poster = { n: rows.length, fs: +fs.toFixed(2), ncol, perCol, colW: Math.round(colW) };
+const el = document.getElementById('poster');
+el.setAttribute('viewBox', `0 0 ${PW} ${PH}`); el.style.width = WIN + 'in'; el.style.height = HIN + 'in';
+el.innerHTML = `<g transform="scale(${K})">${svg}</g>`;
+const lines = rows.reduce((a, r) => a + wrap(r, fs, colW).length, 0);
+window.__poster = { n: rows.length, size: `${WIN}x${HIN}`, listPt: +(fs * K).toFixed(2), ncol, colW: Math.round(colW * K), wrapped: rows.filter(r => wrap(r, fs, colW).length > 1).length, lines };
 document.body.dataset.ready = '1';
 </script>
 </body>

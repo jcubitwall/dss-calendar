@@ -39,7 +39,7 @@ function propBar() {
     <button class="chip" data-pset="j" aria-pressed="${!settings.propAll}">Johnson's list${PROPHECIES.length ? ` (${nJ})` : ''}</button>
     <button class="chip" data-pset="all" aria-pressed="${settings.propAll}">Add other teachers &amp; scrolls</button>
     <button class="chip" data-pfut="1" aria-pressed="${settings.propFuture}">Include yet-future</button>
-    <a class="chip" href="print/prophecy-map-48x12.pdf" target="_blank" rel="noopener">Prophecy map poster (PDF)</a></div>`;
+    <a class="chip" href="print/prophecy-map-60x20.pdf" target="_blank" rel="noopener">Prophecy map poster (PDF)</a></div>`;
 }
 const propById = id => PROPHECIES.find(p => p.id === id);
 let propLoad = null;
