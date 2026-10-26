@@ -1,0 +1,8 @@
+# Places where the app corrects an evident misprint in Ancient Prophecies Revealed. Shown in each prophecy's note.
+# num	book prints	app uses
+32	1 Sam. 9:15-15	1 Sam. 9:15-16
+140	Jer. 2:28-30	Jer. 22:28-30 (the Jeconiah passage)
+146	prophecy Luke 1:57-66, fulfilment Luke 1:5-25	prophecy Luke 1:5-25, fulfilment Luke 1:57-66 (columns swapped)
+273	Luke 13:33-36	Luke 13:33-35 (Luke 13 has 35 verses)
+370	1 Tim. 3:2-3	2 Tim. 3:2-3
+371	Mat. 24:15	Matt. 24:35 ("my words shall not pass away")

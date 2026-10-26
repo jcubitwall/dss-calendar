@@ -89,6 +89,10 @@ const DAY = {
   330: [1967, 6, 7, 'gregorian'],
 };
 const NINTH_OF_AV = new Set([288, 289, 290, 291, 296, 302]);
+// Evident misprints in the book that the app corrects (data/prophecy/book-corrections.tsv)
+const CORR = Object.fromEntries(tsv('book-corrections.tsv').map(([n, book, app]) => [+n, `The book prints "${book}"; corrected here to ${app}.`]));
+// Years the book marks as approximate ("1880s", "1920s", "~2000")
+const APPROX = { 295: 'AD 1880s', 299: 'AD 1920s', 344: 'c. AD 2000', 345: 'c. AD 2000', 346: 'c. AD 2000', 347: 'c. AD 2000', 348: 'c. AD 2000', 349: 'c. AD 2000', 350: 'c. AD 2000', 351: 'c. AD 2000', 352: 'c. AD 2000', 353: 'c. AD 2000', 354: 'c. AD 2000' };
 const NOTE = {
   217: "Johnson: 483 prophetic years of 360 days (173,880 days) from Artaxerxes' decree in Nisan 444 BC end on April 6, AD 32.",
   316: 'Johnson: 2,520 prophetic years (907,200 days) after the end of the captivity, counted from August 3, 537 BC, end on May 14, 1948 (Ezekiel 4:4-6 with Leviticus 26:18).',
@@ -127,6 +131,7 @@ for (let [n, yr, title, pred, ful] of tsv('johnson-table.tsv')) {
   const fl = { year: fy, approx: false, label: fy <= 0 ? `${-fy} BC` : `AD ${fy}`, yearSource: 'johnson' };
   if (DAY[num]) { const [y, mo, d, cal] = DAY[num]; Object.assign(fl, { year: y, m: mo, d, cal }); }
   if (bookY !== fy) fl.label += ` (book: ${-bookY} BC)`;
+  if (APPROX[num]) Object.assign(fl, { approx: true, label: APPROX[num] });
   // Prophecies with no verse in the table: the Ninth-of-Av calamities trace to Numbers 14; the eagle vision is 2 Esdras 11.
   if (!pred && NINTH_OF_AV.has(num)) pred = 'Num. 14 (Ninth of Av)';
   if (!pred && /esdras apocalypse/i.test(ful || '')) pred = '2 Esdras 11-12 (Esdras Apocalypse)';
@@ -138,7 +143,7 @@ for (let [n, yr, title, pred, ful] of tsv('johnson-table.tsv')) {
   // Research notes written before the book was available may say Johnson's view couldn't be found; drop those.
   const clean = t => (t || '').split(/(?<=\.)\s+/).filter(x => !(/Johnson/.test(x) && /(not use|does not|doesn't|not found|could not|couldn't|no Johnson|unconfirmed|visible|did not)/i.test(x))).join(' ');
   if (m) m.summary = clean(m.summary);
-  const notes = [NOTE[num], NINTH_OF_AV.has(num) ? "Johnson lists this among the calamities that fell on the Ninth of Av (Tisha B'Av)." : '', m?.summary].filter(Boolean);
+  const notes = [NOTE[num], CORR[num], NINTH_OF_AV.has(num) ? "Johnson lists this among the calamities that fell on the Ninth of Av (Tisha B'Av)." : '', m?.summary].filter(Boolean);
   out.push({
     id: `apr-${num}`, num, title, prophecy: pred || (NINTH_OF_AV.has(num) ? 'Num. 14 (Ninth of Av)' : ''),
     prophet: m?.prophet || '', given, fulfilled: fl, fulfilment: ful || m?.fulfilment || '',
@@ -153,7 +158,7 @@ for (const [n, section, title, refs] of tsv('johnson-future.tsv')) {
   out.push({
     id: `apr-${num}`, num, section, title, prophecy: refs, prophet: m?.prophet || '',
     given: m?.given?.year != null ? m.given : givenFor(refs, null), fulfilled: null, fulfilment: '',
-    status: 'future', summary: m?.summary || '', agreement: [...new Set(['Ken Johnson', ...(m?.agreement || [])])],
+    status: 'future', summary: [CORR[num], m?.summary].filter(Boolean).join(' '), agreement: [...new Set(['Ken Johnson', ...(m?.agreement || [])])],
     dss: m?.dss || '', expected: m?.expected || null,
     sources: [SRC(num), ...(m?.sources || []).filter(s => !/Ancient Prophecies Revealed/.test(s.name))],
   });

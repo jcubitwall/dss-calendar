@@ -67,7 +67,7 @@ const FUT = { 'The Birth Pangs': 5958, 'After 2008': 5956, 'First half of the Tr
   'The Second Coming': 5984, 'The Millennium': 6300 };
 const yearOf = am => { const y = Math.floor(am) - D.EPOCH_OFFSET; return y <= 0 ? `${1 - y} BC` : `AD ${y}`; };
 function shortDate(lbl, am, approx) {
-  const m = /(c\.\s*)?(AD\s*\d+(?:\s*[–-]\s*\d+)?|\d+(?:\s*[–-]\s*\d+)?\s*BC)/.exec(lbl || '');
+  const m = /(c\.\s*)?(AD\s*\d+s?(?:\s*[–-]\s*\d+)?|\d+(?:\s*[–-]\s*\d+)?\s*BC)/.exec(lbl || '');
   let s = m ? m[2].replace(/\s*[–-]\s*/, '–') : yearOf(am);
   if (/^\d{3,4}$/.test((lbl || '').match(/\b(1[5-9]\d\d|20\d\d)\b/)?.[0] || '') && !m) s = 'AD ' + lbl.match(/\b(1[5-9]\d\d|20\d\d)\b/)[0];
   return ((m && m[1]) || approx || /^(c\.|before|late|circa)/i.test(lbl || '') ? 'c. ' : '') + s;

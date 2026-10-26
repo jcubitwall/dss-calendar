@@ -1314,7 +1314,7 @@
   "id": "apr-32",
   "num": 32,
   "title": "A Benjamite, Saul, will be the first king",
-  "prophecy": "1 Sam. 9:15-15",
+  "prophecy": "1 Sam. 9:15-16",
   "prophet": "God (to Samuel)",
   "given": {
    "year": -1044,
@@ -1330,7 +1330,7 @@
   },
   "fulfilment": "1 Sam. 10:17-24",
   "status": "fulfilled",
-  "summary": "God told Samuel that the next day a man from Benjamin would come whom he should anoint. Saul arrived searching for donkeys, was anointed, and later chosen by lot.",
+  "summary": "The book prints \"1 Sam. 9:15-15\"; corrected here to 1 Sam. 9:15-16. God told Samuel that the next day a man from Benjamin would come whom he should anoint. Saul arrived searching for donkeys, was anointed, and later chosen by lot.",
   "agreement": [
    "Ken Johnson",
    "evangelical consensus"
@@ -2780,7 +2780,7 @@
   "id": "apr-72",
   "num": 72,
   "title": "Assyria will besiege Jerusalem (185,000 Assyrians died)",
-  "prophecy": "2 Kings 19:5-7; 20-36",
+  "prophecy": "2 Kings 19:5-7, 20-36",
   "prophet": "Isaiah",
   "given": {
    "year": -712,
@@ -4024,7 +4024,7 @@
  {
   "id": "apr-106",
   "num": 106,
-  "title": "Berenice will marry Antiochus II (~285-246 BC)",
+  "title": "Berenice will marry Antiochus II (c. 285–246 BC)",
   "prophecy": "Dan. 11:6",
   "prophet": "Daniel",
   "given": {
@@ -4762,7 +4762,7 @@
   "id": "apr-124",
   "num": 124,
   "title": "The Messiah will be the One who has existed from eternity",
-  "prophecy": "Mic. 5:2; cmp Ps. 90:2",
+  "prophecy": "Mic. 5:2; cf. Ps. 90:2",
   "prophet": "Micah",
   "given": {
    "year": -710,
@@ -5335,7 +5335,7 @@
   },
   "fulfilment": "Matt. 1:1-17",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "The book prints \"Jer. 2:28-30\"; corrected here to Jer. 22:28-30 (the Jeconiah passage).",
   "agreement": [
    "Ken Johnson"
   ],
@@ -5542,7 +5542,7 @@
   },
   "fulfilment": "Luke 1:57-66",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "The book prints \"prophecy Luke 1:57-66, fulfilment Luke 1:5-25\"; corrected here to prophecy Luke 1:5-25, fulfilment Luke 1:57-66 (columns swapped).",
   "agreement": [
    "Ken Johnson"
   ],
@@ -5691,13 +5691,13 @@
   "id": "apr-151",
   "num": 151,
   "title": "Child of the prophetess will be called Mahr-Shalal-Hash-Baz",
-  "prophecy": "Isa. 8:3,18 {Isa. 53:3 despised}",
-  "prophet": "Isaiah",
+  "prophecy": "Isa. 8:3, 18; cf. Isa. 53:3",
+  "prophet": "",
   "given": {
-   "year": -700,
+   "year": -710,
    "approx": true,
-   "label": "c. 700 BC",
-   "yearSource": "evangelical"
+   "label": "c. 710 BC",
+   "yearSource": "derived"
   },
   "fulfilled": {
    "year": -2,
@@ -5707,21 +5707,15 @@
   },
   "fulfilment": "Matt. 27:33",
   "status": "fulfilled",
-  "summary": "The Servant would be despised, rejected and held in low esteem. Jesus' own people and leaders rejected him. Chuck Smith ties this to Jesus' rejection.",
+  "summary": "",
   "agreement": [
-   "Ken Johnson",
-   "Chuck Smith",
-   "evangelical consensus"
+   "Ken Johnson"
   ],
-  "dss": "1QIsa-a",
+  "dss": "",
   "sources": [
    {
     "name": "Ancient Prophecies Revealed, #151",
     "url": "https://biblefacts.org"
-   },
-   {
-    "name": "Chuck Smith, C2000 Isaiah 53-55",
-    "url": "https://www.blueletterbible.org/Comm/smith_chuck/c2000_Isa/Isa_053.cfm"
    }
   ]
  },
@@ -7670,9 +7664,10 @@
   "summary": "A stone rejected by the builders would become the head of the corner. Jesus applied this to himself, and Peter preached that the rejected, crucified Jesus was raised to be the cornerstone.",
   "agreement": [
    "Ken Johnson",
-   "evangelical consensus"
+   "evangelical consensus",
+   "Chuck Smith"
   ],
-  "dss": "",
+  "dss": "1QIsa-a",
   "sources": [
    {
     "name": "Ancient Prophecies Revealed, #205",
@@ -7681,6 +7676,10 @@
    {
     "name": "Scripture (KJV)",
     "url": "https://www.biblegateway.com/"
+   },
+   {
+    "name": "Chuck Smith, C2000 Isaiah 53-55",
+    "url": "https://www.blueletterbible.org/Comm/smith_chuck/c2000_Isa/Isa_053.cfm"
    }
   ]
  },
@@ -9139,7 +9138,7 @@
   "id": "apr-244",
   "num": 244,
   "title": "The Messiah will be resurrected from the dead",
-  "prophecy": "Ps. 16:8-11; 49:15; Isa. 25:7-8; 55:3",
+  "prophecy": "Ps. 16:8-11; 49:15; cf. Ps. 17:15; 30:3; 40:2-5; Acts 13:34; Isa. 55:3; 1 Cor. 15:54; Isa. 25:7-8",
   "prophet": "",
   "given": {
    "year": -1010,
@@ -10167,7 +10166,7 @@
   "id": "apr-273",
   "num": 273,
   "title": "Jewish kingdom will be desolated",
-  "prophecy": "Matt. 23:37-38; Luke 13:33-36",
+  "prophecy": "Matt. 23:37-38; Luke 13:33-35",
   "prophet": "",
   "given": {
    "year": 30,
@@ -10183,7 +10182,7 @@
   },
   "fulfilment": "",
   "status": "fulfilled",
-  "summary": "",
+  "summary": "The book prints \"Luke 13:33-36\"; corrected here to Luke 13:33-35 (Luke 13 has 35 verses).",
   "agreement": [
    "Ken Johnson"
   ],
@@ -10914,8 +10913,8 @@
   },
   "fulfilled": {
    "year": 1880,
-   "approx": false,
-   "label": "AD 1880",
+   "approx": true,
+   "label": "AD 1880s",
    "yearSource": "johnson"
   },
   "fulfilment": "",
@@ -11045,8 +11044,8 @@
   },
   "fulfilled": {
    "year": 1920,
-   "approx": false,
-   "label": "AD 1920",
+   "approx": true,
+   "label": "AD 1920s",
    "yearSource": "johnson"
   },
   "fulfilment": "",
@@ -12613,8 +12612,8 @@
   },
   "fulfilled": {
    "year": 2000,
-   "approx": false,
-   "label": "AD 2000",
+   "approx": true,
+   "label": "c. AD 2000",
    "yearSource": "johnson"
   },
   "fulfilment": "",
@@ -12645,8 +12644,8 @@
   },
   "fulfilled": {
    "year": 2000,
-   "approx": false,
-   "label": "AD 2000",
+   "approx": true,
+   "label": "c. AD 2000",
    "yearSource": "johnson"
   },
   "fulfilment": "",
@@ -12677,8 +12676,8 @@
   },
   "fulfilled": {
    "year": 2000,
-   "approx": false,
-   "label": "AD 2000",
+   "approx": true,
+   "label": "c. AD 2000",
    "yearSource": "johnson"
   },
   "fulfilment": "",
@@ -12709,8 +12708,8 @@
   },
   "fulfilled": {
    "year": 2000,
-   "approx": false,
-   "label": "AD 2000",
+   "approx": true,
+   "label": "c. AD 2000",
    "yearSource": "johnson"
   },
   "fulfilment": "History: about 49,000 Yemenite Jews airlifted",
@@ -12746,8 +12745,8 @@
   },
   "fulfilled": {
    "year": 2000,
-   "approx": false,
-   "label": "AD 2000",
+   "approx": true,
+   "label": "c. AD 2000",
    "yearSource": "johnson"
   },
   "fulfilment": "",
@@ -12778,8 +12777,8 @@
   },
   "fulfilled": {
    "year": 2000,
-   "approx": false,
-   "label": "AD 2000",
+   "approx": true,
+   "label": "c. AD 2000",
    "yearSource": "johnson"
   },
   "fulfilment": "",
@@ -12810,8 +12809,8 @@
   },
   "fulfilled": {
    "year": 2000,
-   "approx": false,
-   "label": "AD 2000",
+   "approx": true,
+   "label": "c. AD 2000",
    "yearSource": "johnson"
   },
   "fulfilment": "",
@@ -12842,8 +12841,8 @@
   },
   "fulfilled": {
    "year": 2000,
-   "approx": false,
-   "label": "AD 2000",
+   "approx": true,
+   "label": "c. AD 2000",
    "yearSource": "johnson"
   },
   "fulfilment": "",
@@ -12874,8 +12873,8 @@
   },
   "fulfilled": {
    "year": 2000,
-   "approx": false,
-   "label": "AD 2000",
+   "approx": true,
+   "label": "c. AD 2000",
    "yearSource": "johnson"
   },
   "fulfilment": "",
@@ -12906,8 +12905,8 @@
   },
   "fulfilled": {
    "year": 2000,
-   "approx": false,
-   "label": "AD 2000",
+   "approx": true,
+   "label": "c. AD 2000",
    "yearSource": "johnson"
   },
   "fulfilment": "",
@@ -12938,8 +12937,8 @@
   },
   "fulfilled": {
    "year": 2000,
-   "approx": false,
-   "label": "AD 2000",
+   "approx": true,
+   "label": "c. AD 2000",
    "yearSource": "johnson"
   },
   "fulfilment": "",
@@ -13244,7 +13243,7 @@
   "id": "apr-364",
   "num": 364,
   "section": "After 2008",
-  "title": "Sephardic Jews will return to Israel and populate the Negev",
+  "title": "Sephardic Jews will return to Israel, and populate the Negev",
   "prophecy": "Obad. 1:20",
   "prophet": "",
   "given": {
@@ -13437,7 +13436,7 @@
   "fulfilled": null,
   "fulfilment": "",
   "status": "future",
-  "summary": "",
+  "summary": "The book prints \"1 Tim. 3:2-3\"; corrected here to 2 Tim. 3:2-3.",
   "agreement": [
    "Ken Johnson"
   ],
@@ -13466,7 +13465,7 @@
   "fulfilled": null,
   "fulfilment": "",
   "status": "future",
-  "summary": "",
+  "summary": "The book prints \"Mat. 24:15\"; corrected here to Matt. 24:35 (\"my words shall not pass away\").",
   "agreement": [
    "Ken Johnson"
   ],
@@ -13513,7 +13512,7 @@
   "num": 373,
   "section": "After 2008",
   "title": "The apostasy of the church will fully form",
-  "prophecy": "2 Thess. 2:3 (see the book's section on the Apostasy of the Church)",
+  "prophecy": "2 Thess. 2:3 (the book: see the section on the Apostasy of the Church)",
   "prophet": "Paul",
   "given": {
    "year": 52,
@@ -13547,7 +13546,7 @@
   "num": 374,
   "section": "After 2008",
   "title": "The Rapture of the believing church will occur",
-  "prophecy": "1 Thess. 4:15-18 (see the book's section on the Rapture)",
+  "prophecy": "1 Thess. 4:15-18 (the book: see the section on the Rapture)",
   "prophet": "",
   "given": {
    "year": 51,
@@ -13924,7 +13923,7 @@
   "num": 387,
   "section": "First half of the Tribulation",
   "title": "Apostasy comes (see section on the Apostasy of the Church)",
-  "prophecy": "2 Thess. 2:3",
+  "prophecy": "2 Thess. 2:3 (the book: see the section on the Apostasy of the Church)",
   "prophet": "",
   "given": {
    "year": 51,
@@ -14019,7 +14018,7 @@
   "id": "apr-390",
   "num": 390,
   "section": "First half of the Tribulation",
-  "title": "The Tribulation (Daniel's 70th week) begins a seven-year period with a signed peace covenant",
+  "title": "The Tribulation (Daniel's 70th week) will begin a seven-year period with a signed peace covenant",
   "prophecy": "Dan. 9:27",
   "prophet": "Daniel",
   "given": {
@@ -14281,7 +14280,7 @@
   "id": "apr-398",
   "num": 398,
   "section": "The Antichrist's rise to power",
-  "title": "He will honor those who acknowledge him, make them rulers, and parcel out land for a price",
+  "title": "He will give great honor to those who acknowledge him and cause them to rule over many, and will parcel out land for a price",
   "prophecy": "Dan. 11:39",
   "prophet": "",
   "given": {
@@ -14368,7 +14367,7 @@
   "id": "apr-401",
   "num": 401,
   "section": "The wars of the Antichrist",
-  "title": "He will subdue three kings (of the ten), then ten kings given into his hand for 42 months",
+  "title": "He will subdue three kings (of the ten), then ten kings will be given into his hand for 42 months",
   "prophecy": "Dan. 7:8,24,25",
   "prophet": "Daniel",
   "given": {
@@ -14647,7 +14646,7 @@
   "id": "apr-410",
   "num": 410,
   "section": "The wars of the Antichrist",
-  "title": "One-fourth of the world's population will be destroyed under his leadership",
+  "title": "One-fourth of the world's population will be destroyed under his \"leadership\"",
   "prophecy": "Rev. 6:8",
   "prophet": "",
   "given": {
@@ -14734,7 +14733,7 @@
   "id": "apr-413",
   "num": 413,
   "section": "Antichrist rules supreme",
-  "title": "He will pitch his royal pavilion between the seas and the holy mountain",
+  "title": "He will pitch the tent of his royal pavilion between the seas and the holy mountain",
   "prophecy": "Dan. 11:45",
   "prophet": "",
   "given": {
@@ -15430,7 +15429,7 @@
   "id": "apr-437",
   "num": 437,
   "section": "The Invasion of Israel",
-  "title": "He will take action against the strongest of fortresses with the help of a foreign god",
+  "title": "He will take action against the strongest of fortresses with the help of a foreign god (the strange god)",
   "prophecy": "Dan. 11:39",
   "prophet": "",
   "given": {
@@ -15845,7 +15844,7 @@
   "id": "apr-451",
   "num": 451,
   "section": "The Abomination of Desolation",
-  "title": "On account of transgression, the host will be given over to the horn along with the regular sacrifice",
+  "title": "On account of transgression, the host (idol or army) will be given over to the horn along with the regular sacrifice",
   "prophecy": "Dan. 8:12",
   "prophet": "",
   "given": {
@@ -16053,7 +16052,7 @@
   "id": "apr-458",
   "num": 458,
   "section": "The Persecution",
-  "title": "The saints will be given into his hands for a time, times, and half a time",
+  "title": "The saints of the Highest One will be given into his hands for a time, times, and half a time",
   "prophecy": "Dan. 7:25",
   "prophet": "",
   "given": {
