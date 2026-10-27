@@ -83,3 +83,8 @@ Every push to `main` redeploys.
 ## Credit
 
 Calendar research by Ken Johnson, [dsscalendar.org](https://dsscalendar.org) and [biblefacts.org](https://biblefacts.org). This is an independent app. Equinoxes and moon phases come from [Astronomy Engine](https://github.com/cosinekitty/astronomy) (MIT).
+
+
+## Large print maps
+- **History map** (print dialog → History map, or the prebuilt PDFs in `print/`): seven thousand years as seven equal "days", a band for each category you have switched on, prophecy as numbered ribbons from who foretold it to when it was fulfilled, a close-up of AD 32, and an index of every prophecy. Rebuild: `node scripts/render-history-map.mjs print --size 60x20,72x24,72x36`.
+- **Prophecy map**: `node scripts/render-prophecy-poster.mjs print --size 48x12,48x18,60x20,72x24`.

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>History Map</title>
+<style>
+@font-face { font-family: 'Alegreya'; font-weight: 400; src: url(fonts/alegreya-latin-500-normal.woff2); }
+@font-face { font-family: 'Alegreya Sans'; font-weight: 400; src: url(fonts/alegreya-sans-latin-400-normal.woff2); }
+@font-face { font-family: 'Alegreya Sans'; font-weight: 400; font-style: italic; src: url(fonts/alegreya-sans-latin-400-italic.woff2); }
+@font-face { font-family: 'Alegreya Sans'; font-weight: 700; src: url(fonts/alegreya-sans-latin-700-normal.woff2); }
+html, body { margin: 0; background: #FAF7F0; }
+#out svg { display: block; }
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script type="module">
+// Renders the history map for print (scripts/render-history-map.mjs). ?w=60&h=20&cats=biblical,scrolls,church,secular&prophecy=1
+import * as D from '../engine/dss.js';
+import { buildMap } from './history-map.js';
+const q = new URLSearchParams(location.search);
+const w = +q.get('w') || 60, h = +q.get('h') || 20;
+const cats = (q.get('cats') || 'biblical,scrolls,church,secular').split(',').filter(Boolean);
+const withP = q.get('prophecy') !== '0';
+const [table, events, prophecies] = await Promise.all(['../engine/tekufah-table.json', '../data/events.json', '../data/prophecies.json'].map(u => fetch(u).then(r => r.json())));
+D.init(table);
+for (const f of ['400 10px "Alegreya Sans"', '700 10px "Alegreya Sans"', 'italic 400 10px "Alegreya Sans"', '400 10px Alegreya']) await document.fonts.load(f);
+const cv = document.createElement('canvas').getContext('2d');
+const measure = (s, font) => { cv.font = font; return cv.measureText(s).width; };
+const isJ = p => p.kj || p.n || /^(apr|age)-/.test(p.id);
+const P = withP ? prophecies.filter(p => isJ(p) || p.dss) : [];
+const r = buildMap({ D, events, prophecies: P, cats, width: w * 72, height: h * 72, measure });
+document.getElementById('out').innerHTML = r.svg.replace(/width="[\d.]+pt" height="[\d.]+pt"/, `width="${w}in" height="${h}in"`);
+window.__map = { indexPt: +r.indexPt.toFixed(2), labelPt: +r.labelPt.toFixed(2), ...r.counts };
+document.body.dataset.ready = '1';
+</script>
+</body>
+</html>

@@ -802,12 +802,25 @@ function jumpToProphecy(id, end) {
 const PAPERS = [
   ['letter', 'Letter 11 × 8.5 in', 11, 8.5], ['tabloid', 'Tabloid 17 × 11 in', 17, 11],
   ['a3', 'A3 16.5 × 11.7 in', 16.54, 11.69], ['p2436', 'Poster 36 × 24 in', 36, 24],
-  ['p3648', 'Poster 48 × 36 in', 48, 36], ['p4872', 'Banner 72 × 24 in', 72, 24],
+  ['p3648', 'Poster 48 × 36 in', 48, 36], ['p6020', 'Banner 60 × 20 in', 60, 20], ['p4872', 'Banner 72 × 24 in', 72, 24], ['p7236', 'Banner 72 × 36 in', 72, 36],
 ];
-const pr = Object.assign({ kind: 'line', paper: 'p2436' }, store.get('print', {}));
+const pr = Object.assign({ kind: 'map', paper: 'p6020' }, store.get('print', {}));
+let HM = null;   // history-map module, loaded when first needed
+const measureCv = document.createElement('canvas').getContext('2d');
+const measureText = (s, font) => { measureCv.font = font; return measureCv.measureText(s).width; };
+async function ensureMap() {
+  if (!HM) HM = await import('./tools/history-map.js');
+  await Promise.all(['400 10px "Alegreya Sans"', '700 10px "Alegreya Sans"', 'italic 400 10px "Alegreya Sans"', '400 10px Alegreya'].map(f => document.fonts.load(f).catch(() => {})));
+  if (propOn() && !PROPHECIES.length) await ensureProphecies();
+}
 function posterNow() {
   const [, , wi, hi] = PAPERS.find(p => p[0] === pr.paper) || PAPERS[3];
   const W = wi * 72, H = hi * 72;
+  if (pr.kind === 'map' && HM) {
+    const cats = ['biblical', 'scrolls', 'church', 'secular', 'mine'].filter(k => settings.show[k] !== false);
+    const m = HM.buildMap({ D, events: allEvents(), prophecies: propList(), cats, width: W, height: H, measure: measureText, now: D.fromJdn(today).am });
+    return { svg: m.svg, fontSize: Math.min(m.labelPt, m.indexPt || 99), map: m, W, H, wi, hi };
+  }
   const cats = Object.keys(TL.TYPES).filter(k => settings.show[k] !== false);
   const from = Math.max(1, Math.min(tl.from, tl.to)), to = Math.min(7000, Math.max(tl.from, tl.to));
   const doc = TL.posterDoc(pr.kind === 'wheel' ? 'wheel' : 'line', allEvents(), W, H, { from, to, cats, prophecies: propList() });
@@ -815,14 +828,18 @@ function posterNow() {
 }
 function openPrint() {
   const dlg = $('#printDlg');
-  const draw = () => {
+  const draw = async () => {
     store.set('print', pr);
+    if (pr.kind === 'map') { $('#prInfo').textContent = 'Drawing the map…'; await ensureMap(); }
     const p = posterNow();
     const pt = p.fontSize, mm = pt * 0.3528;
     const ok = pt >= 7;
     $('#prPreview').innerHTML = p.svg.replace(/width="[\d.]+pt" height="[\d.]+pt"/, 'width="100%"');
-    $('#prInfo').innerHTML = `${allEvents().length} events · smallest event text <b>${pt.toFixed(1)} pt</b> (${mm.toFixed(1)} mm tall)` +
-      (ok ? '' : ' — too small to read comfortably. Pick a larger paper, a shorter span, or fewer categories.');
+    $('#prInfo').innerHTML = p.map
+      ? `${p.map.counts.events} events, ${p.map.counts.prophecies} prophecies · event labels <b>${p.map.labelPt.toFixed(1)} pt</b>` + (p.map.indexPt ? ` · prophecy index <b>${p.map.indexPt.toFixed(1)} pt</b> (${(p.map.indexPt * 0.3528).toFixed(1)} mm)` : '') +
+        (ok ? '' : ' — small; fine up close. A taller sheet (72 × 36 in) makes the index easy to read.')
+      : `${allEvents().length} events · smallest event text <b>${pt.toFixed(1)} pt</b> (${mm.toFixed(1)} mm tall)` +
+        (ok ? '' : ' — too small to read comfortably. Pick a larger paper, a shorter span, or fewer categories.');
     $('#prInfo').classList.toggle('warn', !ok);
   };
   $('#prKind').value = pr.kind; $('#prPaper').value = pr.paper;
@@ -845,8 +862,15 @@ function download(name, blob) {
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
 }
-const fileBase = () => `dss-timeline-${pr.kind}-${tl.from}-${tl.to}AM-${pr.paper}`;
+const fileBase = () => pr.kind === 'map' ? `dss-history-map-${pr.paper}` : `dss-timeline-${pr.kind}-${tl.from}-${tl.to}AM-${pr.paper}`;
 function loadScript(src) { return new Promise((ok, bad) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => bad(new Error('Could not load ' + src)); document.head.appendChild(s); }); }
+// The map's fonts, embedded so the PDF looks the same everywhere (vendor/fonts, Alegreya: SIL Open Font License)
+let mapFonts = null;
+async function addMapFonts(doc) {
+  const F = [['AlegreyaSans-Regular.ttf', 'Alegreya Sans', 'normal'], ['AlegreyaSans-Bold.ttf', 'Alegreya Sans', 'bold'], ['AlegreyaSans-Italic.ttf', 'Alegreya Sans', 'italic'], ['Alegreya-Medium.ttf', 'Alegreya', 'normal']];
+  if (!mapFonts) mapFonts = await Promise.all(F.map(async ([f]) => { const b = new Uint8Array(await (await fetch('vendor/fonts/' + f)).arrayBuffer()); let s = ''; for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode.apply(null, b.subarray(i, i + 0x8000)); return btoa(s); }));
+  F.forEach(([f, fam, st], i) => { doc.addFileToVFS(f, mapFonts[i]); doc.addFont(f, fam, st); });
+}
 async function doPdf(btn) {
   const label = btn.textContent; btn.textContent = 'Building PDF…'; btn.disabled = true;
   try {
@@ -856,6 +880,7 @@ async function doPdf(btn) {
     const holder = document.createElement('div'); holder.style.cssText = 'position:fixed;left:-99999px;top:0';
     holder.innerHTML = p.svg; document.body.appendChild(holder);
     const doc = new window.jspdf.jsPDF({ orientation: p.W > p.H ? 'landscape' : 'portrait', unit: 'pt', format: [p.W, p.H] });
+    if (p.map) await addMapFonts(doc);
     await doc.svg(holder.firstElementChild, { x: 0, y: 0, width: p.W, height: p.H });
     holder.remove();
     download(fileBase() + '.pdf', doc.output('blob'));
