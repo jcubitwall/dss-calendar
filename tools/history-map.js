@@ -243,31 +243,52 @@ export function buildMap({ D, events = [], prophecies = [], cats = ['biblical', 
   }
   svg += lmText.join('');
 
-  // ---------- Messiah inset ----------
-  let inset = null, indexPt = 0;
-  if (PROPH) {
-    const mz = P.filter(r => r.f >= 3922 && r.f < 3962);
-    if (mz.length >= 10) {
-      const iw = Math.min(980, span * 0.24), ih = Math.min(indexH * 0.6, 340);
-      const cx = X(3942), ix0 = Math.max(left, Math.min(right - iw, cx - iw / 2)), iy = indexTop;
-      inset = { x0: ix0 - 16, x1: ix0 + iw + 16, y1: iy + ih + 14 };
-      svg += `<path d="M${f1(X(3922))},${f1(spY + spineH)} L${f1(X(3962))},${f1(spY + spineH)} L${f1(ix0 + iw)},${f1(iy)} L${f1(ix0)},${f1(iy)} Z" fill="${C.messiah}" opacity="0.07"/>`;
-      svg += `<rect x="${f1(ix0)}" y="${f1(iy)}" width="${f1(iw)}" height="${f1(ih)}" rx="12" fill="#FFFDF7" stroke="${C.messiah}" stroke-width="1.5"/>`;
-      svg += T(ix0 + 16, iy + 24, "MAGNIFIED · THE MESSIAH'S FIRST COMING, 3 BC – AD 35", { b: 1, fs: 13, fill: C.messiah });
-      svg += T(ix0 + 16, iy + 41, `${mz.length} prophecies fulfilled in 38 years. Each block is one prophecy, stacked on the year it was fulfilled and coloured by who foretold it.`, { fs: 10.5, fill: C.muted, it: 1 });
-      const order = ['Genesis', 'Moses', 'Kings & prophets', 'Psalms', 'Isaiah', 'Jeremiah', 'Ezekiel', 'Daniel', 'Zechariah', 'Minor prophets', 'Jesus', 'Apostles', 'Enoch, Esdras & scrolls'];
-      let lx = ix0 + 16, ly = iy + 60;
-      for (const s of order) { const n = mz.filter(r => r.src === s).length; if (!n) continue; const t = `${s} ${n}`, w = tw(t, 10.5) + 30; if (lx + w > ix0 + iw - 10) { lx = ix0 + 16; ly += 16; } svg += `<rect x="${f1(lx)}" y="${f1(ly - 8)}" width="14" height="9" rx="2" fill="${SRC_COLOR[s]}"/>` + T(lx + 19, ly, t, { fs: 10.5 }); lx += w; }
-      const zx = am => ix0 + 40 + (am - 3922) / 40 * (iw - 80), zy = iy + ih - 34;
-      svg += `<line x1="${f1(ix0 + 28)}" y1="${f1(zy)}" x2="${f1(ix0 + iw - 28)}" y2="${f1(zy)}" stroke="${C.rule}" stroke-width="1.1"/>`;
-      for (let am = 3922; am <= 3962; am++) { const x = zx(am + 0.5); svg += `<line x1="${f1(x)}" y1="${f1(zy)}" x2="${f1(x)}" y2="${f1(zy + (am % 5 ? 3.5 : 7))}" stroke="${C.rule}" stroke-width="0.7"/>`; if (am % 5 === 0 || am === 3924 || am === 3957) svg += T(x, zy + 19, yearOf(am), { fs: 10, a: 'middle', fill: C.muted }); }
-      const by = {}; mz.forEach(r => { const k = Math.floor(r.f); (by[k] = by[k] || []).push(r); });
-      const maxSt = Math.max(...Object.values(by).map(a => a.length));
-      const step = Math.min(7, (zy - ly - 40) / maxSt);
-      for (const [k, rs] of Object.entries(by)) { rs.sort((a, b) => order.indexOf(a.src) - order.indexOf(b.src)); rs.forEach((r, i) => { svg += `<rect x="${f1(zx(+k + 0.5) - 9)}" y="${f1(zy - 3 - (i + 1) * step)}" width="18" height="${f1(Math.max(1, step - 0.8))}" rx="1" fill="${SRC_COLOR[r.src]}"/>`; }); }
-      const MK = [[3924, 'Birth · 2 BC'], [3953, 'Ministry begins · AD 28'], [3957, 'Cross, resurrection, Pentecost · AD 32']];
-      for (const [k, t] of MK) if (by[k]) svg += TB(zx(k + 0.5), zy - 10 - by[k].length * step, t, { b: 1, fs: 11, a: 'middle', bg: '#FFFDF7' });
+  // ---------- magnified boxes: the Messiah's first coming, and Israel reborn ----------
+  const insets = []; let indexPt = 0;
+  const ORDER = ['Genesis', 'Moses', 'Kings & prophets', 'Psalms', 'Isaiah', 'Jeremiah', 'Ezekiel', 'Daniel', 'Zechariah', 'Minor prophets', 'Jesus', 'Apostles', 'Revelation', 'Enoch, Esdras & scrolls'];
+  function drawInset({ a0, a1, cx, heading, note, color, labelEvery, keyYears, marks }) {
+    const mz = P.filter(r => r.p.f && r.f >= a0 && r.f < a1);
+    if (mz.length < 10) return;
+    const iw = Math.min(980, span * 0.24), ih = Math.min(indexH * 0.6, 340);
+    let ix0 = Math.max(left, Math.min(right - iw, X(cx) - iw / 2));
+    for (const o of insets) if (ix0 < o.x1 && ix0 + iw > o.x0) ix0 = Math.min(right - iw, o.x1 + 20);
+    const iy = indexTop;
+    insets.push({ x0: ix0 - 16, x1: ix0 + iw + 16, y1: iy + ih + 14 });
+    svg += `<path d="M${f1(X(a0))},${f1(spY + spineH)} L${f1(X(a1))},${f1(spY + spineH)} L${f1(ix0 + iw)},${f1(iy)} L${f1(ix0)},${f1(iy)} Z" fill="${color}" opacity="0.07"/>`;
+    svg += `<rect x="${f1(ix0)}" y="${f1(iy)}" width="${f1(iw)}" height="${f1(ih)}" rx="12" fill="#FFFDF7" stroke="${color}" stroke-width="1.5"/>`;
+    svg += T(ix0 + 16, iy + 24, heading, { b: 1, fs: 13, fill: color });
+    svg += T(ix0 + 16, iy + 41, `${mz.length} ${note}`, { fs: 10.5, fill: C.muted, it: 1 });
+    let lx = ix0 + 16, ly = iy + 60;
+    for (const s of ORDER) { const n = mz.filter(r => r.src === s).length; if (!n) continue; const t = `${s} ${n}`, w = tw(t, 10.5) + 30; if (lx + w > ix0 + iw - 10) { lx = ix0 + 16; ly += 16; } svg += `<rect x="${f1(lx)}" y="${f1(ly - 8)}" width="14" height="9" rx="2" fill="${SRC_COLOR[s]}"/>` + T(lx + 19, ly, t, { fs: 10.5 }); lx += w; }
+    const yrs = a1 - a0, cell = (iw - 80) / yrs, bw = Math.min(18, cell * 0.82);
+    const zx = am => ix0 + 40 + (am - a0) / yrs * (iw - 80), zy = iy + ih - 34;
+    svg += `<line x1="${f1(ix0 + 28)}" y1="${f1(zy)}" x2="${f1(ix0 + iw - 28)}" y2="${f1(zy)}" stroke="${C.rule}" stroke-width="1.1"/>`;
+    for (let am = a0; am < a1; am++) {
+      const x = zx(am + 0.5), y = Math.floor(am) - D.EPOCH_OFFSET;
+      svg += `<line x1="${f1(x)}" y1="${f1(zy)}" x2="${f1(x)}" y2="${f1(zy + (y % 5 ? 3.5 : 7))}" stroke="${C.rule}" stroke-width="0.7"/>`;
+      if (y % labelEvery === 0 || keyYears.includes(am)) svg += T(x, zy + 19, yearOf(am), { fs: 10, a: 'middle', fill: keyYears.includes(am) ? C.ink : C.muted, b: keyYears.includes(am) ? 1 : 0 });
     }
+    const by = {}; mz.forEach(r => { const k = Math.floor(r.f); (by[k] = by[k] || []).push(r); });
+    const maxSt = Math.max(...Object.values(by).map(a => a.length));
+    const step = Math.min(9, (zy - ly - 44) / maxSt);
+    for (const [k, rs] of Object.entries(by)) { rs.sort((a, b) => ORDER.indexOf(a.src) - ORDER.indexOf(b.src)); rs.forEach((r, i) => { svg += `<rect x="${f1(zx(+k + 0.5) - bw / 2)}" y="${f1(zy - 3 - (i + 1) * step)}" width="${f1(bw)}" height="${f1(Math.max(1, step - 0.8))}" rx="1" fill="${SRC_COLOR[r.src]}"/>`; }); }
+    // marker labels sit above their stack; nudge up when two would touch
+    const placed = [];
+    for (const [k, t] of marks) {
+      if (!by[k]) continue;
+      const x = zx(k + 0.5), w = tw(t, 11, { b: 1 }) + 8; let y = zy - 10 - by[k].length * step;
+      while (placed.some(q => Math.abs(q.x - x) < (q.w + w) / 2 && Math.abs(q.y - y) < 14)) y -= 15;
+      placed.push({ x, y, w });
+      svg += TB(x, y, t, { b: 1, fs: 11, a: 'middle', bg: '#FFFDF7' });
+    }
+  }
+  if (PROPH) {
+    drawInset({ a0: 3922, a1: 3962, cx: 3942, color: C.messiah, heading: "MAGNIFIED · THE MESSIAH'S FIRST COMING, 3 BC – AD 35",
+      note: 'prophecies fulfilled in 38 years. Each block is one prophecy, stacked on the year it was fulfilled and coloured by who foretold it.',
+      labelEvery: 5, keyYears: [3924, 3957], marks: [[3924, 'Birth · 2 BC'], [3953, 'Ministry begins · AD 28'], [3957, 'Cross, resurrection, Pentecost · AD 32']] });
+    drawInset({ a0: 5866, a1: 5932, cx: 5900, color: C.israel, heading: 'MAGNIFIED · ISRAEL REBORN, 1941 – 2006',
+      note: 'prophecies fulfilled in these years, stacked on the year fulfilled and coloured by who foretold them.',
+      labelEvery: 10, keyYears: [5873, 5892, 5898], marks: [[5873, 'Israel reborn · 1948'], [5892, 'Jerusalem reunited · 1967'], [5898, 'Yom Kippur War · 1973'], [5925, 'The land restored · c. 2000']] });
   }
 
   // ---------- index: every prophecy, grouped by ribbon ----------
@@ -306,7 +327,7 @@ export function buildMap({ D, events = [], prophecies = [], cats = ['biblical', 
     const headLines = 1.55;
     const heightOf = (it, fs, colW) => it.head ? fs * 1.22 * headLines : wrap(it, fs, colW).length * fs * 1.22 + fs * 0.3;
     // columns: those overlapping the inset start below it
-    function slots(n, colW) { return Array.from({ length: n }, (_, c) => { const a = x0 + c * (colW + 14), b = a + colW; const under = inset && b > inset.x0 && a < inset.x1; return { a, b, top: under ? inset.y1 : top }; }); }
+    function slots(n, colW) { return Array.from({ length: n }, (_, c) => { const a = x0 + c * (colW + 14), b = a + colW; const over = insets.filter(o => b > o.x0 && a < o.x1); return { a, b, top: over.length ? Math.max(...over.map(o => o.y1)) : top }; }); }
     function pack(fs, n) {
       const colW = (xs - 14 * (n - 1)) / n, S = slots(n, colW); let c = 0, yy = S[0].top; const out = [];
       for (let i = 0; i < items.length; i++) {
