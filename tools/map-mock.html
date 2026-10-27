@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Map Layout Mockups</title>
+<style>
+@font-face { font-family: 'Alegreya'; font-weight: 500; src: url(fonts/alegreya-latin-500-normal.woff2); }
+@font-face { font-family: 'Alegreya'; font-weight: 400; font-style: italic; src: url(fonts/alegreya-latin-400-italic.woff2); }
+@font-face { font-family: 'Alegreya Sans'; font-weight: 400; src: url(fonts/alegreya-sans-latin-400-normal.woff2); }
+@font-face { font-family: 'Alegreya Sans'; font-weight: 400; font-style: italic; src: url(fonts/alegreya-sans-latin-400-italic.woff2); }
+@font-face { font-family: 'Alegreya Sans'; font-weight: 500; src: url(fonts/alegreya-sans-latin-500-normal.woff2); }
+@font-face { font-family: 'Alegreya Sans'; font-weight: 700; src: url(fonts/alegreya-sans-latin-700-normal.woff2); }
+@font-face { font-family: 'Alegreya Sans SC'; font-weight: 700; src: url(fonts/alegreya-sans-sc-latin-700-normal.woff2); }
+html, body { margin: 0; background: #FAF7F0; }
+svg { display: block; }
+</style>
+</head>
+<body>
+<svg id="s" xmlns="http://www.w3.org/2000/svg"></svg>
+<script type="module">
+// Mockups of the large print map, built from the real data. ?mode=master | loom | bars
+import * as D from '../engine/dss.js';
+const MODE = new URLSearchParams(location.search).get('mode') || 'master';
+const W = 4320, H = 1440, M = 44;                     // 60 × 20 in, in points
+const C = { paper: '#FAF7F0', ink: '#1B2427', muted: '#5C6A6E', faint: '#A9B3B5', rule: '#4E5D61', title: '#0F4C5A',
+  messiah: '#B7862C', israel: '#1B6577', nations: '#8A5A3C', church: '#7B4F8E', future: '#3B4FA0', scrolls: '#5E7F3A',
+  biblical: '#B7862C', secular: '#1B6577' };
+const DAYBG = ['#F1E9D6', '#E9EFE6', '#E4EDEE', '#EFE7DC', '#ECE5EE', '#E6EAF1', '#F3ECD3'];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const f1 = n => (+n).toFixed(1);
+const [table, all, events] = await Promise.all(['../engine/tekufah-table.json', '../data/prophecies.json', '../data/events.json'].map(u => fetch(u).then(r => r.json())));
+D.init(table);
+for (const f of ['10px "Alegreya Sans"', '700 10px "Alegreya Sans"', '500 10px "Alegreya Sans"', 'italic 10px "Alegreya Sans"', '700 10px "Alegreya Sans SC"', '500 10px Alegreya', 'italic 10px Alegreya']) await document.fonts.load(f);
+const cv = document.createElement('canvas').getContext('2d');
+const tw = (s, font) => { cv.font = font; return cv.measureText(s).width; };
+const T = (x, y, s, o = {}) => `<text x="${f1(x)}" y="${f1(y)}" font-family="${o.ff || 'Alegreya Sans'}" font-size="${f1(o.fs || 12)}"${o.fw ? ` font-weight="${o.fw}"` : ''}${o.it ? ' font-style="italic"' : ''} fill="${o.fill || C.ink}"${o.a ? ` text-anchor="${o.a}"` : ''}${o.ls ? ` letter-spacing="${o.ls}"` : ''}${o.halo ? ` stroke="${C.paper}" stroke-width="${o.halo}" paint-order="stroke" stroke-linejoin="round"` : ''}${o.op ? ` opacity="${o.op}"` : ''}>${esc(s)}</text>`;
+const yearOf = am => { const y = Math.floor(am) - D.EPOCH_OFFSET; return y <= 0 ? `${1 - y} BC` : `AD ${y}`; };
+
+// ---------- prophecies: Johnson's list + scroll-witness items ----------
+const isJ = p => p.kj || p.n || /^(apr|age)-/.test(p.id);
+const P = all.filter(p => isJ(p) || p.dss);
+const NOW = 5951;
+const FUT = { 'The Millennium': 6300 };
+const famOf = p => p.f ? p.f.am : (FUT[p.sec] ?? 5975);
+function src(p) {
+  const r = (p.ref || '') + ' ' + (p.who || '');
+  const m = /^\s*([1-3]?\s?[A-Za-z]+)/.exec(p.ref || '');
+  const b = (m ? m[1] : '').toLowerCase().replace(/\s/g, '');
+  if (/^gen/.test(b)) return 'Genesis';
+  if (/^(exo|ex|lev|num|deu|dt|jos)/.test(b)) return 'Moses';
+  if (/^([12]sa|[12]ki|[12]ch|jdg|judg|ruth|neh|ezra|esth)/.test(b)) return 'Kings & prophets';
+  if (/^ps/.test(b)) return 'Psalms';
+  if (/^isa/.test(b)) return 'Isaiah';
+  if (/^(jer|lam)/.test(b)) return 'Jeremiah';
+  if (/^eze/.test(b)) return 'Ezekiel';
+  if (/^dan/.test(b)) return 'Daniel';
+  if (/^zec/.test(b)) return 'Zechariah';
+  if (/^(hos|joel|amos|oba|jon|mic|nah|hab|zep|hag|mal)/.test(b)) return 'Minor prophets';
+  if (/^(mat|mark|mk|luke|lk|john|jn)$/.test(b) || /^(matt|mark|luke|john)/.test(b)) return 'Jesus';
+  if (/^(acts|rom|[12]cor|gal|eph|phil|col|[12]th|[12]tim|tit|heb|jas|[12]pet|[123]john|jude)/.test(b)) return 'Apostles';
+  if (/^rev/.test(b)) return 'Revelation';
+  return 'Enoch, Esdras & scrolls';
+}
+const ERAS = [[0, 2449, 'Patriarchs'], [2449, 2880, 'Exodus & Judges'], [2880, 3010, 'United kingdom'], [3010, 3338, 'Divided kingdom'],
+  [3338, 3600, 'Exile & Persia'], [3600, 3900, 'Greece & Rome'], [3900, 3963, "Messiah's first coming"], [3963, 4100, 'Apostles & AD 70'],
+  [4100, 5800, 'Church age & empires'], [5800, NOW, 'Israel reborn'], [NOW, 9999, 'Yet future']];
+const eraOf = am => ERAS.find(([a, b]) => am >= a && am < b)[2];
+function theme(p) {
+  if (p.st === 'future' || !p.f) return 'future';
+  if (/^age-/.test(p.id)) return 'church';
+  const a = p.f.am;
+  if (a >= 3900 && a < 3963) return 'messiah';
+  if (a >= 3963 && a < 5800 && /church|Papal|Rome|Christian|gospel|apostle|Paul|Peter/i.test(p.t)) return 'church';
+  if (/Israel|Jew|Judah|Jerusalem|Temple|Zion|Hebrew|shekel|Negev|land/i.test(p.t)) return 'israel';
+  return 'nations';
+}
+const rows = P.map(p => ({ p, g: p.g.am, f: famOf(p), src: src(p), era: eraOf(famOf(p)), th: theme(p) }));
+const bmap = new Map();
+for (const r of rows) { const k = r.src + '→' + r.era; if (!bmap.has(k)) bmap.set(k, []); bmap.get(k).push(r); }
+const med = a => { const s = [...a].sort((x, y) => x - y); return s[s.length >> 1]; };
+const bundles = [...bmap.entries()].map(([k, rs]) => {
+  const cnt = {}; rs.forEach(r => cnt[r.th] = (cnt[r.th] || 0) + 1);
+  const nums = rs.map(r => r.p.n).filter(Boolean).sort((a, b) => a - b);
+  return { k, src: rs[0].src, era: rs[0].era, rs, n: rs.length, g: med(rs.map(r => r.g)), f: med(rs.map(r => r.f)),
+    th: Object.entries(cnt).sort((a, b) => b[1] - a[1])[0][0], nums };
+}).sort((a, b) => b.n - a.n);
+
+// ---------- scale: seven equal "days", stretched inside each day by how much happens there ----------
+const left = M + 70, right = W - M, span = right - left, dayW = span / 7;
+const dens = new Float64Array(700);
+for (const r of rows) { dens[Math.min(699, Math.floor(r.g / 10))] += 0.5; dens[Math.min(699, Math.floor(r.f / 10))] += 1; }
+for (const e of events) { const am = D.fromJdn(e.j).am; dens[Math.min(699, Math.max(0, Math.floor(am / 10)))] += 0.6; }
+const cdf = [];
+for (let d = 0; d < 7; d++) {
+  const seg = []; let s = 0;
+  for (let i = 0; i < 100; i++) { const v = 0.35 + dens[d * 100 + i]; seg.push(s); s += v; }
+  seg.push(s); cdf.push(seg.map(v => v / s));
+}
+const X = am => { const a = Math.max(1, Math.min(6999.9, am)); const d = Math.min(6, Math.floor((a - 1) / 1000)); const t = ((a - 1) - d * 1000) / 10; const i = Math.floor(t), fr = t - i; const c = cdf[d][i] + (cdf[d][i + 1] - cdf[d][i]) * fr; return left + d * dayW + c * dayW * 0.96 + dayW * 0.02; };
+const DAYN = ['FIRST DAY', 'SECOND DAY', 'THIRD DAY', 'FOURTH DAY', 'FIFTH DAY', 'SIXTH DAY', 'SEVENTH DAY · SABBATH MILLENNIUM'];
+
+let svg = `<rect width="${W}" height="${H}" fill="${C.paper}"/>`;
+svg += `<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker>
+<pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="${C.future}" stroke-width="0.8" opacity="0.18"/></pattern></defs>`;
+function header(title, sub, tag) {
+  svg += T(M, M + 34, title, { ff: 'Alegreya', fw: 500, fs: 44, fill: C.title });
+  svg += T(M + tw(title, '500 44px Alegreya') + 24, M + 18, sub, { fs: 15, fill: C.ink });
+  svg += T(M + tw(title, '500 44px Alegreya') + 24, M + 37, tag, { fs: 12.5, fill: C.muted, it: 1 });
+  svg += `<line x1="${M}" y1="${M + 54}" x2="${W - M}" y2="${M + 54}" stroke="${C.title}" stroke-width="1"/>`;
+}
+function spine(y, h = 30, label = true) {
+  for (let d = 0; d < 7; d++) {
+    const x0 = left + d * dayW;
+    svg += `<rect x="${f1(x0)}" y="${y}" width="${f1(dayW)}" height="${h}" fill="${DAYBG[d]}"/>`;
+    if (d) svg += `<line x1="${f1(x0)}" y1="${y - 4}" x2="${f1(x0)}" y2="${y + h + 4}" stroke="${C.rule}" stroke-width="1.2"/>`;
+    if (label) {
+      svg += T(x0 + dayW / 2, y + 13, DAYN[d], { ff: 'Alegreya Sans SC', fw: 700, fs: 12, a: 'middle', fill: C.title, ls: 1.5 });
+      svg += T(x0 + dayW / 2, y + 25, `${d * 1000 + 1}–${(d + 1) * 1000} AM · ${yearOf(d * 1000 + 1)} – ${yearOf((d + 1) * 1000)}`, { fs: 9.5, a: 'middle', fill: C.muted });
+    }
+  }
+  svg += `<rect x="${left}" y="${y}" width="${span}" height="${h}" fill="none" stroke="${C.rule}" stroke-width="1"/>`;
+}
+function ticks(y, up = true) {
+  const LM = [[1, 'Creation'], [1656, 'Flood'], [2008, 'Abraham'], [2448, 'Exodus'], [2935, 'Temple'], [3338, 'Babylon'], [3389, 'Return'], [3926, 'Birth'], [3957, 'Cross'], [3995, 'AD 70'], [4057, 'Bar Kokhba'], [5442, 'Reformation'], [5873, '1948'], [5892, '1967'], [6001, '6000 AM']];
+  let lastX = -1e9, lane = 0;
+  for (const [am, n] of LM) {
+    const x = X(am); lane = x - lastX < 46 ? lane + 1 : 0; lastX = x;
+    svg += `<circle cx="${f1(x)}" cy="${y}" r="3" fill="${C.paper}" stroke="${C.rule}" stroke-width="1.2"/>`;
+    svg += T(x, up ? y - 7 - lane * 11 : y + 15 + lane * 11, n, { fw: 700, fs: 9.5, a: 'middle', fill: C.rule, halo: 3 });
+  }
+}
+function legend(x, y, items) {
+  for (const [k, l, dash] of items) {
+    svg += `<path d="M${x},${y} q14,-16 28,0" fill="none" stroke="${C[k]}" stroke-width="3"${dash ? ' stroke-dasharray="4 3"' : ''}/>`;
+    svg += T(x + 34, y + 3, l, { fw: 500, fs: 12 }); x += tw(l, '500 12px "Alegreya Sans"') + 58;
+  }
+}
+const THL = [['messiah', "Messiah's first coming"], ['israel', 'Israel'], ['nations', 'The nations'], ['church', 'The church'], ['future', 'Yet future', 1]];
+const lbl = b => `${b.src} → ${b.era}`;
+
+if (MODE === 'master') {
+  header('Seven Thousand Years', 'History and prophecy from Creation to the Sabbath millennium · choose any bands', 'Mockup A · seven equal "days", swim lanes for each kind of history, prophecy as bundled ribbons, magnified inset for the Messiah');
+  legend(W - M - 1250, M + 22, THL);
+  const spY = 700;
+  // ribbons above the spine
+  const top = M + 80, maxH = spY - 150 - top;
+  const shown = bundles.filter(b => b.n >= 2);
+  const lanesY = [];
+  [...shown].sort((a, b) => Math.abs(X(b.f) - X(b.g)) - Math.abs(X(a.f) - X(a.g))).forEach(b => {
+    const x1 = X(b.g), x2 = X(b.f), dx = Math.abs(x2 - x1);
+    const h = Math.min(maxH, 30 + maxH * Math.pow(dx / span, 0.7) * 1.25);
+    const sw = Math.max(1.5, Math.sqrt(b.n) * 3.2), base = spY - 128;
+    const cy = base - h * 1.33;
+    svg += `<path d="M${f1(x1)},${base} C${f1(x1)},${f1(cy)} ${f1(x2)},${f1(cy)} ${f1(x2)},${base}" fill="none" stroke="${C[b.th]}" stroke-width="${f1(sw)}" stroke-linecap="round" opacity="${b.th === 'future' ? 0.55 : 0.62}"${b.th === 'future' ? ` stroke-dasharray="${f1(sw * 1.6)} ${f1(sw)}"` : ''}/>`;
+    if (b.n >= 5) lanesY.push({ b, x: (x1 + x2) / 2, y: base - h, w: tw(`${lbl(b)} · ${b.n}`, '700 11px "Alegreya Sans"') });
+  });
+  // number the big ribbons at their apex; the key sits in the open space under days 1-3
+  const keyed = lanesY.filter(o => o.b.n >= 6).sort((a, b) => a.b.f - b.b.f || a.b.g - b.b.g);
+  const placed = [];
+  keyed.forEach((o, i) => {
+    o.num = i + 1; let y = o.y - 2, x = o.x;
+    for (let k = 0; k < 20 && placed.some(p => Math.hypot(p.x - x, p.y - y) < 21); k++) { y += (k % 2 ? -1 : 1) * 10 * (k + 1); }
+    placed.push({ x, y });
+    svg += `<circle cx="${f1(x)}" cy="${f1(y)}" r="9.5" fill="${C.paper}" stroke="${C[o.b.th]}" stroke-width="2"/>`;
+    svg += T(x, y + 4, String(o.num), { fw: 700, fs: 11, a: 'middle', fill: C[o.b.th] });
+  });
+  window.__keyed = keyed;
+  // foretold and fulfilled ends
+  for (const b of shown) { svg += `<circle cx="${f1(X(b.g))}" cy="${spY - 128}" r="3.2" fill="${C.paper}" stroke="${C[b.th]}" stroke-width="1.6"/><circle cx="${f1(X(b.f))}" cy="${spY - 128}" r="3.6" fill="${C[b.th]}"/>`; }
+  svg += T(left - 8, spY - 124, 'PROPHECY', { ff: 'Alegreya Sans SC', fw: 700, fs: 11, a: 'end', fill: C.future, ls: 1 });
+  svg += T(left + 6, spY - 108, '○ foretold   ● fulfilled   ribbon width = number of prophecies   labels: source → era · count', { fs: 10, fill: C.muted, it: 1 });
+  // swim lanes
+  const LANES = [['biblical', 'BIBLE', spY - 92, 'up'], ['scrolls', 'SCROLLS', spY - 44, 'up'], ['church', 'CHURCH', spY + 76, 'dn'], ['secular', 'WORLD', spY + 124, 'dn']];
+  for (const [k, name, y] of LANES) {
+    svg += `<line x1="${left}" y1="${y}" x2="${right}" y2="${y}" stroke="${C[k]}" stroke-width="0.8" opacity="0.5"/>`;
+    svg += T(left - 8, y + 4, name, { ff: 'Alegreya Sans SC', fw: 700, fs: 11, a: 'end', fill: C[k], ls: 1 });
+    const evs = events.filter(e => e.k === k).map(e => ({ e, x: X(D.fromJdn(e.j).am) })).sort((a, b) => a.x - b.x);
+    for (const o of evs) svg += `<circle cx="${f1(o.x)}" cy="${y}" r="2.6" fill="${C[k]}" opacity="0.85"/>`;
+    // label what fits
+    let last = -1e9; const up = y < spY;
+    for (const o of evs) { const t = o.e.t.length > 34 ? o.e.t.slice(0, 33) + '…' : o.e.t; const w = tw(t, '10px "Alegreya Sans"'); if (o.x - last < 12) continue; last = o.x + w * Math.cos(Math.PI / 4) * 0.2; svg += `<text x="${f1(o.x + 3)}" y="${f1(up ? y - 5 : y + 12)}" font-family="Alegreya Sans" font-size="9" fill="${C.ink}" opacity="0.8" transform="rotate(${up ? -40 : 40} ${f1(o.x + 3)} ${f1(up ? y - 5 : y + 12)})">${esc(t)}</text>`; }
+  }
+  spine(spY, 32); ticks(spY, true);
+  // ribbon key
+  {
+    const kx = left, ky = spY + 205;
+    svg += T(kx, ky, 'PROPHECY RIBBONS · WHO FORETOLD → WHEN FULFILLED', { ff: 'Alegreya Sans SC', fw: 700, fs: 14, fill: C.future, ls: 1 });
+    const per = Math.ceil(window.__keyed.length / 2);
+    window.__keyed.forEach((o, i) => {
+      const x = kx + Math.floor(i / per) * 560, y = ky + 26 + (i % per) * 19;
+      svg += `<circle cx="${x + 9}" cy="${y - 4}" r="8.5" fill="${C.paper}" stroke="${C[o.b.th]}" stroke-width="1.8"/>` + T(x + 9, y, String(o.num), { fw: 700, fs: 10, a: 'middle', fill: C[o.b.th] });
+      const nr = o.b.nums.length ? ` · #${o.b.nums[0]}–${o.b.nums.at(-1)}` : '';
+      svg += T(x + 26, y, `${o.b.src} → ${o.b.era}`, { fw: 700, fs: 12, fill: C.ink }) + T(x + 30 + tw(`${o.b.src} → ${o.b.era}`, '700 12px "Alegreya Sans"'), y, `${o.b.n} prophecies${nr}`, { fs: 11.5, fill: C.muted });
+    });
+  }
+  // Messiah inset (magnified AD 28-35) under the spine
+  const ix = X(3957), iy = spY + 200, iw = 1500, ih = 420, ix0 = Math.min(Math.max(ix - iw / 2, left), right - iw);
+  svg += `<path d="M${f1(X(3920))},${spY + 32} L${f1(ix0)},${iy} L${f1(ix0 + iw)},${iy} L${f1(X(3965))},${spY + 32} Z" fill="${C.messiah}" opacity="0.08"/>`;
+  svg += `<rect x="${f1(ix0)}" y="${iy}" width="${iw}" height="${ih}" rx="14" fill="#FFFDF7" stroke="${C.messiah}" stroke-width="1.6"/>`;
+  svg += T(ix0 + 18, iy + 28, 'MAGNIFIED · THE MESSIAH\'S FIRST COMING, 3 BC – AD 35', { ff: 'Alegreya Sans SC', fw: 700, fs: 14, fill: C.messiah, ls: 1 });
+  const zx = am => ix0 + 40 + (am - 3922) / (3962 - 3922) * (iw - 80);
+  const zy = iy + ih - 50;
+  svg += `<line x1="${f1(ix0 + 30)}" y1="${zy}" x2="${f1(ix0 + iw - 30)}" y2="${zy}" stroke="${C.rule}" stroke-width="1.2"/>`;
+  for (let am = 3923; am <= 3961; am += 1) { const x = zx(am); svg += `<line x1="${f1(x)}" y1="${zy}" x2="${f1(x)}" y2="${zy + (am % 5 ? 4 : 8)}" stroke="${C.rule}" stroke-width="0.8"/>`; if (am % 5 === 2 || am === 3957 || am === 3924) svg += T(x, zy + 20, yearOf(am), { fs: 10, a: 'middle', fill: C.muted }); }
+  const mz = rows.filter(r => r.f >= 3922 && r.f < 3962);
+  const stack = {};
+  const maxSt = Math.max(...Object.values(mz.reduce((a, r) => (a[Math.round(r.f)] = (a[Math.round(r.f)] || 0) + 1, a), {})));
+  const STEP = Math.min(6.2, (zy - iy - 110) / maxSt);
+  const srcOrder = ['Genesis', 'Moses', 'Psalms', 'Isaiah', 'Jeremiah', 'Daniel', 'Zechariah', 'Minor prophets', 'Kings & prophets', 'Jesus', 'Apostles', 'Enoch, Esdras & scrolls'];
+  const SC = { Genesis: '#8A5A3C', Moses: '#A0522D', Psalms: '#B7862C', Isaiah: '#1B6577', Jeremiah: '#3B7F8F', Daniel: '#7B4F8E', Zechariah: '#5E7F3A', 'Minor prophets': '#6E8B3D', 'Kings & prophets': '#9C6B4E', Jesus: '#B4533A', Apostles: '#C27A4A', 'Enoch, Esdras & scrolls': '#4E5D61' };
+  mz.sort((a, b) => srcOrder.indexOf(a.src) - srcOrder.indexOf(b.src)).forEach(r => { const k = Math.round(r.f); stack[k] = (stack[k] || 0) + 1; const x = zx(r.f), y = zy - 6 - (stack[k] - 1) * STEP; svg += `<rect x="${f1(x - 9)}" y="${f1(y - STEP * 0.8)}" width="18" height="${f1(STEP * 0.8)}" rx="1.5" fill="${SC[r.src]}"/>`; });
+  const MK = [[3924.5, 'Birth · 2 BC'], [3953.5, 'Ministry begins · AD 28'], [3957.5, 'Cross & resurrection · AD 32']];
+  for (const [am, t] of MK) svg += T(zx(am), zy - 6 - (stack[Math.round(am)] || 0) * STEP - 10, t, { fw: 700, fs: 12, a: 'middle', fill: C.ink, halo: 3 });
+  let lx = ix0 + 18, ly = iy + 50;
+  for (const s of srcOrder) { if (!mz.some(r => r.src === s)) continue; const n = mz.filter(r => r.src === s).length; svg += `<rect x="${lx}" y="${ly - 8}" width="14" height="8" rx="2" fill="${SC[s]}"/>`; svg += T(lx + 19, ly, `${s} ${n}`, { fs: 11 }); lx += tw(`${s} ${n}`, '11px "Alegreya Sans"') + 42; }
+  svg += T(ix0 + 18, iy + 72, `${mz.length} prophecies fulfilled in these 38 years, stacked by the year fulfilled and coloured by who foretold them`, { fs: 11, fill: C.muted, it: 1 });
+  // index preview, bottom right
+  const qx = ix0 + iw + 60, qy = iy;
+  svg += T(qx, qy + 20, 'BELOW THE MAP: THE INDEX, ONE BLOCK PER RIBBON', { ff: 'Alegreya Sans SC', fw: 700, fs: 14, fill: C.title, ls: 1 });
+  const b0 = bundles.find(b => b.src === 'Daniel' && b.era === 'Greece & Rome');
+  svg += T(qx, qy + 48, `${lbl(b0)} · ${b0.n} prophecies`, { fw: 700, fs: 14, fill: C[b0.th] });
+  b0.rs.slice(0, 12).forEach((r, i) => {
+    const y = qy + 72 + i * 18, bx = qx + 560;
+    svg += T(qx, y, r.p.ref, { fw: 700, fs: 11.5 }); svg += T(qx + 110, y, r.p.t.length > 62 ? r.p.t.slice(0, 61) + '…' : r.p.t, { fs: 11.5, fill: '#34403F' });
+    const a = 3350, z = 3900, gx = bx + (r.g - a) / (z - a) * 160, fx = bx + (r.f - a) / (z - a) * 160;
+    svg += `<line x1="${bx}" y1="${y - 4}" x2="${bx + 160}" y2="${y - 4}" stroke="${C.faint}" stroke-width="0.6"/><line x1="${f1(gx)}" y1="${y - 4}" x2="${f1(fx)}" y2="${y - 4}" stroke="${C[r.th]}" stroke-width="3" stroke-linecap="round"/>`;
+    svg += T(bx + 175, y, `${r.p.g.label.replace(/ \(.*/, '')} → ${r.p.f ? r.p.f.label.replace(/ \(.*/, '') : 'yet future'}`, { fs: 11, fill: C.muted });
+  });
+}
+
+if (MODE === 'loom') {
+  header('Foretold → Fulfilled', 'Every prophecy as one straight thread from the year it was given (top) to the year it came to pass (bottom)', 'Mockup B · "the loom": two timelines; the slant of a thread shows how long the world waited');
+  legend(W - M - 1250, M + 22, THL);
+  const yT = 190, yB = 1130;
+  spine(yT - 32, 32); spine(yB, 32);
+  svg += T(left - 8, yT - 12, 'FORETOLD', { ff: 'Alegreya Sans SC', fw: 700, fs: 12, a: 'end', fill: C.title, ls: 1 });
+  svg += T(left - 8, yB + 20, 'FULFILLED', { ff: 'Alegreya Sans SC', fw: 700, fs: 12, a: 'end', fill: C.title, ls: 1 });
+  svg += `<rect x="${f1(X(NOW))}" y="${yT}" width="${f1(right - X(NOW))}" height="${yB - yT}" fill="url(#hatch)"/>`;
+  for (const r of [...rows].sort((a, b) => (a.th === 'messiah') - (b.th === 'messiah'))) {
+    const x1 = X(r.g), x2 = X(r.f);
+    svg += `<path d="M${f1(x1)},${yT} C${f1(x1)},${f1(yT + 260)} ${f1(x2)},${f1(yB - 260)} ${f1(x2)},${yB}" fill="none" stroke="${C[r.th]}" stroke-width="0.9" opacity="${r.th === 'messiah' ? 0.32 : 0.5}"${r.th === 'future' ? ' stroke-dasharray="4 3"' : ''}/>`;
+  }
+  ticks(yT - 32, true); ticks(yB + 32, false);
+  // callouts on the busiest threads
+  const call = bundles.filter(b => b.n >= 8).slice(0, 9);
+  call.forEach((b, i) => {
+    const x = (X(b.g) + X(b.f)) / 2, y = (yT + yB) / 2 + (i % 3 - 1) * 90;
+    svg += T(x, y, `${lbl(b)} · ${b.n}`, { fw: 700, fs: 13, a: 'middle', fill: C[b.th], halo: 4 });
+  });
+}
+
+if (MODE === 'bars') {
+  header('How Long the World Waited', 'Each bar runs from when a prophecy was given to when it was fulfilled; bars are grouped by who foretold it and when it came to pass', 'Mockup C · waiting-time bars: one labelled bar per group, read like a project schedule; the index lists every prophecy in the group');
+  legend(W - M - 1250, M + 22, THL);
+  const y0 = 150; spine(y0, 32); ticks(y0 + 32, false);
+  const list = bundles.filter(b => b.n >= 2).sort((a, b) => a.f - b.f || a.g - b.g);
+  const rowH = Math.min(26, (H - y0 - 120) / list.length);
+  list.forEach((b, i) => {
+    const y = y0 + 70 + i * rowH, x1 = Math.min(X(b.g), X(b.f)), x2 = Math.max(X(b.g), X(b.f));
+    if (i % 2) svg += `<rect x="${left}" y="${f1(y - rowH * 0.62)}" width="${span}" height="${f1(rowH)}" fill="${C.ink}" opacity="0.025"/>`;
+    // individual prophecies as faint whiskers, the group as a solid bar
+    for (const r of b.rs) svg += `<line x1="${f1(X(r.g))}" y1="${f1(y - 4)}" x2="${f1(X(r.f))}" y2="${f1(y - 4)}" stroke="${C[b.th]}" stroke-width="1" opacity="0.25"/>`;
+    const sw = Math.max(4, Math.min(rowH * 0.62, 3 + Math.sqrt(b.n) * 2));
+    svg += `<line x1="${f1(x1)}" y1="${f1(y - 4)}" x2="${f1(x2)}" y2="${f1(y - 4)}" stroke="${C[b.th]}" stroke-width="${f1(sw)}" stroke-linecap="round" opacity="0.85"${b.th === 'future' ? ' stroke-dasharray="8 4"' : ''}/>`;
+    svg += `<circle cx="${f1(X(b.g))}" cy="${f1(y - 4)}" r="${f1(sw * 0.62)}" fill="${C.paper}" stroke="${C[b.th]}" stroke-width="1.6"/>`;
+    const t = `${lbl(b)} · ${b.n}`, w = tw(t, '700 12px "Alegreya Sans"');
+    const tx = x2 + 10 + w < right ? x2 + 10 : x1 - 10;
+    svg += T(tx, y, t, { fw: 700, fs: 12, a: x2 + 10 + w < right ? 'start' : 'end', fill: C[b.th], halo: 3 });
+  });
+}
+
+const el = document.getElementById('s');
+el.setAttribute('viewBox', `0 0 ${W} ${H}`); el.setAttribute('width', W); el.setAttribute('height', H);
+el.innerHTML = svg;
+window.__info = { bundles: bundles.length, big: bundles.filter(b => b.n >= 5).length, top: bundles.slice(0, 8).map(b => lbl(b) + ' ' + b.n) };
+document.body.dataset.ready = '1';
+</script>
+</body>
+</html>
