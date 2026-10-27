@@ -13,6 +13,8 @@
 //   width, height  page size in points
 //   measure(text, cssFont) → width in px for that font (canvas measureText)
 
+import { iconSVG, LANDMARKS, AGES, ENOCH_WEEKS, WEEK_COLORS } from '../icons.js';
+
 const C = {
   paper: '#FAF7F0', ink: '#1B2427', body: '#34403F', muted: '#5C6A6E', faint: '#A3ADAF', rule: '#4E5D61', title: '#0F4C5A',
   messiah: '#B7862C', israel: '#1B6577', nations: '#8A5A3C', church: '#7B4F8E', future: '#3B4FA0',
@@ -109,10 +111,10 @@ export function buildMap({ D, events = [], prophecies = [], cats = ['biblical', 
   const headH = 104;
   const upper = ['biblical', 'scrolls'].filter(k => cats.includes(k));
   const lower = ['church', 'secular', 'mine'].filter(k => cats.includes(k));
-  const spineH = 36;
+  const DAYH = 30, AGEH = 22, WEEKH = 24, spineH = DAYH + AGEH + WEEKH, ICONH = 62;
   const ribbonH = PROPH ? Math.round(Math.min(H * 0.2, 300)) : 0;
   const lanesAll = [...upper, ...lower];
-  const freeH = H - headH - ribbonH - spineH - 26 - M - 30;
+  const freeH = H - headH - ribbonH - spineH - ICONH - M - 30;
   // how many label rows a lane would use if it had them all (greedy packing of labels left to right)
   const rowsWanted = (k, fs) => { const ends = []; for (const o of evs.filter(o => o.e.k === k).map(o => ({ ...o, x: X(o.am) })).sort((a, b) => a.x - b.x)) { const w = tw(o.e.t, fs) + 6; let r = ends.findIndex(e => e < o.x - 3); if (r < 0) { r = ends.length; ends.push(0); } ends[r] = o.x + w; } return ends.length; };
   let labelFs = PROPH ? 9.5 : 12, rowH = labelFs * 1.32;
@@ -124,7 +126,7 @@ export function buildMap({ D, events = [], prophecies = [], cats = ['biblical', 
   let y = headH + ribbonH;
   const laneY = {};
   for (const k of upper) { y += laneH[k]; laneY[k] = y - 6; y += 10; }
-  y += 26;                       // room for the landmark names on top of the spine
+  y += ICONH;                    // the row of event icons on top of the spine
   const spY = y; y += spineH;
   for (const k of lower) { laneY[k] = y + 8; y += laneH[k] + 10; }
   const indexTop = y + 14;
@@ -219,27 +221,58 @@ export function buildMap({ D, events = [], prophecies = [], cats = ['biblical', 
   }
 
   svg += leaders + labels;
-  // ---------- spine ----------
+  // ---------- spine: seven days, four ages, Enoch's ten weeks ----------
+  const band = (a, b) => [a <= 1 ? left : X(a), b >= 7000 ? right : X(b + 1)];
   for (let d = 0; d < 7; d++) {
     const x0 = left + d * dayW;
-    svg += `<rect x="${f1(x0)}" y="${f1(spY)}" width="${f1(dayW)}" height="${spineH}" fill="${DAYBG[d]}"/>`;
-    if (d) svg += `<line x1="${f1(x0)}" y1="${f1(spY - 5)}" x2="${f1(x0)}" y2="${f1(spY + spineH + 5)}" stroke="${C.rule}" stroke-width="1.3"/>`;
-    svg += T(x0 + dayW / 2, spY + 15, DAYN[d].toUpperCase(), { b: 1, fs: 12.5, a: 'middle', fill: C.title });
-    svg += T(x0 + dayW / 2, spY + 28, `${d * 1000 + 1}–${(d + 1) * 1000} AM · ${yearOf(d * 1000 + 1)} – ${yearOf((d + 1) * 1000)}`, { fs: 10, a: 'middle', fill: C.muted });
+    svg += `<rect x="${f1(x0)}" y="${f1(spY)}" width="${f1(dayW)}" height="${DAYH}" fill="${DAYBG[d]}"/>`;
+    svg += T(x0 + dayW / 2, spY + 13, DAYN[d].toUpperCase(), { b: 1, fs: 12, a: 'middle', fill: C.title });
+    svg += T(x0 + dayW / 2, spY + 25, `${d * 1000 + 1}–${(d + 1) * 1000} AM · ${yearOf(d * 1000 + 1)} – ${yearOf((d + 1) * 1000)}`, { fs: 9.5, a: 'middle', fill: C.muted });
   }
+  const yA = spY + DAYH, yW = yA + AGEH;
+  for (const g of AGES) {
+    const [x0, x1] = band(g.a, g.b);
+    svg += `<rect x="${f1(x0)}" y="${f1(yA)}" width="${f1(x1 - x0)}" height="${AGEH}" fill="${g.color}"/>`;
+    const full = `${g.name.toUpperCase()} · ${g.a}–${g.b} AM`, t = tw(full, 10.5, { b: 1 }) < x1 - x0 - 12 ? full : g.name.toUpperCase();
+    svg += T((x0 + x1) / 2, yA + 15, t, { b: 1, fs: 10.5, a: 'middle', fill: C.rule });
+    if (g.a > 1) svg += `<line x1="${f1(x0)}" y1="${f1(yA)}" x2="${f1(x0)}" y2="${f1(yA + AGEH)}" stroke="${C.rule}" stroke-width="1.2"/>`;
+  }
+  for (const w of ENOCH_WEEKS) {
+    const [x0, x1] = band(w.a, w.b), room = x1 - x0 - 10;
+    svg += `<rect x="${f1(x0)}" y="${f1(yW)}" width="${f1(x1 - x0)}" height="${WEEKH}" fill="${WEEK_COLORS[w.n - 1]}"/>`;
+    if (w.n > 1) svg += `<line x1="${f1(x0)}" y1="${f1(yW)}" x2="${f1(x0)}" y2="${f1(yW + WEEKH)}" stroke="${C.faint}" stroke-width="1"/>`;
+    const opts = [[`Week ${w.n}`, ` · ${w.theme} · 1 Enoch ${w.ref}`], [`Week ${w.n}`, ` · ${w.theme}`], [`Week ${w.n}`, ` · ${w.a}–${w.b} AM`], [`Week ${w.n}`, ''], [String(w.n), '']];
+    const [h, rest] = opts.find(([h, r]) => tw(h, 10, { b: 1 }) + tw(r, 10) <= room) || opts.at(-1);
+    const wt = tw(h, 10, { b: 1 }) + tw(rest, 10), tx = (x0 + x1) / 2 - wt / 2;
+    svg += T(tx, yW + 16, h, { b: 1, fs: 10, fill: '#5B4A2E' }) + T(tx + tw(h, 10, { b: 1 }), yW + 16, rest, { fs: 10, fill: C.muted });
+  }
+  for (let d = 1; d < 7; d++) { const x0 = left + d * dayW; svg += `<line x1="${f1(x0)}" y1="${f1(spY - 4)}" x2="${f1(x0)}" y2="${f1(spY + DAYH)}" stroke="${C.rule}" stroke-width="1.3"/>`; }
   svg += `<rect x="${left}" y="${f1(spY)}" width="${f1(span)}" height="${spineH}" fill="none" stroke="${C.rule}" stroke-width="1"/>`;
-  svg += T(left - 10, spY + 15, 'AM', { b: 1, fs: 10.5, a: 'end', fill: C.title }) + T(left - 10, spY + 28, 'BC / AD', { fs: 9.5, a: 'end', fill: C.muted });
-  // century ticks where there is room, landmarks on the spine
+  svg += `<line x1="${left}" y1="${f1(yA)}" x2="${right}" y2="${f1(yA)}" stroke="${C.rule}" stroke-width="0.6"/><line x1="${left}" y1="${f1(yW)}" x2="${right}" y2="${f1(yW)}" stroke="${C.rule}" stroke-width="0.6"/>`;
+  svg += T(left - 10, spY + 13, '7 DAYS', { b: 1, fs: 10, a: 'end', fill: C.title }) + T(left - 10, spY + 25, 'AM · BC/AD', { fs: 8.5, a: 'end', fill: C.muted });
+  svg += T(left - 10, yA + 15, '4 AGES', { b: 1, fs: 10, a: 'end', fill: C.rule });
+  svg += T(left - 10, yW + 11, "ENOCH'S", { b: 1, fs: 9, a: 'end', fill: '#5B4A2E' }) + T(left - 10, yW + 21, '10 WEEKS', { b: 1, fs: 9, a: 'end', fill: '#5B4A2E' });
+  // century ticks under the spine
   let lastT = -1e9;
   for (let am = 100; am < 7000; am += 100) { const x = X(am); if (x - lastT < 26) continue; lastT = x; svg += `<line x1="${f1(x)}" y1="${f1(spY + spineH)}" x2="${f1(x)}" y2="${f1(spY + spineH + (am % 500 ? 4 : 7))}" stroke="${C.rule}" stroke-width="0.8"/>`; }
-  const LM = [[1, 'Creation'], [1656, 'Flood'], [2008, 'Abraham'], [2448, 'Exodus'], [2935, "Solomon's Temple"], [3338, 'Jerusalem falls'], [3389, 'Return'], [3924, 'Birth of Jesus'], [3957, 'The Cross'], [3995, 'AD 70'], [4057, 'Bar Kokhba'], [5442, 'Reformation'], [5873, '1948'], [5892, '1967'], [6000, '6000 AM']];
-  const lmp = [];
-  for (const [am, n] of LM) {
-    const x = X(am), w = tw(n, 10, { b: 1 }) + 8; let lane = 0;
-    while (lmp.some(q => q.lane === lane && Math.abs(q.x - x) < (q.w + w) / 2)) lane++;
-    lmp.push({ x, w, lane });
-    svg += `<circle cx="${f1(x)}" cy="${f1(spY)}" r="3.2" fill="${C.paper}" stroke="${C.rule}" stroke-width="1.3"/>`;
-    lmText.push(TB(x, spY - 6 - lane * 12, n, { b: 1, fs: 10, a: am < 50 ? 'start' : 'middle', fill: C.rule }));
+  // main events as icons above the spine; badges spread apart where events crowd, with a stem to the true year
+  const lm = LANDMARKS.filter(l => !l.appOnly).map(l => ({ ...l, x: X(l.am) })).sort((a, b) => a.x - b.x);
+  const R = 14, GAP = 31;
+  lm.forEach((l, i) => { l.bx = Math.max(l.x, i ? lm[i - 1].bx + GAP : left + R); });
+  for (let i = lm.length - 1; i >= 0; i--) l_fix(i);
+  function l_fix(i) { const lim = i === lm.length - 1 ? right - R : lm[i + 1].bx - GAP; if (lm[i].bx > lim) lm[i].bx = lim; }
+  const by = spY - 19, tiers = [];
+  for (const l of lm) {
+    const w = tw(l.name, 9.5, { b: 1 }) + 6; let t = 0;
+    while (tiers.some(q => q.t === t && Math.abs(q.x - l.bx) < (q.w + w) / 2)) t++;
+    tiers.push({ x: l.bx, w, t }); l.t = t;
+  }
+  for (const l of lm) {
+    svg += `<path d="M${f1(l.bx)},${f1(by + R)} L${f1(l.x)},${f1(spY)}" stroke="${C.rule}" stroke-width="0.8"/><circle cx="${f1(l.x)}" cy="${f1(spY)}" r="2.6" fill="${C.rule}"/>`;
+    svg += `<circle cx="${f1(l.bx)}" cy="${f1(by)}" r="${R}" fill="#FFFDF7" stroke="${C.rule}" stroke-width="1.2"/>` + iconSVG(l.icon, l.bx, by, 19, C.ink);
+    const ly = by - R - 5 - l.t * 11.5;
+    if (l.t) svg += `<line x1="${f1(l.bx)}" y1="${f1(by - R)}" x2="${f1(l.bx)}" y2="${f1(ly + 2)}" stroke="${C.faint}" stroke-width="0.6"/>`;
+    lmText.push(TB(l.bx, ly, l.name, { b: 1, fs: 9.5, a: 'middle', fill: C.rule }));
   }
   svg += lmText.join('');
 

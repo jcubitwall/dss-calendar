@@ -1,6 +1,7 @@
 // Timelines: a scrolling straight-line timeline, a 7000-year wheel, and print posters.
 // Only the events passed in (already filtered by the user's toggles) are drawn.
 import * as D from './engine/dss.js';
+import { iconSVG, iconForEvent, ENOCH_WEEKS, WEEK_COLORS } from './icons.js';
 
 export const TYPES = {
   biblical: { label: 'Bible', color: '#B7862C' },
@@ -49,6 +50,7 @@ export function renderLine(el, events, opts = {}) {
   const top = 20, axisX = hasP ? 122 : 58, labelX = axisX + 18, rowH = 44, ageH = 28;
   const items = events.map(e => ({ e, am: amPos(e.j) })).filter(o => o.am >= from - 1 && o.am <= to + 1);
   AGE_SPANS.forEach(([a, b], i) => { if (b >= from && a <= to) items.push({ age: i, am: Math.max(a, from) - 0.0001 }); });
+  for (const w of ENOCH_WEEKS) if (w.b >= from && w.a <= to) items.push({ week: w, am: Math.max(w.a, from) - 0.00005 });
   const inSpan = am => am >= from - 1 && am <= to + 1;
   let anyFuture = false;
   for (const p of prophecies) {
@@ -62,9 +64,10 @@ export function renderLine(el, events, opts = {}) {
   let y = top, am0 = from;
   const anchors = [[from, top]];
   for (const o of items) {
-    y += Math.max(o.age != null || o.future ? 4 : 0, (Math.max(o.am, from) - am0) * ppy);
+    const head = o.age != null || o.future || o.week;
+    y += Math.max(head ? 4 : 0, (Math.max(o.am, from) - am0) * ppy);
     o.y = y; anchors.push([Math.max(o.am, from), y]);
-    y += o.age != null || o.future ? ageH : rowH;
+    y += o.week ? 58 : head ? ageH : rowH;
     am0 = Math.max(o.am, from);
     anchors.push([am0 + 1e-6, y]);
   }
@@ -84,6 +87,12 @@ export function renderLine(el, events, opts = {}) {
     const y0 = yAt(Math.max(a, from)), y1 = yAt(Math.min(b + 1, to + 1));
     svg += `<rect x="${axisX - 9}" y="${y0}" width="7" height="${Math.max(0, y1 - y0)}" fill="${AGE_COLORS[i]}"/>`;
   });
+  // Enoch's ten weeks: a second strip just outside the ages strip, with week numbers
+  for (const w of ENOCH_WEEKS) {
+    if (w.b < from || w.a > to) continue;
+    const y0 = yAt(Math.max(w.a, from)), y1 = yAt(Math.min(w.b + 1, to + 1));
+    svg += `<rect x="${axisX - 19}" y="${y0}" width="8" height="${Math.max(0, y1 - y0)}" fill="${WEEK_COLORS[w.n - 1]}" stroke="#C9BFA6" stroke-width="0.6"/>`;
+  }
   svg += `<line x1="${axisX}" y1="${top}" x2="${axisX}" y2="${yEnd}" stroke="var(--ink-2)" stroke-width="1.5"/>`;
   let html = '';
   const ticks = [];
@@ -121,6 +130,7 @@ export function renderLine(el, events, opts = {}) {
   }
   for (const o of items) {
     if (o.age != null) { html += `<div class="tl-age" style="top:${o.y}px;left:${labelX}px">${AGE_NAMES[o.age]}</div>`; continue; }
+    if (o.week) { const w = o.week; html += `<div class="tl-week" style="top:${o.y}px;left:${labelX}px"><b>Enoch's week ${w.n}</b> · ${w.a}–${w.b} AM<span>${xmlEsc(w.theme)} · 1 Enoch ${w.ref}</span></div>`; continue; }
     if (o.future) { html += `<div class="tl-age tl-future" style="top:${o.y}px;left:${labelX}px">Yet to be fulfilled (dashed arrows)</div>`; continue; }
     const cy = o.y + 11;
     if (o.pg || o.pf || o.px) {
@@ -138,8 +148,11 @@ export function renderLine(el, events, opts = {}) {
     }
     const c = TYPES[o.e.k]?.color || '#555';
     pos['ev-' + o.e.id] = o.y;
+    const ic = iconForEvent(o.e.t);
     rows.push({ y: o.y, id: o.e.id,
-      svg: `<line x1="${axisX}" y1="${cy}" x2="${labelX - 2}" y2="${cy}" stroke="${c}" stroke-opacity=".6"/><circle cx="${axisX}" cy="${cy}" r="4" fill="${c}"/>`,
+      svg: `<line x1="${axisX}" y1="${cy}" x2="${labelX - 2}" y2="${cy}" stroke="${c}" stroke-opacity=".6"/>` + (ic
+        ? `<circle cx="${axisX}" cy="${cy}" r="12" fill="var(--card, #fff)" stroke="${c}" stroke-width="1.6"/>` + iconSVG(ic.icon, axisX, cy, 16, c)
+        : `<circle cx="${axisX}" cy="${cy}" r="4" fill="${c}"/>`),
       html: cls => `<button class="tl-ev${cls}" style="top:${o.y}px;left:${labelX}px" data-ev="${xmlEsc(o.e.id)}" id="tl-ev-${xmlEsc(o.e.id)}"><span class="tl-t">${xmlEsc(o.e.t)}</span><span class="tl-d">${xmlEsc(whenText(o.e))}</span></button>` });
   }
   if (!rows.length) html += `<p class="tl-empty" style="left:${labelX}px">No events are switched on for this span. Turn on a category above.</p>`;

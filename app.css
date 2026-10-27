@@ -236,6 +236,9 @@ details.more[open] summary::after { transform: rotate(-90deg); }
 .tl-tick.major { font-weight: 700; color: var(--ink); }
 .tl-tick small { display: block; font: 400 10.5px var(--sans); color: var(--ink-2); margin-top: 2px; }
 .tl-age { position: absolute; font: 700 13px/26px var(--sans); color: var(--sun); }
+.tl-week { position: absolute; right: 8px; font: 600 12px/16px var(--sans); color: var(--ink-2); padding-top: 3px; }
+.tl-week b { color: #8A6A2E; font-weight: 700; }
+.tl-week span { display: block; font-weight: 400; font-style: italic; color: var(--ink-2); }
 .tl-future { color: var(--prophecy); }
 .tl-ev { position: absolute; right: 0; height: 40px; text-align: left; background: none; border: 0; padding: 0 4px; display: grid; border-radius: 8px; }
 .tl-ev .tl-t { font-size: 15px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
