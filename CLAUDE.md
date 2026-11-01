@@ -41,6 +41,8 @@ Owner: Johnny Wall. Static web app, deployed on Cloudflare Pages from GitHub (`m
 
 25. Josephus (owner, Nov 2026): 268 events from Jewish War, Antiquities 11–20, Life and Against Apion (data/sources/josephus.json, ids jos-*), built by node scripts/import-josephus.mjs data/josephus/war.json data/josephus/ant.json (raw research kept in data/josephus/). Day dates in Jewish/Macedonian months are recomputed by scripts/lib/jewish-lunar.mjs (month starts ~30 h after conjunction; Nisan 15 on/after equinox; checks: Passover AD 30 = 7 Apr, AD 33 = 3 Apr); Roman dates kept as researched. War/Antiquities doubles merged (SAME list), both cited. Year-only events: precision "year" → p:'y', placed 1 July, never shown as "on this day"; month-only as before. Herod's death 4 BC with a note on Johnson's 2 BC birth (1 BC alternative).
 
+26. Vertical prophecy map (owner, Nov 2026): tools/prophecy-poster-v.html, portrait; time runs down from Creation; arcs bow left of a seven-day spine from foretold to fulfilled; each prophecy's line sits beside its fulfilment year on an elastic scale; landmark icons on the spine. The timeline flows into 1–3 columns (fewest that keep text ≥ 8.5 pt; arcs from an earlier column enter dotted from the top). Prebuilt print/prophecy-map-v-36x48 (10.9 pt), -24x72 (11.4 pt), -24x36 (7.8 pt): node scripts/render-prophecy-poster.mjs print --vertical --size 24x36,36x48,24x72.
+
 ## Where things are
 - Engine: `engine/dss.js` (pure). Table: `scripts/build-table.mjs`. Tests: `scripts/test-engine.mjs` (must pass).
 - Events: edit `data/sources/*.json`, then `node scripts/build-events.mjs`. Bible: `data/bible/` + `scripts/build-bible.mjs`.

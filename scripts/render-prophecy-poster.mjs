@@ -1,5 +1,5 @@
 // Render tools/prophecy-poster.html to a 48 × 12 in vector PDF (and SVG + PNG preview).
-// Usage: node scripts/render-prophecy-poster.mjs [outDir] [--no-others] [--size 48x12,72x24] [--preview]
+// Usage: node scripts/render-prophecy-poster.mjs [outDir] [--no-others] [--size 48x12,72x24] [--preview] [--vertical]
 import { createServer } from 'node:http';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { extname, join, resolve } from 'node:path';
@@ -13,6 +13,7 @@ const others = !process.argv.includes('--no-others');
 const si = process.argv.indexOf('--size');
 const sizes = (si > 0 ? process.argv[si + 1] : '48x12').split(',').map(z => z.split('x').map(Number));
 const preview = process.argv.includes('--preview');
+const vertical = process.argv.includes('--vertical');   // portrait layout: tools/prophecy-poster-v.html
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.woff2': 'font/woff2', '.css': 'text/css' };
 const srv = createServer(async (req, res) => {
   try { const p = join(root, decodeURIComponent(req.url.split('?')[0])); res.writeHead(200, { 'content-type': TYPES[extname(p)] || 'application/octet-stream' }); res.end(await readFile(p)); }
@@ -24,10 +25,10 @@ const b = await chromium.launch();
 for (const [w, h] of sizes) {
   const pg = await b.newPage({ viewport: { width: w * 96, height: h * 96 } });
   pg.on('pageerror', e => console.error('page error:', e.message));
-  await pg.goto(`http://localhost:${port}/tools/prophecy-poster.html?others=${others ? 1 : 0}&w=${w}&h=${h}`);
+  await pg.goto(`http://localhost:${port}/tools/${vertical ? 'prophecy-poster-v' : 'prophecy-poster'}.html?others=${others ? 1 : 0}&w=${w}&h=${h}`);
   await pg.waitForSelector('body[data-ready="1"]', { timeout: 60000 });
   console.log(await pg.evaluate(() => window.__poster));
-  const name = `prophecy-map-${w}x${h}`;
+  const name = `prophecy-map-${vertical ? 'v-' : ''}${w}x${h}`;
   await pg.pdf({ path: join(out, name + '.pdf'), width: w + 'in', height: h + 'in', printBackground: true, pageRanges: '1' });
   const svg = await pg.evaluate(() => document.getElementById('poster').outerHTML);
   await writeFile(join(out, name + '.svg'), svg.replace(/<svg ([^>]*?)style="[^"]*"/, `<svg width="${w}in" height="${h}in" $1`));
