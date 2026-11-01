@@ -1,5 +1,5 @@
 // Offline support. Network first (so updates show up immediately), cache as fallback when offline.
-const CACHE = 'dss-v10';
+const CACHE = 'dss-v11';
 const CORE = ['./', 'index.html', 'app.css', 'app.js', 'timeline.js', 'icons.js', 'lookup.js', 'reader.js', 'tools/history-map.js', 'engine/dss.js', 'icon.svg', 'apple-touch-icon.png', 'manifest.webmanifest'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => {
