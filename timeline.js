@@ -29,6 +29,7 @@ export function whenText(e) {
   const c = D.jdnToCivil(e.j);
   const yr = D.yearShort(c.y);
   if (x.kind === 'creation') return 'Creation week';
+  if (e.p === 'y') return `${x.am} AM · ${yr}`;
   if (e.p === 'm' && x.kind === 'month') return `${D.MONTHS[x.month - 1].name} ${x.am} AM · ${yr}`;
   if (x.kind === 'month') return `${x.day} ${D.MONTHS[x.month - 1].name} ${x.am} AM · ${yr}`;
   return `${x.am} AM · ${yr}`;

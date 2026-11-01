@@ -223,7 +223,7 @@ function historySections(x, jdn, mode) {
   const week = new Map();                              // slot -> offset in the week (0 = Sunday)
   const sun = jdn - x.weekday;
   for (let k = 0; k < 7; k++) { const y = D.fromJdn(sun + k); if (y?.am) week.set(y.dayOfYear, k); }
-  const all = [...EVENTS, ...mine.map(e => ({ ...e, k: 'mine' }))].filter(e => shown(e) && e.p !== 'm');
+  const all = [...EVENTS, ...mine.map(e => ({ ...e, k: 'mine' }))].filter(e => shown(e) && !e.p);
   const cap = mode === 'page' ? 6 : 3;
   let out = '';
   for (const [k, title, sub] of SECTIONS) {
@@ -311,7 +311,7 @@ function histItem(e, exact, extra) {
 function evItem(e, withDate) {
   e = { ...e };
   const kind = KIND_LABEL[e.k] || 'History';
-  const when = withDate ? `<div class="kind">${esc(TL.whenText(e))}</div>` : (e.p === 'm' ? `<div class="kind">Scripture gives the month only; shown on the 1st</div>` : '');
+  const when = withDate ? `<div class="kind">${esc(TL.whenText(e))}</div>` : (e.p === 'm' ? `<div class="kind">The source gives the month only; shown on the 1st</div>` : e.p === 'y' ? `<div class="kind">The source gives the year only</div>` : '');
   const basis = e.b ? `<div class="basis">Year: ${esc(e.b)}${e.c === 'derived' ? ' (derived)' : ''}</div>` : '';
   const del = e.k === 'mine' ? ` <button class="linkbtn" data-del="${esc(e.id)}">Delete</button>` : '';
   const go = (withDate ? ` <button class="linkbtn" data-go="${e.j}">Go to day</button>` : '') + ` <button class="linkbtn" data-ev="${esc(e.id)}">Read more</button>`;
@@ -475,7 +475,7 @@ function moreHistory() {
       continue;
     }
     const e = o.e, c = D.jdnToCivil(e.j);
-    h += `<li><button data-ev="${esc(e.id)}"${e.id === tl.last ? ' class="seen"' : ''}><span class="d1">${esc(TL.whenText(e).split(' · ')[0])}</span><span class="t">${esc(e.t)}</span><span class="d2">${D.WEEKDAYS[D.weekdayOf(e.j)]}, ${fmtCivil(c, true)} ${calName(c.cal)}</span></button></li>`;
+    h += `<li><button data-ev="${esc(e.id)}"${e.id === tl.last ? ' class="seen"' : ''}><span class="d1">${esc(TL.whenText(e).split(' · ')[0])}</span><span class="t">${esc(e.t)}</span><span class="d2">${e.p === 'y' ? `${D.yearShort(c.y)} · year only` : `${D.WEEKDAYS[D.weekdayOf(e.j)]}, ${fmtCivil(c, true)} ${calName(c.cal)}`}</span></button></li>`;
   }
   histShown = end;
   $('#histList').insertAdjacentHTML('beforeend', h);
@@ -701,14 +701,15 @@ async function openEvent(id) {
   if (e.u) links.push(`<a href="${esc(e.u)}" target="_blank" rel="noopener">${esc(e.s && !/wikipedia/i.test(e.s) ? e.s : (wt ? 'Wikipedia' : 'Source'))}</a>`);
   if (wt && e.u !== `https://en.wikipedia.org/wiki/${wt}`) links.push(`<a href="https://en.wikipedia.org/wiki/${encodeURIComponent(wt)}" target="_blank" rel="noopener">Wikipedia</a>`);
   if (wt) links.push(`<a href="https://grokipedia.com/page/${encodeURIComponent(wt.replace(/ /g, '_'))}" target="_blank" rel="noopener">Grokipedia</a>`);
-  const when = e.p === 'm' && x?.kind === 'month'
-    ? `${D.MONTHS[x.month - 1].name} ${x.am} AM <span class="muted">(Scripture gives the month only)</span>`
+  const when = e.p === 'y' ? `${x.am} AM <span class="muted">(the source gives the year only)</span>`
+    : e.p === 'm' && x?.kind === 'month'
+    ? `${D.MONTHS[x.month - 1].name} ${x.am} AM <span class="muted">(the source gives the month only)</span>`
     : `${D.WEEKDAYS[x.weekday]}, ${esc(dssShort(x))}`;
   $('#eventBody').innerHTML = `
     <div class="kind ${e.k}">${kind}${e.c === 'probable' ? ' · day probable' : ''}${e.c === 'derived' ? ' · year derived' : ''}</div>
     <h2 class="lk-title">${esc(e.t)}</h2>
     <p class="ev-when">${when}</p>
-    <p class="muted">${fmtCivil(c, true)} ${calName(c.cal)}${c.y < 1700 ? ` · ${fmtCivil(other, true)} ${calName(other.cal)}` : ''}${e.r && !ref ? ` · ${esc(e.r)}` : ''}</p>
+    <p class="muted">${e.p === 'y' ? D.yearShort(c.y) : `${fmtCivil(c, true)} ${calName(c.cal)}${c.y < 1700 ? ` · ${fmtCivil(other, true)} ${calName(other.cal)}` : ''}`}${e.r && !ref ? ` · ${esc(e.r)}` : ''}</p>
     ${e.n ? `<p>${esc(e.n)}</p>` : ''}
     ${e.b ? `<p class="basis">Year: ${esc(e.b)}</p>` : ''}
     <div id="evRead" class="ev-read"></div>
@@ -1060,7 +1061,7 @@ D.init(table);
 EVENTS = events;
 if (propOn()) ensureProphecies().then(render);
 addEventListener('online', () => { if (propOn() && !PROPHECIES.length) ensureProphecies().then(render); });
-for (const e of EVENTS) { if (!byJdn.has(e.j)) byJdn.set(e.j, []); byJdn.get(e.j).push(e); }
+for (const e of EVENTS) { if (e.p === 'y') continue; if (!byJdn.has(e.j)) byJdn.set(e.j, []); byJdn.get(e.j).push(e); }
 const setHdr = () => document.documentElement.style.setProperty('--hdr', $('.top').offsetHeight + 'px');
 setHdr(); window.addEventListener('resize', setHdr);
 const hm = location.hash.match(/d=(-?\d+)/);
