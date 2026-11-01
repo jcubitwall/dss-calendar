@@ -103,11 +103,11 @@ const NOTE = {
 const research = existsSync(rdir) ? readdirSync(rdir).filter(f => f.endsWith('.json')).sort()
   .flatMap(f => JSON.parse(readFileSync(new URL(f, rdir))).map(p => ({ ...p, _f: f }))) : [];
 const byNum = new Map();
-for (const p of research) for (const s of p.sources || []) {
+for (const p of research) if (!p.core) for (const s of p.sources || []) {
   const m = /Ancient Prophecies Revealed,?\s*#(\d+)/.exec(s.name || ''); if (m && !byNum.has(+m[1])) byNum.set(+m[1], p);
 }
 const byKey = new Map();
-for (const p of research) for (const k of allKeys(p.prophecy)) { const s = kstr(k); (byKey.get(s) || byKey.set(s, []).get(s)).push(p); }
+for (const p of research) if (!p.core) for (const k of allKeys(p.prophecy)) { const s = kstr(k); (byKey.get(s) || byKey.set(s, []).get(s)).push(p); }
 const used = new Set();
 function match(num, pred, fy) {
   if (byNum.has(num)) return byNum.get(num);
@@ -227,6 +227,8 @@ const STOP = new Set('the a of and will be to in his he by on from for with is a
 const words = t => new Set(t.toLowerCase().replace(/[^a-z ]/g, ' ').split(/\s+/).filter(x => x.length > 2 && !STOP.has(x)));
 const supp = [];
 for (const p of research.filter(p => !used.has(p))) {
+  // scan additions (core) were checked against the list by hand: never folded into a Johnson entry
+  if (p.core) { supp.push({ ...p, notJohnson: true, _f: undefined }); continue; }
   const ws = words(p.title); let best = 0, bj = null;
   for (const j of out) {
     const wj = words(j.title); let i = 0; for (const x of ws) if (wj.has(x)) i++;

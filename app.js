@@ -3,7 +3,7 @@ import * as L from './lookup.js';
 import * as TL from './timeline.js';
 import * as R from './reader.js';
 
-const DATA_V = '2026-11-01b';   // bump when data files change, so phones fetch the new copy
+const DATA_V = '2026-11-01c';   // bump when data files change, so phones fetch the new copy
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -30,13 +30,13 @@ let PROPHECIES = [];
 const propOn = () => settings.show.prophecy === true;
 if (settings.propAll == null) settings.propAll = false;
 if (settings.propFuture == null) settings.propFuture = false;
-const isJ = p => p.kj || p.n || /^(apr|age)-/.test(p.id);
+const isJ = p => p.kj || p.n || p.core || /^(apr|age)-/.test(p.id);   // main list: Johnson's prophecies + the full-scan additions
 const propList = () => (!propOn() ? [] : PROPHECIES.filter(p => (settings.propAll || isJ(p)) && (settings.propFuture || p.f)));
 function propBar() {
   if (!propOn()) return '';
   const nJ = PROPHECIES.filter(p => isJ(p) && (settings.propFuture || p.f)).length;
   return `<div class="filters prop-bar" role="group" aria-label="Prophecy options">
-    <button class="chip" data-pset="j" aria-pressed="${!settings.propAll}">Johnson's list${PROPHECIES.length ? ` (${nJ})` : ''}</button>
+    <button class="chip" data-pset="j" aria-pressed="${!settings.propAll}">Main list${PROPHECIES.length ? ` (${nJ})` : ''}</button>
     <button class="chip" data-pset="all" aria-pressed="${settings.propAll}">Add other teachers &amp; scrolls</button>
     <button class="chip" data-pfut="1" aria-pressed="${settings.propFuture}">Include yet-future</button>
     <a class="chip" href="print/prophecy-map-60x20.pdf" target="_blank" rel="noopener">Prophecy map poster (PDF)</a></div>`;
@@ -763,7 +763,7 @@ function openProphecy(id) {
   const by = { johnson: "Ken Johnson's date", evangelical: 'standard evangelical dating', secular: 'secular dating' };
   const basis = [...new Set(p.ys)].map(k => by[k] || k).join(' / ');
   $('#eventBody').innerHTML = `
-    <div class="kind prophecy">${p.n ? `Ancient Prophecies Revealed #${p.n}${p.sec ? ' · ' + esc(p.sec) : ''} · ` : p.nj ? "Not in Johnson's list · " : ''}Prophecy${p.st === 'future' ? ' · yet to be fulfilled' : p.st === 'partial' ? ' · partly fulfilled' : ''}</div>
+    <div class="kind prophecy">${p.n ? `Ancient Prophecies Revealed #${p.n}${p.sec ? ' · ' + esc(p.sec) : ''} · ` : p.core ? 'Added in the full scan · ' : p.nj ? "Not in Johnson's list · " : ''}Prophecy${p.st === 'future' ? ' · yet to be fulfilled' : p.st === 'partial' ? ' · partly fulfilled' : ''}</div>
     <h2 class="lk-title">${esc(p.t)}</h2>
     <div class="p-span">
       <div><span class="muted small">Foretold</span><b>${esc(p.g.label)}</b><span class="muted small">${amTxt(p.g)} · ${esc(p.who ? p.who + ', ' : '')}${esc(p.ref)}</span></div>

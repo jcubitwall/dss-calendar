@@ -47,6 +47,8 @@ for (const p of out) {
   const x = FIX[p.id]; if (!x) continue;
   if ('dss' in x) p.dss = x.dss;
   if ('t' in x) p.t = x.t;
+  if (x.core) p.core = 1;
+  if (x.sec) p.sec = x.sec;
   if ('ref' in x) p.ref = x.ref;
   if ('s' in x) p.s = x.s;
   for (const [a, b] of x.sRep || []) { if (!p.s.includes(a)) console.warn('audit sRep not found', p.id, a.slice(0, 40)); p.s = p.s.replace(a, b); }
