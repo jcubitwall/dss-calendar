@@ -32,7 +32,7 @@ for (const f of readdirSync(dir).filter(f => f.endsWith('.json')).sort()) {
     out.push({
       id: p.id, t: p.title, ref: p.prophecy || '', who: p.prophet || '', g, f: fl, fr: p.fulfilment || '',
       ...(p.status !== 'fulfilled' && p.expected ? { x: pos(p.expected) } : {}),
-      ...(p.num ? { n: p.num } : {}), ...(/^age-|^apr-/.test(p.id) ? { kj: 1 } : {}), ...(p.section ? { sec: p.section } : {}), ...(p.notJohnson ? { nj: 1 } : {}),
+      ...(p.num ? { n: p.num } : {}), ...(/^age-|^apr-/.test(p.id) ? { kj: 1 } : {}), ...(p.section ? { sec: p.section } : {}), ...(p.notJohnson ? { nj: 1 } : {}), ...(p.core ? { core: 1 } : {}),
       st: p.status || 'fulfilled', s: p.summary || '', a: p.agreement || [], dss: p.dss || '',
       src: (p.sources || []).map(s => ({ n: s.name, u: s.url || '' })), ys: [p.given?.yearSource, p.fulfilled?.yearSource].filter(Boolean),
     });

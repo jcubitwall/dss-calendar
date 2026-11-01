@@ -54,7 +54,7 @@ const isJ = p => p.kj || p.n || /^(apr|age)-/.test(p.id);
 let items = all.filter(isJ);
 if (OTHERS) {
   const seen = new Set(items.map(p => (p.ref || '') + '|' + Math.round(p.f?.am ?? -1)));
-  for (const p of all.filter(p => !isJ(p) && p.dss)) {
+  for (const p of all.filter(p => !isJ(p) && (p.dss || p.core))) {
     const k = (p.ref || '') + '|' + Math.round(p.f?.am ?? -1);
     if (seen.has(k)) continue; seen.add(k); items.push(p);
   }

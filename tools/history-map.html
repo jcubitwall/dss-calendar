@@ -28,7 +28,7 @@ for (const f of ['400 10px "Alegreya Sans"', '700 10px "Alegreya Sans"', 'italic
 const cv = document.createElement('canvas').getContext('2d');
 const measure = (s, font) => { cv.font = font; return cv.measureText(s).width; };
 const isJ = p => p.kj || p.n || /^(apr|age)-/.test(p.id);
-const P = withP ? prophecies.filter(p => isJ(p) || p.dss) : [];
+const P = withP ? prophecies.filter(p => isJ(p) || p.dss || p.core) : [];
 const r = buildMap({ D, events, prophecies: P, cats, width: w * 72, height: h * 72, measure });
 document.getElementById('out').innerHTML = r.svg.replace(/width="[\d.]+pt" height="[\d.]+pt"/, `width="${w}in" height="${h}in"`);
 window.__map = { indexPt: +r.indexPt.toFixed(2), labelPt: +r.labelPt.toFixed(2), ...r.counts };
