@@ -3,7 +3,7 @@ import * as L from './lookup.js';
 import * as TL from './timeline.js';
 import * as R from './reader.js';
 
-const DATA_V = '2026-11-01c';   // bump when data files change, so phones fetch the new copy
+const DATA_V = '2026-11-01d';   // bump when data files change, so phones fetch the new copy
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -768,7 +768,7 @@ function openProphecy(id) {
     <div class="p-span">
       <div><span class="muted small">Foretold</span><b>${esc(p.g.label)}</b><span class="muted small">${amTxt(p.g)} · ${esc(p.who ? p.who + ', ' : '')}${esc(p.ref)}</span></div>
       <div class="p-arrow" aria-hidden="true">→</div>
-      <div><span class="muted small">${p.f ? 'Fulfilled' : p.x ? 'Expected' : 'Fulfilment'}</span><b>${p.f ? esc(p.f.label) : p.x ? esc(p.x.label) : 'Yet future'}</b><span class="muted small">${p.f ? amTxt(p.f) + (p.fr ? ' · ' + esc(p.fr) : '') : p.x ? amTxt(p.x) + " · Ken Johnson's projection" : ''}</span></div>
+      <div><span class="muted small">${p.f ? 'Fulfilled' : p.x ? 'Expected' : 'Fulfilment'}</span><b>${p.f ? esc(p.f.label) : p.x ? esc(p.x.label) : 'Yet future'}</b><span class="muted small">${p.f ? amTxt(p.f) + (p.fr ? ' · ' + esc(p.fr) : '') : p.x ? amTxt(p.x) + (p.xs === 'owner' ? ' · possible date' : " · Ken Johnson's projection") : ''}</span></div>
     </div>
     ${p.f ? `<p class="muted small">${Math.round(p.f.am - p.g.am)} years from prediction to fulfilment${p.g.approx || p.f.approx ? ' (approximate)' : ''}.</p>` : ''}
     ${p.s ? `<p>${esc(p.s)}</p>` : ''}

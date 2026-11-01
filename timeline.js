@@ -140,7 +140,7 @@ export function renderLine(el, events, opts = {}) {
       const line2 = o.pg
         ? `Foretold ${pYear(p.g)} · ${p.ref}${p.f ? ` → ${pYear(p.f)}` : p.x ? ` → expected ${pYear(p.x)}` : ' → yet future'}`
         : o.pf ? `Fulfilled ${pYear(p.f)}${p.fr ? ' · ' + p.fr : ''} ← ${pYear(p.g)}`
-        : `Expected ${pYear(p.x)} (Ken Johnson's projection) ← ${pYear(p.g)}`;
+        : `Expected ${pYear(p.x)}${p.xs === 'owner' ? '' : " (Ken Johnson's projection)"} ← ${pYear(p.g)}`;
       const lead = o.pg ? 'Foretold: ' : o.pf ? 'Fulfilled: ' : 'Expected: ';
       rows.push({ y: o.y, id: p.id,
         svg: `<line x1="${axisX}" y1="${cy}" x2="${labelX - 2}" y2="${cy}" stroke="${PROPHECY_COLOR}" stroke-opacity=".6"/><circle cx="${axisX}" cy="${cy}" r="4.5" fill="${o.pf ? PROPHECY_COLOR : 'var(--bg)'}" stroke="${PROPHECY_COLOR}" stroke-width="2"${o.px ? ' stroke-dasharray="2 2"' : ''}/>`,

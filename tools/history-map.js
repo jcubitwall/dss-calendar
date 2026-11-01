@@ -96,7 +96,7 @@ export function buildMap({ D, events = [], prophecies = [], cats = ['biblical', 
 
   // ---------- data ----------
   const evs = events.filter(e => cats.includes(e.k)).map(e => ({ e, am: D.fromJdn(e.j).am + (D.fromJdn(e.j).dayOfYear || 0) / 364 }));
-  const P = prophecies.map(p => ({ p, g: p.g.am, f: p.f ? p.f.am : (FUT[p.sec] ?? 5980), src: sourceOf(p), th: themeOf(p) }));
+  const P = prophecies.map(p => ({ p, g: p.g.am, f: p.f ? p.f.am : p.x ? p.x.am : (FUT[p.sec] ?? 5980), src: sourceOf(p), th: themeOf(p) }));
   for (const r of P) r.era = eraOf(r.f);
 
   // ---------- scale: seven equal days, stretched inside each by how much happens there ----------

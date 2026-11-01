@@ -83,7 +83,7 @@ const cleanTitle = t => t.replace(/\s*\((?:[1-3]?\s?[A-Z][a-z]+\.?\s+\d+[^)]*|[^
 
 const rows = items.map(p => {
   const k = cat(p);
-  const fam = p.f ? p.f.am : (FUT[p.sec] ?? 5985);
+  const fam = p.f ? p.f.am : p.x ? p.x.am : (FUT[p.sec] ?? 5985);
   return {
     p, k, gam: p.g.am, fam,
     ref: (p.ref || '').replace(/\s*\([^)]*\)?\s*/g, ' ').replace(/\s+/g, ' ').trim(),
